@@ -1,13 +1,5 @@
-/* pages.css — Home Profile block + About page (.bio-block, .founder-block) +
-   Contact page (.contact-wrap). Imported by style.css. Edit the partial
-   directly to change the matching part of the design.
-*/
+/* pages.css — shared page layouts and content-card systems. */
 
-/* Home — Profile block
-   ============================================================
-   Centered bio: heading and every paragraph share the same font,
-   size, and color, all block-centered within main. Overrides the
-   global p max-width so it can re-center via auto margins. */
 .profile-block { text-align: center; }
 .profile-block h2 { text-align: center; }
 .profile-block p {
@@ -19,15 +11,6 @@
   margin-right: auto;
 }
 
-/* About page — one big floating 3D plaque with a random image slideshow
-   ============================================================
-   The page is a single metal plaque (about-plaque-3d.js), centered in the
-   viewport with nothing under it. A framed slideshow hovers on the plaque
-   and the bio sits in a scrimmed band across the BOTTOM, clear of any face
-   in the image above. The JS tilts the overlay in sync with the metal. The
-   framed slideshow is self-contained, so it also looks right with no metal
-   (mobile / no-WebGL). */
-
 .about-main {
   display: flex;
   flex-direction: column;
@@ -38,7 +21,7 @@
 .about-plaque {
   position: relative;
   width: 100%;
-  max-width: 1080px;          /* bigger plaque */
+  max-width: 1080px;
   margin: 0 auto;
 }
 
@@ -52,25 +35,21 @@
 }
 .about-plaque-canvas.active { display: block; }
 
-/* Overlay (frame + bio). Gets a matrix3d transform from the JS each frame so
-   it tilts with the metal; transform-origin center keeps it aligned. Grid so
-   the frame fills the stack height. The padding is the visible metal border. */
 .about-plaque-stack {
   position: relative;
   z-index: 2;
   display: grid;
-  min-height: clamp(440px, 70vh, 760px);   /* bigger */
+  min-height: clamp(440px, 70vh, 760px);
   padding: clamp(16px, 2.4vw, 38px);
   transform-origin: center center;
   will-change: transform;
 }
 
-/* The framed slideshow area, hovering on the plaque. */
 .about-frame {
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
-  background: #161616;        /* base behind transparent/letterboxed slides */
+  background: #161616;
   box-shadow: 0 18px 46px rgba(0,0,0,0.55);
 }
 
@@ -85,26 +64,21 @@
   opacity: 0;
   transform: translateX(6%) scale(1.03);
   transition: opacity 1s ease, transform 1.2s ease;
-  filter: grayscale(1);        /* matches the black-and-white palette */
+  filter: grayscale(1);
 }
 .about-slide.is-current { opacity: 1; transform: translateX(0) scale(1); }
-.about-slide.is-leaving  { opacity: 0; transform: translateX(-6%) scale(1.03); }
+.about-slide.is-leaving { opacity: 0; transform: translateX(-6%) scale(1.03); }
 .about-slideshow.reduced-motion .about-slide { transition: opacity 0.6s ease; transform: none !important; }
 
-/* Bottom scrim so the bio reads over any frame, keeping the upper image
-   (and faces) clear. */
 .about-frame::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg,
-    rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 30%,
-    rgba(0,0,0,0.55) 64%, rgba(0,0,0,0.90) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 64%, rgba(0,0,0,0.90) 100%);
 }
 
-/* Bio band across the bottom — bigger type, never over the face above. */
 .about-copy {
   position: absolute;
   left: 0;
@@ -119,11 +93,6 @@
 .about-copy h1 { color: #fff; font-size: clamp(2rem, 4vw, 3.2rem); margin: 0 0 8px; }
 .about-copy .lede { color: #fff; font-size: clamp(1.05rem, 1.4vw, 1.4rem); margin: 0 0 10px; max-width: 60ch; }
 .about-copy p { font-size: clamp(0.98rem, 1vw, 1.15rem); line-height: 1.55; max-width: 74ch; }
-
-@media (max-width: 720px) {
-  .about-plaque-stack { min-height: clamp(420px, 80vh, 640px); padding: 10px; }
-  .about-copy { padding: 20px; }
-}
 
 .bio-block {
   background: var(--card);
@@ -145,10 +114,103 @@
 }
 .founder-block h2 { font-size: 1.3rem; }
 
-/* ============================================================
-   Contact page
-   ============================================================ */
+.page-main {
+  width: 100%;
+}
 
+.page-hero {
+  text-align: center;
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.eyebrow,
+.link-kicker,
+.showcase-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--black);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.section-headline {
+  max-width: 780px;
+  margin: 0 auto 26px;
+  text-align: center;
+}
+.section-headline p { margin-inline: auto; color: var(--muted); }
+
+.hub-grid,
+.showcase-grid,
+.brochure-grid,
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+}
+.hub-grid.two-up { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.link-card,
+.showcase-card,
+.brochure-card,
+.social-tile,
+.map-card {
+  background: rgba(255,255,255,0.94);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9), 0 14px 34px rgba(0,0,0,0.07);
+}
+
+.link-card,
+.showcase-card,
+.brochure-card {
+  display: block;
+  padding: clamp(22px, 2.4vw, 32px);
+  color: var(--ink);
+}
+.link-card { text-decoration: none; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
+.link-card:hover { transform: translateY(-2px); border-color: rgba(0,0,0,0.42); box-shadow: 0 18px 42px rgba(0,0,0,0.12); }
+.link-card strong { display: block; color: var(--black); font-size: clamp(1.25rem, 1vw + 1rem, 1.75rem); margin-bottom: 8px; }
+.link-card p,
+.showcase-card p,
+.brochure-card p { max-width: none; color: var(--muted); }
+.link-action { display: inline-block; margin-top: 14px; color: var(--black); font-weight: 800; }
+
+.feature-link { min-height: 220px; }
+.showcase-card h3,
+.brochure-card h3 { margin-bottom: 10px; color: var(--black); }
+.brochure-panel { max-width: 1120px; }
+.brochure-card { border-left: 4px solid var(--black); }
+.cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
+
+.social-grid { max-width: 980px; margin-inline: auto; }
+.social-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 150px;
+  padding: 22px 18px;
+  color: var(--ink);
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.social-tile:hover { transform: translateY(-2px); border-color: rgba(0,0,0,0.42); box-shadow: 0 18px 42px rgba(0,0,0,0.12); }
+.social-tile img { width: 42px; height: 42px; object-fit: contain; filter: grayscale(1); }
+.social-tile strong { color: var(--black); }
+.social-tile span:last-child { color: var(--muted); font-size: 0.92rem; }
+.social-fallback { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 999px; background: #111; color: #fff; font-weight: 900; }
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: clamp(22px, 3vw, 38px);
+  align-items: stretch;
+}
 .contact-wrap {
   background: var(--card);
   padding: 40px 36px;
@@ -160,7 +222,6 @@
 }
 .contact-wrap h1 { text-align: center; }
 .contact-wrap .lede { margin: 0 auto 28px; text-align: center; }
-
 .contact-meta {
   margin-top: 32px;
   padding-top: 24px;
@@ -171,12 +232,27 @@
   font-size: 0.95rem;
   color: var(--muted);
 }
-.contact-meta .label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--black);
-  font-weight: 700;
-  margin-bottom: 2px;
-}
+.contact-meta .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--black); font-weight: 700; margin-bottom: 2px; }
 .contact-meta .value { color: var(--ink); font-size: 1rem; }
+.business-contact { max-width: none; }
+.map-card { overflow: hidden; }
+.map-embed { aspect-ratio: 16 / 10; background: #eee; border-bottom: 1px solid var(--line); }
+.map-embed iframe { display: block; width: 100%; height: 100%; border: 0; filter: grayscale(1) contrast(1.08); }
+.map-copy { padding: 22px 24px 26px; }
+.map-copy h2 { font-size: 1.35rem; margin-bottom: 8px; }
+.map-copy p { color: var(--muted); }
+.map-copy a { font-weight: 800; }
+
+@media (max-width: 820px) {
+  .about-plaque-stack { min-height: clamp(420px, 80vh, 640px); padding: 10px; }
+  .about-copy { padding: 20px; }
+  .hub-grid.two-up,
+  .contact-layout { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-card,
+  .social-tile { transition: none; }
+  .link-card:hover,
+  .social-tile:hover { transform: none; }
+}
