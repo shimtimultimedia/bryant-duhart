@@ -1,0 +1,15 @@
+/* style.css — entry point.
+   Imports themed partials in cascade order. Edit each partial in
+   place to change that area of the design without touching the
+   others. See ../README.md for the folder layout overview.
+*/
+
+@import url("base.css?v=94");
+@import url("header.css?v=94");
+@import url("layout.css?v=94");
+@import url("hero.css?v=94");
+@import url("home-services.css?v=94");
+@import url("portfolio.css?v=94");
+@import url("pages.css?v=94");
+@import url("footer.css?v=94");
+@import url("responsive.css?v=94");

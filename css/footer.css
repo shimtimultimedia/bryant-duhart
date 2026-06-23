@@ -1,0 +1,31 @@
+/* footer.css — Site footer.
+   Imported by style.css. Edit the partial directly to change
+   the matching part of the design.
+*/
+
+/* Footer
+   ============================================================ */
+
+.site-footer {
+  background: var(--black);
+  color: #BBB;
+  border-top: 1px solid var(--black);
+  padding: 10px 24px;
+  text-align: center;
+  font-size: 0.82rem;
+  position: relative;
+  z-index: 3;
+}
+.site-footer a { color: #fff; }
+.site-footer .footer-brand { font-weight: 600; color: #fff; }
+/* Override the global 60ch paragraph cap so the footer line spans the
+   full bar and the inherited text-align:center actually centers it
+   (a 60ch block with no auto-margins would hug the left). */
+.site-footer p { max-width: none; margin: 0; }
+
+/* View Transitions intentionally disabled.
+   Cross-document transition snapshots were triggering on plain reload,
+   leaving the prior page's canvas snapshot visible while the new page's
+   JS reinitialized. Refresh should be a full teardown and restart. */
+
+/* ============================================================ */

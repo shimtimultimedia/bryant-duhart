@@ -1,0 +1,118 @@
+/* header.css — Site header, brand mark, primary navigation.
+   Imported by style.css. Edit the partial directly to change
+   the matching part of the design.
+*/
+
+/* Header / nav
+   ============================================================ */
+
+.site-header {
+  background: var(--black);
+  color: #fff;
+  border-bottom: 1px solid var(--black);
+  position: relative;
+  z-index: 3;
+}
+
+.nav-wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  text-decoration: none;
+  /* Drives the whole lockup. The cube is sized in em of this, and the
+     brand text inherits it, so cube and text scale together as a pair. */
+  font-size: 1.7rem;
+}
+.brand:hover { color: #fff; }
+
+.brand-mark {
+  /* Cube sized in em of the lockup so it stays a matched pair with the
+     text — only a touch taller than the two-line text block, instead of
+     the runaway size the old stretch+aspect-ratio produced. */
+  width: 2.1em;
+  height: 2.1em;
+  flex-shrink: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.brand-mark-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+.brand-mark-fallback svg {
+  width: 82%;
+  height: 82%;
+  display: block;
+}
+
+.brand-mark.brand-mark-ready .brand-mark-fallback { visibility: hidden; }
+
+.brand-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  /* Shrink-wrap to the name so the centered subtitle sits under it. */
+  width: max-content;
+}
+.brand-sub {
+  display: block;
+  font-size: 0.46em;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #BBB;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: #DDD;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  /* Tap-target floor per WCAG 2.2 SC 2.5.8 Target Size (Minimum). */
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.nav-links a[aria-current="page"] { background: #fff; color: var(--black); font-weight: 600; }
+/* Backward-compat: old .active class still works if any page hasn't
+   migrated to aria-current yet. */
+.nav-links a.active { background: #fff; color: var(--black); font-weight: 600; }
+
+/* ============================================================ */

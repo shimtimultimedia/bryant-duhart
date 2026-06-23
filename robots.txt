@@ -1,0 +1,7 @@
+# robots.txt — crawler instructions
+# https://www.rfc-editor.org/rfc/rfc9309 (Robots Exclusion Protocol, 2022)
+
+User-agent: *
+Allow: /
+
+Sitemap: https://shimtimultimedia.github.io/bryant-duhart/sitemap.xml

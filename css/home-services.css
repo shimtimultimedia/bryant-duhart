@@ -1,0 +1,84 @@
+/* home-services.css — Homepage Services section.
+   Flat, clean card grid. No 3D, no glow, no line dividers — just the
+   service icon, title, and a one-line teaser per card. Matches the
+   black-and-white site palette and aligns to the hero plaque width.
+*/
+
+.services-strip {
+  width: 100%;
+  max-width: 880px;            /* aligns with the hero plaque above */
+  margin: clamp(48px, 9vh, 110px) auto 0;
+}
+
+.services-heading {
+  text-align: center;
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--black);
+  margin: 0 0 10px;
+}
+
+.services-intro {
+  text-align: center;
+  font-size: clamp(1rem, 0.4vw + 0.9rem, 1.12rem);
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 56ch;
+  margin: 0 auto clamp(28px, 4vh, 48px);
+}
+
+/* Responsive card grid — 3-up on desktop, fluidly down to 1-up on phones. */
+.service-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.service-card:hover {
+  border-color: var(--black);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* The icon illustration now; a real 16:9 photo later (same filename, .webp)
+   drops straight in with no layout shift. */
+.service-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #f2f2f2;
+  border-bottom: 1px solid var(--line);
+}
+
+.service-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--black);
+  margin: 15px 18px 5px;
+}
+
+.service-teaser {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: none;
+  margin: 0 18px 18px;
+}
+
+@media (max-width: 720px) {
+  .services-strip { margin-top: clamp(36px, 7vh, 64px); }
+  .service-list { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+}

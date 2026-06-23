@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="AI consulting">
+  <rect width="320" height="180" rx="12" fill="#f2f2f2"/>
+  <g transform="translate(160,90)" fill="none" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle r="10" fill="#1a1a1a" stroke="none"/><circle cx="-34" cy="-22" r="7"/><circle cx="34" cy="-22" r="7"/><circle cx="-34" cy="24" r="7"/><circle cx="34" cy="24" r="7"/><path d="M-7 -6 L-28 -18 M7 -6 L28 -18 M-7 6 L-28 19 M7 6 L28 19"/></g>
+</svg>

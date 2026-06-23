@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About — Bryant Duhart</title>
+<meta name="description" content="About Bryant Duhart — multimedia creator and founder of Shimti Multimedia, based in Wiesbaden, Germany.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=94">
+<!-- META:start -->
+<meta name="author" content="Bryant Duhart">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/about.html">
+
+<!-- Resource hint: preload the transparent portrait cutout on desktop. -->
+<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=94" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+
+<!-- Open Graph — Facebook, LinkedIn, Slack, Discord, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bryant Duhart — Multimedia Creator">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="About — Bryant Duhart">
+<meta property="og:description" content="About Bryant Duhart — multimedia creator and founder of Shimti Multimedia, based in Wiesbaden, Germany.">
+<meta property="og:url" content="https://shimtimultimedia.github.io/bryant-duhart/about.html">
+<meta property="og:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
+<meta property="og:image:alt" content="Bryant Duhart portrait">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About — Bryant Duhart">
+<meta name="twitter:description" content="About Bryant Duhart — multimedia creator and founder of Shimti Multimedia, based in Wiesbaden, Germany.">
+<meta name="twitter:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
+<meta name="twitter:image:alt" content="Bryant Duhart portrait">
+<!-- META:end -->
+<script src="js/include.js?v=94" defer></script>
+<script src="js/particles-bg.js?v=94" defer></script>
+
+<!-- Three.js importmap — required by the dynamically loaded
+     js/brand-3d.js so its transitive FontLoader/TextGeometry
+     imports of "three" resolve. Without this, the 3D brand mark
+     fails to render and the BD text fallback is shown instead. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./js/vendor/three.module.js",
+    "three/addons/": "./js/vendor/jsm/"
+  }
+}
+</script>
+<script type="module" src="js/about-plaque-3d.js?v=94"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div data-include="header"></div>
+
+<main id="main" class="about-main">
+
+  <!-- A single floating 3D metal plaque (same material/lighting/cursor
+       behaviour as the home hero). The #about-plaque-canvas renders the
+       metal; .about-plaque-stack is the HTML overlay — the photo hovering on
+       the plaque with the bio laid over it — and about-plaque-3d.js tilts it
+       in sync with the metal so the whole thing moves as one object. The
+       H1 + copy stay in the DOM for SEO / no-JS. -->
+  <section class="about-plaque" id="about-plaque">
+    <canvas class="about-plaque-canvas" id="about-plaque-canvas" aria-hidden="true"></canvas>
+
+    <div class="about-plaque-stack" id="about-plaque-stack">
+      <div class="about-frame">
+        <!-- Random, non-repeating image slideshow (built by about-plaque-3d.js). -->
+        <div class="about-slideshow" id="about-slideshow" aria-hidden="true"></div>
+
+        <!-- Bio in a bottom band over a scrim, clear of any face above. -->
+        <div class="about-copy">
+          <h1>About</h1>
+          <p class="lede">
+            I'm Bryant Duhart — an independent multidisciplinary creator in
+            Wiesbaden, Germany, and founder of Shimti Multimedia.
+          </p>
+          <p>
+            I work across web, design, video, 3D, music and audio, animation,
+            photography, app prototyping, AI-assisted production, and game
+            development — directing the creative side of all of it. My
+            background runs through retail and operations, custom apparel and
+            visual merchandising, music and media, freelance, and
+            entrepreneurship — mostly self-taught — so I carry an idea from
+            first sketch to finished deliverable.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div data-include="footer"></div>
+
+</body>
+</html>

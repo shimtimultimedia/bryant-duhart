@@ -1,0 +1,182 @@
+/* pages.css — Home Profile block + About page (.bio-block, .founder-block) +
+   Contact page (.contact-wrap). Imported by style.css. Edit the partial
+   directly to change the matching part of the design.
+*/
+
+/* Home — Profile block
+   ============================================================
+   Centered bio: heading and every paragraph share the same font,
+   size, and color, all block-centered within main. Overrides the
+   global p max-width so it can re-center via auto margins. */
+.profile-block { text-align: center; }
+.profile-block h2 { text-align: center; }
+.profile-block p {
+  font-size: 1.18rem;
+  line-height: 1.6;
+  color: var(--ink);
+  max-width: 82ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* About page — one big floating 3D plaque with a random image slideshow
+   ============================================================
+   The page is a single metal plaque (about-plaque-3d.js), centered in the
+   viewport with nothing under it. A framed slideshow hovers on the plaque
+   and the bio sits in a scrimmed band across the BOTTOM, clear of any face
+   in the image above. The JS tilts the overlay in sync with the metal. The
+   framed slideshow is self-contained, so it also looks right with no metal
+   (mobile / no-WebGL). */
+
+.about-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  align-items: center;
+}
+
+.about-plaque {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;          /* bigger plaque */
+  margin: 0 auto;
+}
+
+.about-plaque-canvas {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.about-plaque-canvas.active { display: block; }
+
+/* Overlay (frame + bio). Gets a matrix3d transform from the JS each frame so
+   it tilts with the metal; transform-origin center keeps it aligned. Grid so
+   the frame fills the stack height. The padding is the visible metal border. */
+.about-plaque-stack {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-height: clamp(440px, 70vh, 760px);   /* bigger */
+  padding: clamp(16px, 2.4vw, 38px);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* The framed slideshow area, hovering on the plaque. */
+.about-frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #161616;        /* base behind transparent/letterboxed slides */
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55);
+}
+
+.about-slideshow { position: absolute; inset: 0; z-index: 0; }
+.about-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: translateX(6%) scale(1.03);
+  transition: opacity 1s ease, transform 1.2s ease;
+  filter: grayscale(1);        /* matches the black-and-white palette */
+}
+.about-slide.is-current { opacity: 1; transform: translateX(0) scale(1); }
+.about-slide.is-leaving  { opacity: 0; transform: translateX(-6%) scale(1.03); }
+.about-slideshow.reduced-motion .about-slide { transition: opacity 0.6s ease; transform: none !important; }
+
+/* Bottom scrim so the bio reads over any frame, keeping the upper image
+   (and faces) clear. */
+.about-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 30%,
+    rgba(0,0,0,0.55) 64%, rgba(0,0,0,0.90) 100%);
+}
+
+/* Bio band across the bottom — bigger type, never over the face above. */
+.about-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: clamp(22px, 3vw, 50px);
+  color: #fff;
+  text-align: left;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.85);
+}
+.about-copy h1 { color: #fff; font-size: clamp(2rem, 4vw, 3.2rem); margin: 0 0 8px; }
+.about-copy .lede { color: #fff; font-size: clamp(1.05rem, 1.4vw, 1.4rem); margin: 0 0 10px; max-width: 60ch; }
+.about-copy p { font-size: clamp(0.98rem, 1vw, 1.15rem); line-height: 1.55; max-width: 74ch; }
+
+@media (max-width: 720px) {
+  .about-plaque-stack { min-height: clamp(420px, 80vh, 640px); padding: 10px; }
+  .about-copy { padding: 20px; }
+}
+
+.bio-block {
+  background: var(--card);
+  padding: 32px 36px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+  border-left: 4px solid var(--black);
+}
+.bio-block h2 { margin-bottom: 14px; }
+.bio-block p { font-size: 1.05rem; color: var(--ink); }
+
+.founder-block {
+  background: var(--card);
+  padding: 28px 32px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--dark);
+}
+.founder-block h2 { font-size: 1.3rem; }
+
+/* ============================================================
+   Contact page
+   ============================================================ */
+
+.contact-wrap {
+  background: var(--card);
+  padding: 40px 36px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.contact-wrap h1 { text-align: center; }
+.contact-wrap .lede { margin: 0 auto 28px; text-align: center; }
+
+.contact-meta {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.contact-meta .label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--black);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.contact-meta .value { color: var(--ink); font-size: 1rem; }

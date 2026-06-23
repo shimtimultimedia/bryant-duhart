@@ -1,0 +1,102 @@
+/* layout.css — <main>, sections, headings, paragraphs, .lede.
+   Imported by style.css. Edit the partial directly to change
+   the matching part of the design.
+*/
+
+/* Page layout — single <main> rule, consolidated.
+   ============================================================ */
+
+main {
+  flex: 1;
+  max-width: var(--max);
+  width: 100%;
+  margin: 0 auto;
+  /* Symmetric top/bottom padding so when main flex-centers its single
+     child (the plaque on the home page), the gap above and below is
+     equal. Asymmetric padding would offset the center. */
+  padding: 72px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  z-index: 2;
+  /* Flex column with `safe center` so the plaque sits vertically
+     centered when it's shorter than main, but reverts to "start" (no
+     centering) when the content is taller than the viewport — which
+     keeps the top of the content visible and scrollable instead of
+     pushing it above the scroll origin. CSS Box Alignment Module L3;
+     stable in all major browsers since 2020. */
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+}
+main::-webkit-scrollbar { display: none; }
+
+.section { margin-bottom: 64px; }
+.section:last-child { margin-bottom: 0; }
+
+h1, h2, h3 {
+  /* text-wrap: balance distributes words across lines for shapelier
+     headlines. Stable in all modern browsers (Chrome 114+ 2023,
+     Safari 17.5+ 2024, Firefox 121+ 2023). */
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 2.6rem;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: var(--black);
+  margin: 0 0 8px;
+  letter-spacing: -0.005em;
+  font-weight: 700;
+}
+h2 .accent-bar {
+  display: inline-block;
+  width: 28px;
+  height: 4px;
+  background: var(--black);
+  vertical-align: middle;
+  margin-right: 10px;
+  border-radius: 2px;
+}
+
+h3 {
+  font-size: 1.15rem;
+  margin: 0 0 4px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+p {
+  margin: 0 0 16px;
+  /* Readable line length cap. Same 60ch the .lede already uses, so
+     stacked paragraphs share a column width instead of one running
+     short and the next sprawling full-main. Components that need
+     wider text (cards, tiles, etc.) override this on their own. */
+  max-width: 60ch;
+  /* text-wrap: pretty improves last-line balancing in paragraphs.
+     Stable in Chrome 117+ (Sept 2023), Safari 17.5 (May 2024),
+     Firefox 132 (Oct 2024). */
+  text-wrap: pretty;
+}
+p:last-child { margin-bottom: 0; }
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0 0 28px;
+  max-width: 60ch;
+}
+
+/* ============================================================ */

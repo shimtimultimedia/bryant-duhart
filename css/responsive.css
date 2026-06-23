@@ -1,0 +1,101 @@
+/* responsive.css — prefers-reduced-motion + responsive @media queries.
+   Imported by style.css. Edit the partial directly to change
+   the matching part of the design.
+*/
+
+/* Reduced motion — WCAG 2.3.3 / Web Animations API.
+   Honor the user's OS-level "Reduce Motion" preference.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .tile,
+  .platform,
+  .btn,
+  .skip-link,
+  .nav-links a {
+    transition-duration: 0.01ms !important;
+  }
+  .tile:hover,
+  .platform:hover,
+  .btn:hover { transform: none; }
+}
+
+/* ============================================================
+   Responsive
+   Breakpoints:
+     > 1920px    ultrawide  — expand content, scale up bg image
+     1024-1920   desktop    — defaults
+     720-1024    tablet     — shrink + offset bg image
+     < 720       phone      — hide bg image, tighten nav/padding
+     < 420       small phone — tighten typography further
+   ============================================================ */
+
+@media (min-width: 1920px) {
+  main { max-width: 1280px; }
+  #portrait-bg { background-size: auto 90vh; }
+}
+
+@media (max-width: 1024px) {
+  #portrait-bg {
+    background-size: 70%;
+    background-position: -10% calc(100% + 8px);
+  }
+  main { padding: 56px 20px 64px; }
+  .tile-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  #portrait-bg { background-image: none; }
+  #particles-bg { display: none; }
+
+  .nav-wrap { padding: 14px 16px; gap: 10px; }
+  .brand-text { font-size: 1.05rem; }
+  /* On mobile the brand-text shrinks but the mark keeps the same
+     auto/stretch behavior — no override needed. */
+  .nav-links a { padding: 6px 12px; font-size: 0.9rem; min-height: 32px; }
+
+  main { padding: 40px 16px 56px; }
+
+  .hero { padding: 32px 24px; }
+  .tile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  h2 { font-size: 1.35rem; }
+
+  .bio-block, .founder-block { padding: 24px 22px; }
+  .contact-wrap { padding: 32px 22px; }
+
+  /* Force the H1 + subtitle back to normal layout on mobile even if
+     .hidden-by-3d was applied while the user was on desktop and they
+     resized down. Without restoring the subtitle, a desktop→mobile
+     resize would leave it visually-hidden while the 3D canvas is forced
+     off — the title would show alone. */
+  .hero-3d-canvas { display: none !important; }
+  .hero-title-text.hidden-by-3d,
+  .hero-subtitle-text.hidden-by-3d {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+  }
+  .hero-title-text.hidden-by-3d { margin: 0 0 14px; }
+  .hero-subtitle-text.hidden-by-3d { margin: 4px 0 0; }
+}
+
+@media (max-width: 420px) {
+  .nav-wrap { gap: 8px; }
+  .nav-links { gap: 2px; }
+  .nav-links a {
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    /* Hold the 32px floor on the smallest screens for tap accuracy
+       (WCAG 2.2 SC 2.5.8). */
+    min-height: 32px;
+  }
+  main { padding: 32px 14px 48px; }
+  .hero { padding: 24px 18px; }
+  .tile-grid { grid-template-columns: 1fr; }
+  .platform, .tile { padding: 18px 18px; }
+}
