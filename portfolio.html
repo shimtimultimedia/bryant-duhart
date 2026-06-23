@@ -35,16 +35,51 @@
   }
 }
 </script>
+<script type="module" src="js/hero-3d.js?v=94"></script>
+
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
 <main id="main" class="page-main portfolio-main">
-  <header class="page-hero section">
-    <p class="eyebrow">Portfolio hub</p>
-    <h1>Where the work lives</h1>
-    <p class="lede">This page points to the external platforms that hold published work, code, case studies, and visual projects. Custom art and featured portfolio pieces will also be presented directly here as the collection grows.</p>
-  </header>
+
+  <section class="hero-plaque" id="hero-plaque">
+    <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
+
+    <div class="plaque-stack" id="plaque-stack">
+      <div class="plaque-title-slot">
+        <h1 class="hero-title-text" id="hero-title">Selected Work</h1>
+        <p class="hero-subtitle-text" id="hero-subtitle">Portfolio Hub</p>
+      </div>
+
+      <div class="plaque-bio-area">
+        <div class="plaque-bio">
+          <p>
+            Bryant Duhart is a multidisciplinary digital media and technology
+            specialist based in Wiesbaden, Germany. His work combines web design,
+            graphic design, print production, video/media workflows, AI-assisted
+            creative processes, software prototyping, 3D modelling, game
+            development, music production, and interactive visual concepts.
+          </p>
+          <p>
+            As the founder of Shimti Multimedia, he develops practical creative
+            systems for digital publishing, visual storytelling, online presence,
+            and multimedia production. His background spans customer-facing
+            operations, retail management, custom apparel production, visual
+            merchandising, music/media creation, freelance work, entrepreneurship,
+            and self-directed technical learning.
+          </p>
+          <p>
+            His approach is project-led: each engagement is matched to the medium,
+            toolchain, and platform best suited to it, with the operational,
+            commercial, and technical sides handled by the same hand from first
+            sketch to final delivery. The services below outline what that covers;
+            the portfolio gathers the finished work and the platforms it lives on.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="section hub-section" aria-labelledby="portfolio-platforms">
     <div class="section-headline">
@@ -94,3 +129,6 @@
 <div data-include="footer"></div>
 </body>
 </html>
+
+
+
