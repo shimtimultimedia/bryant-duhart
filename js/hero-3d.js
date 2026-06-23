@@ -24,8 +24,27 @@ import { RenderPass }         from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass }    from "three/addons/postprocessing/UnrealBloomPass.js";
 import { ShaderPass }         from "three/addons/postprocessing/ShaderPass.js";
 
-const TITLE_TEXT    = "BRYANT DUHART";
-const SUBTITLE_TEXT = "PORTFOLIO";
+const PAGE_PATH = window.location.pathname.toLowerCase();
+
+const PAGE_PLAQUE_CONFIGS = {
+  home: {
+    title: "BRYANT DUHART",
+    subtitle: "PORTFOLIO",
+    shape: "cube",
+  },
+  portfolio: {
+    title: "WHAT I DO",
+    subtitle: "CREATIVE WORK",
+    shape: "dodecahedron",
+  },
+};
+
+const PAGE_KIND = PAGE_PATH.includes("portfolio.html") ? "portfolio" : "home";
+const PAGE_PLAQUE_CONFIG = PAGE_PLAQUE_CONFIGS[PAGE_KIND] || PAGE_PLAQUE_CONFIGS.home;
+
+const TITLE_TEXT = PAGE_PLAQUE_CONFIG.title;
+const SUBTITLE_TEXT = PAGE_PLAQUE_CONFIG.subtitle;
+const CENTER_SHAPE = PAGE_PLAQUE_CONFIG.shape;
 const SUB_SCALE     = 0.42;
 const SUB_GAP       = 0.34;
 
@@ -323,6 +342,14 @@ function init() {
     return geometry;
   }
 
+  function buildCenterGeometry(size) {
+    if (CENTER_SHAPE === "dodecahedron") {
+      return new THREE.DodecahedronGeometry(size * 0.78, 0);
+    }
+
+    return new RoundedBoxGeometry(size, size, size, 4, size * 0.08);
+  }
+
   function rebuildCube(size) {
     if (!centerCubeMesh || !centerCubeEdges) return;
     if (Math.abs(size - cubeCurrentSize) < 0.01) return;
@@ -330,7 +357,7 @@ function init() {
     cubeCurrentSize = size;
 
     centerCubeMesh.geometry.dispose();
-    centerCubeMesh.geometry = new RoundedBoxGeometry(size, size, size, 4, size * 0.08);
+    centerCubeMesh.geometry = buildCenterGeometry(size);
 
     centerCubeEdges.geometry.dispose();
     centerCubeEdges.geometry = new THREE.EdgesGeometry(centerCubeMesh.geometry);
@@ -553,7 +580,7 @@ function init() {
       cubeRotor.rotation.set(-0.58, 0.74, 0.08);
 
       centerCubeMesh = new THREE.Mesh(
-        new RoundedBoxGeometry(0.26, 0.26, 0.26, 4, 0.022),
+        buildCenterGeometry(0.26),
         cubeMaterial,
       );
       centerCubeEdges = new THREE.LineSegments(
