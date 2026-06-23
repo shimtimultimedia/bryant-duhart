@@ -3,43 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portfolio — Bryant Duhart</title>
-<meta name="description" content="Bryant Duhart's portfolio — links to every platform where his work lives. 3D, web, video, image, AI, and game dev.">
+<title>Portfolio - Bryant Duhart</title>
+<meta name="description" content="Bryant Duhart portfolio hub with external work links, code, visual case studies, and custom creative content by Shimti Multimedia.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=94">
-<!-- META:start -->
+<link rel="stylesheet" href="css/style.css?v=96">
 <meta name="author" content="Bryant Duhart">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/portfolio.html">
-
-<!-- Resource hint: preload the transparent portrait cutout on desktop. -->
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=94" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
-
-<!-- Open Graph — Facebook, LinkedIn, Slack, Discord, etc. -->
+<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=96" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Bryant Duhart — Multimedia Creator">
+<meta property="og:site_name" content="Bryant Duhart - Multimedia Creator">
 <meta property="og:locale" content="en_US">
-<meta property="og:title" content="Portfolio — Bryant Duhart">
-<meta property="og:description" content="Bryant Duhart's portfolio — links to every platform where his work lives. 3D, web, video, image, AI, and game dev.">
+<meta property="og:title" content="Portfolio - Bryant Duhart">
+<meta property="og:description" content="External work links, code, visual case studies, and custom creative content by Shimti Multimedia.">
 <meta property="og:url" content="https://shimtimultimedia.github.io/bryant-duhart/portfolio.html">
 <meta property="og:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta property="og:image:alt" content="Bryant Duhart portrait">
-
-<!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Portfolio — Bryant Duhart">
-<meta name="twitter:description" content="Bryant Duhart's portfolio — links to every platform where his work lives. 3D, web, video, image, AI, and game dev.">
+<meta name="twitter:title" content="Portfolio - Bryant Duhart">
+<meta name="twitter:description" content="External work links, code, visual case studies, and custom creative content by Shimti Multimedia.">
 <meta name="twitter:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
-<!-- META:end -->
 <script src="js/include.js?v=94" defer></script>
 <script src="js/particles-bg.js?v=94" defer></script>
-
-<!-- Three.js importmap — required by the dynamically loaded
-     js/brand-3d.js so its transitive FontLoader/TextGeometry
-     imports of "three" resolve. Without this, the 3D brand mark
-     fails to render and the BD text fallback is shown instead. -->
 <script type="importmap">
 {
   "imports": {
@@ -51,165 +38,59 @@
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
-
 <div data-include="header"></div>
-
-<main id="main">
-
-  <header class="section">
-    <h1>Portfolio</h1>
-    <p class="lede">
-      A directory of every live platform where my work lives, with upcoming
-      destinations marked before they go public.
-    </p>
+<main id="main" class="page-main portfolio-main">
+  <header class="page-hero section">
+    <p class="eyebrow">Portfolio hub</p>
+    <h1>Where the work lives</h1>
+    <p class="lede">This page points to the external platforms that hold published work, code, case studies, and visual projects. Custom art and featured portfolio pieces will also be presented directly here as the collection grows.</p>
   </header>
 
-  <!-- ============================================================
-       3D
-       ============================================================ -->
-  <section class="medium" id="three-d">
-    <div class="medium-head">
-      <h2><span class="accent-bar"></span>3D models &amp; assets</h2>
-      <p>Models, textures, and scenes published on 3D marketplaces.</p>
+  <section class="section hub-section" aria-labelledby="portfolio-platforms">
+    <div class="section-headline">
+      <h2 id="portfolio-platforms"><span class="accent-bar"></span>External portfolio platforms</h2>
+      <p>Primary destinations for code, media projects, visual presentation, and public work history.</p>
     </div>
-    <div class="platforms">
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Sketchfab</span>
-        <p class="platform-desc">Interactive 3D models with embedded viewer.</p>
-      </div>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Fab</span>
-        <p class="platform-desc">Assets on Epic's content marketplace.</p>
-      </div>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">TurboSquid</span>
-        <p class="platform-desc">Professional 3D assets for media production.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============================================================
-       WEB
-       ============================================================ -->
-  <section class="medium" id="web">
-    <div class="medium-head">
-      <h2><span class="accent-bar"></span>Web &amp; code</h2>
-      <p>This site, the GitHub account, and other web projects.</p>
-    </div>
-    <div class="platforms">
-
-      <a class="platform" href="https://github.com/shimtimultimedia" target="_blank" rel="noopener">
-        <span class="platform-name">GitHub</span>
-        <p class="platform-desc">@shimtimultimedia — code, sites, and side projects.</p>
+    <div class="hub-grid two-up">
+      <a class="link-card feature-link" href="https://github.com/shimtimultimedia" target="_blank" rel="noopener">
+        <span class="link-kicker">Code / sites / prototypes</span>
+        <strong>GitHub</strong>
+        <p>Repositories, static sites, experiments, and technical project work under SHIMTI Multimedia.</p>
+        <span class="link-action">Open GitHub</span>
       </a>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Other Pages site</span>
-        <p class="platform-desc">Project-specific GitHub Pages site.</p>
-      </div>
-
+      <a class="link-card feature-link" href="https://www.behance.net/Shimtimultimedia" target="_blank" rel="noopener">
+        <span class="link-kicker">Visual case studies</span>
+        <strong>Behance</strong>
+        <p>Design presentations, visual concepts, campaign artwork, and polished creative case studies.</p>
+        <span class="link-action">Open Behance</span>
+      </a>
     </div>
   </section>
 
-  <!-- ============================================================
-       VIDEO
-       ============================================================ -->
-  <section class="medium" id="video">
-    <div class="medium-head">
-      <h2><span class="accent-bar"></span>Video</h2>
-      <p>Channels and uploads across video platforms.</p>
+  <section class="section hub-section" aria-labelledby="custom-work">
+    <div class="section-headline">
+      <h2 id="custom-work"><span class="accent-bar"></span>Custom art and featured content</h2>
+      <p>Selected work can be presented directly on this page instead of sending every visitor away to another platform.</p>
     </div>
-    <div class="platforms">
-
-      <div class="platform coming-soon">
-        <span class="platform-name">YouTube</span>
-        <p class="platform-desc">Main video channel.</p>
-      </div>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">DailyMotion</span>
-        <p class="platform-desc">Mirrored uploads on DailyMotion.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============================================================
-       IMAGE
-       ============================================================ -->
-  <section class="medium" id="image">
-    <div class="medium-head">
-      <h2><span class="accent-bar"></span>Image &amp; graphics</h2>
-      <p>Visual work — design, photography, graphics.</p>
-    </div>
-    <div class="platforms">
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Behance</span>
-        <p class="platform-desc">Project galleries and case studies.</p>
-      </div>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Pinterest</span>
-        <p class="platform-desc">Boards and visual references.</p>
-      </div>
-
+    <div class="showcase-grid">
+      <article class="showcase-card">
+        <span class="showcase-label">Upcoming</span>
+        <h3>Poster and campaign art</h3>
+        <p>Final client posters, key art, and promotional visuals can be added here as portfolio-ready feature cards.</p>
+      </article>
+      <article class="showcase-card">
+        <span class="showcase-label">Upcoming</span>
+        <h3>AI-assisted visuals</h3>
+        <p>Curated image, video, and concept-development examples can be grouped by project or production workflow.</p>
+      </article>
+      <article class="showcase-card">
+        <span class="showcase-label">Upcoming</span>
+        <h3>3D and game assets</h3>
+        <p>Embedded previews, marketplace links, or rendered stills can sit here when public assets are ready.</p>
+      </article>
     </div>
   </section>
-
-  <!-- ============================================================
-       AI
-       ============================================================ -->
-  <section class="medium" id="ai">
-    <div class="medium-head">
-      <h2><span class="accent-bar"></span>AI workflows</h2>
-      <p>AI-assisted creative systems, prototypes, and production experiments.</p>
-    </div>
-    <div class="platforms">
-
-      <div class="platform coming-soon">
-        <span class="platform-name">AI prototypes</span>
-        <p class="platform-desc">Small tools, assistants, and experiments built around practical creative work.</p>
-      </div>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Prompt systems</span>
-        <p class="platform-desc">Reusable workflows for image, video, web, writing, and production tasks.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ============================================================
-       GAME DEV  —  Coming Soon
-       ============================================================ -->
-  <section class="medium" id="games">
-    <div class="medium-head">
-      <h2><span class="accent-bar"></span>Game dev</h2>
-      <p>In-progress game-development work. Stay tuned.</p>
-    </div>
-    <div class="platforms">
-
-      <div class="platform coming-soon">
-        <span class="platform-name">itch.io</span>
-        <p class="platform-desc">Indie game releases and prototypes.</p>
-      </div>
-
-      <div class="platform coming-soon">
-        <span class="platform-name">Steam</span>
-        <p class="platform-desc">Future commercial releases.</p>
-      </div>
-
-    </div>
-  </section>
-
 </main>
-
 <div data-include="footer"></div>
-
 </body>
 </html>
