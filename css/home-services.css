@@ -1,84 +1,182 @@
 /* home-services.css — Homepage Services section.
-   Flat, clean card grid. No 3D, no glow, no line dividers — just the
-   service icon, title, and a one-line teaser per card. Matches the
-   black-and-white site palette and aligns to the hero plaque width.
+   Stable, CSS-rendered service cards. The hero remains the WebGL focal
+   point; this section uses graphite mini-plaques, clean icon panels, and
+   clear teaser copy so it reads as finished portfolio content without extra
+   WebGL contexts.
 */
 
 .services-strip {
   width: 100%;
-  max-width: 880px;            /* aligns with the hero plaque above */
-  margin: clamp(48px, 9vh, 110px) auto 0;
+  max-width: 980px;
+  margin: clamp(54px, 9vh, 118px) auto 0;
+  padding: 0 clamp(14px, 2vw, 28px) clamp(42px, 7vh, 84px);
 }
 
 .services-heading {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto 12px;
   text-align: center;
-  font-size: clamp(1.9rem, 3vw, 2.7rem);
-  font-weight: 800;
-  letter-spacing: -0.015em;
+  font-size: clamp(2.35rem, 4.8vw, 4.2rem);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
   color: var(--black);
-  margin: 0 0 10px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.75), 0 10px 24px rgba(0,0,0,0.10);
+}
+
+.services-heading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: min(78vw, 520px);
+  height: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.22), rgba(0,0,0,0.82), rgba(0,0,0,0.22), transparent);
 }
 
 .services-intro {
+  max-width: 62ch;
+  margin: 22px auto clamp(28px, 4.5vh, 50px);
   text-align: center;
-  font-size: clamp(1rem, 0.4vw + 0.9rem, 1.12rem);
+  font-size: clamp(1rem, 0.42vw + 0.9rem, 1.13rem);
   line-height: 1.55;
   color: var(--muted);
-  max-width: 56ch;
-  margin: 0 auto clamp(28px, 4vh, 48px);
 }
 
-/* Responsive card grid — 3-up on desktop, fluidly down to 1-up on phones. */
 .service-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
-  gap: clamp(16px, 2vw, 24px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.2vw, 28px);
 }
 
 .service-card {
   display: flex;
   flex-direction: column;
-  background: var(--card);
-  border: 1px solid var(--line);
+  min-width: 0;
+  background: rgba(255,255,255,0.94);
+  border: 1px solid rgba(0,0,0,0.12);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9), 0 14px 34px rgba(0,0,0,0.07);
   overflow: hidden;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
+
 .service-card:hover {
-  border-color: var(--black);
-  box-shadow: var(--shadow-md);
+  border-color: rgba(0,0,0,0.42);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.92), 0 18px 42px rgba(0,0,0,0.12);
   transform: translateY(-2px);
 }
 
-/* The icon illustration now; a real 16:9 photo later (same filename, .webp)
-   drops straight in with no layout shift. */
+.service-title {
+  order: -1;
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(58px, 5.8vw, 78px);
+  margin: 0;
+  padding: 12px 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.26), transparent 34%),
+    linear-gradient(180deg, #3a3a3a 0%, #222 42%, #151515 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.16);
+  color: #fff4d8;
+  font-size: clamp(1rem, 0.7vw + 0.88rem, 1.35rem);
+  line-height: 1.05;
+  font-weight: 850;
+  letter-spacing: 0.035em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 4px rgba(255,236,188,0.82),
+    0 0 12px rgba(255,199,102,0.32),
+    0 1px 0 rgba(255,255,255,0.25),
+    0 2px 0 rgba(0,0,0,0.70);
+}
+
+.service-title::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.70);
+  pointer-events: none;
+}
+
+.service-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, transparent 35%, rgba(255,255,255,0.18) 49%, transparent 66%, transparent 100%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 .service-image {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #f2f2f2;
-  border-bottom: 1px solid var(--line);
-}
-
-.service-title {
-  font-size: 1.12rem;
-  font-weight: 700;
-  color: var(--black);
-  margin: 15px 18px 5px;
+  padding: clamp(16px, 2vw, 24px);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(241,241,241,0.96)),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.035) 0 10px, transparent 10px 20px);
+  border-bottom: 1px solid rgba(0,0,0,0.10);
 }
 
 .service-teaser {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: var(--muted);
+  flex: 1;
   max-width: none;
-  margin: 0 18px 18px;
+  margin: 0;
+  padding: 16px 18px 18px;
+  color: #3f3f3f;
+  font-size: clamp(0.95rem, 0.22vw + 0.9rem, 1.04rem);
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 980px) {
+  .service-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
-  .services-strip { margin-top: clamp(36px, 7vh, 64px); }
-  .service-list { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .services-strip {
+    max-width: 620px;
+    margin-top: clamp(38px, 7vh, 70px);
+    padding-inline: clamp(14px, 5vw, 24px);
+  }
+
+  .services-heading {
+    font-size: clamp(2rem, 12vw, 3.35rem);
+  }
+
+  .services-intro {
+    margin-bottom: 28px;
+  }
+
+  .service-list {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .service-title {
+    min-height: 62px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card {
+    transition: none;
+  }
+
+  .service-card:hover {
+    transform: none;
+  }
 }
