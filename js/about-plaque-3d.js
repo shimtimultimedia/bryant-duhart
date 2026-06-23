@@ -37,22 +37,16 @@ const LIGHT_RANGE = 9;
 // (bd_bg*) is intentionally excluded — it's already the site-wide background
 // on every page — as are the silhouette mask and duplicate .png/.avif formats.
 const SLIDE_IMAGES = [
+  "images/bryant-developer-monitors.webp",
+  "images/bryant-leather-jacket.webp",
+  "images/bryant-suit-fist.webp",
+  "images/bryant-suit-watch.webp",
+  "images/bryant-casual-plaid.webp",
+  "images/bryant-business-car.webp",
+  "images/bryant-developer-tablet.webp",
   "images/bd_business_skyline.webp",
-  "images/services/web-design.svg",
-  "images/services/graphic-design.svg",
-  "images/services/video.svg",
-  "images/services/3d-design.svg",
-  "images/services/music-production.svg",
-  "images/services/audio-services.svg",
-  "images/services/film-concepts.svg",
-  "images/services/photography.svg",
-  "images/services/animation.svg",
-  "images/services/game-development.svg",
-  "images/services/app-development.svg",
-  "images/services/ai-consulting.svg",
-  "images/services/creative-direction.svg",
 ];
-const SLIDE_INTERVAL_MS = 4200;
+const SLIDE_INTERVAL_MS = 7200;
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -106,7 +100,7 @@ function initSlideshow() {
     next.classList.remove("is-leaving");
     next.classList.add("is-current");
     // Clear the leaving state after the transition so it's ready to re-enter.
-    setTimeout(() => prev.classList.remove("is-leaving"), 1200);
+    setTimeout(() => prev.classList.remove("is-leaving"), 2400);
   }
 
   if (prefersReduced) stage.classList.add("reduced-motion");
@@ -251,3 +245,6 @@ if (document.readyState === "loading") {
 } else {
   init();
 }
+
+
+

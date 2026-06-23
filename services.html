@@ -35,20 +35,31 @@
   }
 }
 </script>
+<script type="module" src="js/hero-3d.js?v=100"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
 <main id="main" class="page-main services-main">
-  <header class="page-hero section brochure-hero">
-    <p class="eyebrow">Customer brochure</p>
-    <h1>Multimedia services for practical digital presence</h1>
-    <p class="lede">SHIMTI Multimedia provides project-based creative production across web, design, video, audio, 3D, AI-assisted workflows, app prototypes, and campaign direction. The work is structured for small businesses, performers, creators, and teams that need finished media without managing a separate specialist for every stage.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="contact.html">Start a business inquiry</a>
-      <a class="btn" href="portfolio.html">View portfolio links</a>
+
+  <section class="hero-plaque" id="hero-plaque">
+    <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
+
+    <div class="plaque-stack" id="plaque-stack">
+      <div class="plaque-title-slot">
+        <h1 class="hero-title-text" id="hero-title">What I Offer</h1>
+        <p class="hero-subtitle-text" id="hero-subtitle">AI Powered Multimedia</p>
+      </div>
+
+      <div class="plaque-bio-area">
+        <div class="plaque-bio">
+          <p>Project-based creative production for web, design, video, audio, 3D, AI-assisted workflows, app prototypes, and campaign direction.</p>
+          <p>SHIMTI Multimedia is structured for small businesses, performers, creators, and teams that need finished media without coordinating a separate specialist for every stage.</p>
+          <p>The service catalogue below outlines practical deliverables that can stand alone or combine into a complete production package.</p>
+        </div>
+      </div>
     </div>
-  </header>
+  </section>
 
   <section class="section brochure-panel" aria-labelledby="service-offers">
     <div class="section-headline">
@@ -83,3 +94,5 @@
 <div data-include="footer"></div>
 </body>
 </html>
+
+

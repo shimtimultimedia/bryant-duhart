@@ -37,9 +37,38 @@ const PAGE_PLAQUE_CONFIGS = {
     subtitle: "CREATIVE WORK",
     shape: "dodecahedron",
   },
+  services: {
+    title: "WHAT I OFFER",
+    subtitle: "AI POWERED MULTIMEDIA",
+    shape: "icosahedron",
+  },
+  social: {
+    title: "MY NETWORK",
+    subtitle: "SHIMTI ECOSYSTEM",
+    shape: "octahedron",
+  },
+  contact: {
+    title: "GET IN TOUCH",
+    subtitle: "BUSINESS NETWORKING",
+    shape: "sphere",
+  },
+  about: {
+    title: "MY STORY",
+    subtitle: "SHORT BIOGRAPHY",
+    shape: "tetrahedron",
+  },
 };
 
-const PAGE_KIND = PAGE_PATH.includes("portfolio.html") ? "portfolio" : "home";
+function resolvePageKind() {
+  if (PAGE_PATH.includes("portfolio.html")) return "portfolio";
+  if (PAGE_PATH.includes("services.html")) return "services";
+  if (PAGE_PATH.includes("social.html")) return "social";
+  if (PAGE_PATH.includes("contact.html")) return "contact";
+  if (PAGE_PATH.includes("about.html")) return "about";
+  return "home";
+}
+
+const PAGE_KIND = resolvePageKind();
 const PAGE_PLAQUE_CONFIG = PAGE_PLAQUE_CONFIGS[PAGE_KIND] || PAGE_PLAQUE_CONFIGS.home;
 
 const TITLE_TEXT = PAGE_PLAQUE_CONFIG.title;
@@ -343,11 +372,21 @@ function init() {
   }
 
   function buildCenterGeometry(size) {
-    if (CENTER_SHAPE === "dodecahedron") {
-      return new THREE.DodecahedronGeometry(size * 0.78, 0);
+    switch (CENTER_SHAPE) {
+      case "dodecahedron":
+        return new THREE.DodecahedronGeometry(size * 0.78, 0);
+      case "icosahedron":
+        return new THREE.IcosahedronGeometry(size * 0.78, 0);
+      case "octahedron":
+        return new THREE.OctahedronGeometry(size * 0.84, 0);
+      case "sphere":
+        return new THREE.SphereGeometry(size * 0.48, 28, 18);
+      case "tetrahedron":
+        return new THREE.TetrahedronGeometry(size * 0.86, 0);
+      case "cube":
+      default:
+        return new RoundedBoxGeometry(size, size, size, 4, size * 0.08);
     }
-
-    return new RoundedBoxGeometry(size, size, size, 4, size * 0.08);
   }
 
   function rebuildCube(size) {
@@ -620,3 +659,4 @@ if (document.readyState === "loading") {
 } else {
   init();
 }
+
