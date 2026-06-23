@@ -48,6 +48,7 @@
   }
 }
 </script>
+<script type="module" src="js/hero-3d.js?v=100"></script>
 <script type="module" src="js/about-plaque-3d.js?v=94"></script>
 </head>
 <body>
@@ -63,32 +64,29 @@
        the plaque with the bio laid over it — and about-plaque-3d.js tilts it
        in sync with the metal so the whole thing moves as one object. The
        H1 + copy stay in the DOM for SEO / no-JS. -->
-  <section class="about-plaque" id="about-plaque">
-    <canvas class="about-plaque-canvas" id="about-plaque-canvas" aria-hidden="true"></canvas>
 
-    <div class="about-plaque-stack" id="about-plaque-stack">
-      <div class="about-frame">
-        <!-- Random, non-repeating image slideshow (built by about-plaque-3d.js). -->
-        <div class="about-slideshow" id="about-slideshow" aria-hidden="true"></div>
+  <section class="hero-plaque" id="hero-plaque">
+    <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
 
-        <!-- Bio in a bottom band over a scrim, clear of any face above. -->
-        <div class="about-copy">
-          <h1>About</h1>
-          <p class="lede">
-            I'm Bryant Duhart — an independent multidisciplinary creator in
-            Wiesbaden, Germany, and founder of Shimti Multimedia.
-          </p>
-          <p>
-            I work across web, design, video, 3D, music and audio, animation,
-            photography, app prototyping, AI-assisted production, and game
-            development — directing the creative side of all of it. My
-            background runs through retail and operations, custom apparel and
-            visual merchandising, music and media, freelance, and
-            entrepreneurship — mostly self-taught — so I carry an idea from
-            first sketch to finished deliverable.
-          </p>
+    <div class="plaque-stack" id="plaque-stack">
+      <div class="plaque-title-slot">
+        <h1 class="hero-title-text" id="hero-title">My Story</h1>
+        <p class="hero-subtitle-text" id="hero-subtitle">Short Biography</p>
+      </div>
+
+      <div class="plaque-bio-area">
+        <div class="plaque-bio">
+          <p>I'm Bryant Duhart — an independent multidisciplinary creator in Wiesbaden, Germany, and founder of SHIMTI Multimedia.</p>
+          <p>My work spans web, design, video, 3D, music and audio, animation, photography, app prototyping, AI-assisted production, and game development.</p>
+          <p>My background runs through retail operations, custom apparel, visual merchandising, music and media, freelance production, and self-directed technical learning.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section about-gallery-section">
+    <div class="about-gallery-frame">
+      <div class="about-slideshow" id="about-slideshow" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -98,3 +96,6 @@
 
 </body>
 </html>
+
+
+

@@ -230,3 +230,11 @@
 .tile-title { font-weight: 700; font-size: 1.1rem; color: var(--black); }
 .status-note { font-size: 0.7rem; color: var(--black); font-weight: 600; letter-spacing: 0.04em; }
 .tile-desc { font-size: 0.86rem; color: var(--muted); margin: 0; }
+/* Plaque scroll safety: the WebGL canvas follows global pointer movement but never captures wheel/touch scroll. */
+.hero-plaque {
+  touch-action: pan-y;
+}
+
+.hero-3d-canvas {
+  pointer-events: none;
+}

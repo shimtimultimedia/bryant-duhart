@@ -35,16 +35,31 @@
   }
 }
 </script>
+<script type="module" src="js/hero-3d.js?v=100"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
 <main id="main" class="page-main social-main">
-  <header class="page-hero section">
-    <p class="eyebrow">Social hub</p>
-    <h1>SHIMTI Multimedia across the web</h1>
-    <p class="lede">Use these links to find SHIMTI Multimedia on social platforms. The page is intentionally a direct link hub rather than a long feed.</p>
-  </header>
+
+  <section class="hero-plaque" id="hero-plaque">
+    <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
+
+    <div class="plaque-stack" id="plaque-stack">
+      <div class="plaque-title-slot">
+        <h1 class="hero-title-text" id="hero-title">My Network</h1>
+        <p class="hero-subtitle-text" id="hero-subtitle">SHIMTI Ecosystem</p>
+      </div>
+
+      <div class="plaque-bio-area">
+        <div class="plaque-bio">
+          <p>A connected hub for the public SHIMTI Multimedia presence across social platforms, creative channels, professional networks, and community spaces.</p>
+          <p>These destinations support publishing, discovery, collaboration, audience building, and the wider ecosystem around Bryant Duhart and SHIMTI Multimedia.</p>
+          <p>Use the links below to follow the network where each platform is strongest.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="section social-hub" aria-labelledby="social-links">
     <div class="section-headline">
@@ -66,3 +81,5 @@
 <div data-include="footer"></div>
 </body>
 </html>
+
+
