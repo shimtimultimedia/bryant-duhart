@@ -146,10 +146,10 @@
 .brochure-card,
 .social-tile,
 .map-card {
-  background: rgba(255,255,255,0.94);
-  border: 1px solid rgba(0,0,0,0.12);
+  background: var(--card-soft);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.9), 0 14px 34px rgba(0,0,0,0.07);
+  box-shadow: var(--shadow-md);
 }
 
 .link-card,
@@ -161,6 +161,8 @@
 }
 .link-card { text-decoration: none; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
 .link-card:hover { transform: translateY(-2px); border-color: rgba(0,0,0,0.42); box-shadow: 0 18px 42px rgba(0,0,0,0.12); }
+.link-card[aria-disabled="true"] { cursor: default; }
+.link-card[aria-disabled="true"]:hover { transform: none; border-color: var(--line); box-shadow: var(--shadow-md); }
 .link-card strong { display: block; color: var(--black); font-size: clamp(1.25rem, 1vw + 1rem, 1.75rem); margin-bottom: 8px; }
 .link-card p,
 .showcase-card p,
@@ -264,3 +266,17 @@
   inset: 0;
 }
 
+
+.brochure-card strong {
+  color: var(--black);
+  font-weight: 800;
+}
+
+:root.theme-dark .map-embed iframe,
+:root.theme-dark .social-tile img {
+  filter: grayscale(1) invert(1) contrast(1.05);
+}
+
+:root.theme-dark .about-gallery-frame {
+  background: #0f1114;
+}
