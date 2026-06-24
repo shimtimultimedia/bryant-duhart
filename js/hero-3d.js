@@ -83,7 +83,7 @@ const MOBILE_BREAKPOINT = 720;
 const DEFAULT_LAYER = 0;
 const BLOOM_LAYER   = 1;
 
-const MAX_PIXEL_RATIO = 1.75;
+const MAX_PIXEL_RATIO = 2.25;
 const DEPTH          = 0.18;
 const ORTHO_HEIGHT   = 3.6;
 const PADDING        = 0.04;
@@ -131,7 +131,7 @@ function createRenderer(canvas) {
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.92;
+  renderer.toneMappingExposure = 0.94;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.setClearColor(0x000000, 0);
 
@@ -659,4 +659,3 @@ if (document.readyState === "loading") {
 } else {
   init();
 }
-

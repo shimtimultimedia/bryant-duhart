@@ -21,6 +21,7 @@ import { RoomEnvironment }    from "three/addons/environments/RoomEnvironment.js
 
 const ORTHO_H = 2;     // world-height of the camera frustum
 const PADDING = 0.1;   // breathing room so the cube's corners don't clip
+const LIGHT_RANGE = 7; // Cursor-follow light travel for the small header mark
 // Classic isometric tilt: spin 45° about Y, then tilt ~35.26° about X
 // so the top and two side faces all show — the same 3-face view as the
 // Shimti Multimedia cube this mark echoes.
@@ -173,9 +174,7 @@ function init() {
   // The mesh stays put; the key light tracks the pointer so the BD's
   // highlight slides with the mouse, matching the hero title. Fill and
   // rim stay fixed at their creation positions to hold steady form;
-  // the env map supplies the ambient richness. Range is tighter than
-  // the hero's because this mark is small.
-  const LIGHT_RANGE = 7;
+  // the env map supplies the ambient richness.
 
   function animate() {
     const t = performance.now() / 1000;

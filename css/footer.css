@@ -29,3 +29,22 @@
    JS reinitialized. Refresh should be a full teardown and restart. */
 
 /* ============================================================ */
+
+.site-footer {
+  color: var(--muted);
+}
+
+.site-footer p {
+  color: var(--muted);
+}
+
+:root.theme-dark .site-footer {
+  color: #F2F2F2;
+  background: #050505;
+  border-top-color: var(--line);
+}
+
+:root.theme-dark .site-footer p,
+:root.theme-dark .footer-brand {
+  color: #F2F2F2;
+}

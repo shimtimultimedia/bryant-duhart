@@ -7,9 +7,9 @@
    ============================================================ */
 
 .site-header {
-  background: var(--black);
-  color: #fff;
-  border-bottom: 1px solid var(--black);
+  background: var(--site-header-bg);
+  color: var(--site-header-ink);
+  border-bottom: 1px solid var(--site-header-bg);
   position: relative;
   z-index: 3;
 }
@@ -17,11 +17,10 @@
 .nav-wrap {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 18px 24px;
-  display: flex;
-  flex-wrap: wrap;
+  padding: 18px 180px 18px 24px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
 }
 
@@ -29,13 +28,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #fff;
+  color: var(--site-header-ink);
   text-decoration: none;
   /* Drives the whole lockup. The cube is sized in em of this, and the
      brand text inherits it, so cube and text scale together as a pair. */
   font-size: 1.7rem;
 }
-.brand:hover { color: #fff; }
+.brand:hover { color: var(--site-header-ink); }
 
 .brand-mark {
   /* Cube sized in em of the lockup so it stays a matched pair with the
@@ -86,7 +85,7 @@
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #BBB;
+  color: var(--site-header-muted);
   margin-top: 4px;
   text-align: center;
 }
@@ -95,6 +94,8 @@
   display: flex;
   gap: 4px;
   flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .nav-links a {
@@ -109,10 +110,153 @@
   display: inline-flex;
   align-items: center;
 }
-.nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
-.nav-links a[aria-current="page"] { background: #fff; color: var(--black); font-weight: 600; }
+.nav-links a:hover { background: rgba(255,255,255,0.12); color: var(--site-header-ink); }
+.nav-links a[aria-current="page"] { background: var(--active-bg); color: var(--active-ink); font-weight: 600; }
 /* Backward-compat: old .active class still works if any page hasn't
    migrated to aria-current yet. */
-.nav-links a.active { background: #fff; color: var(--black); font-weight: 600; }
+.nav-links a.active { background: var(--active-bg); color: var(--active-ink); font-weight: 600; }
 
 /* ============================================================ */
+
+.nav-actions {
+  display: contents;
+}
+
+/* THEME TOGGLE FAR-RIGHT LOCK */
+.theme-toggle {
+  position: absolute;
+  right: clamp(14px, 2vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--site-header-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 4px 0;
+  min-height: 32px;
+  flex: 0 0 auto;
+}
+
+.theme-toggle:hover {
+  color: var(--site-header-ink);
+}
+
+.theme-toggle-label {
+  line-height: 1;
+  opacity: 0.58;
+  transition: opacity 0.18s ease, color 0.18s ease;
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  transition: left 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle-moon {
+  position: absolute;
+  top: 5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  background: transparent;
+  z-index: 2;
+  transition: left 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Light mode: switch is bright, thumb sits on the LIGHT side. */
+.theme-toggle[data-theme-state="light"] .theme-toggle-track {
+  background: #f2f2f2;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.16);
+}
+
+.theme-toggle[data-theme-state="light"] .theme-toggle-thumb {
+  left: 25px;
+  background: #050505;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+
+.theme-toggle[data-theme-state="light"] .theme-toggle-moon {
+  left: 31px;
+  opacity: 0;
+  box-shadow: none;
+}
+
+.theme-toggle[data-theme-state="light"] .theme-toggle-label-light {
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Dark mode: switch is dark, thumb sits on the DARK side. */
+.theme-toggle[data-theme-state="dark"] .theme-toggle-track {
+  background: #111111;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.52), 0 0 0 1px rgba(255,255,255,0.10);
+}
+
+.theme-toggle[data-theme-state="dark"] .theme-toggle-thumb {
+  left: 3px;
+  background: #f2f2f2;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.45);
+}
+
+.theme-toggle[data-theme-state="dark"] .theme-toggle-moon {
+  left: 10px;
+  opacity: 1;
+  box-shadow: -5px 0 0 #111111;
+}
+
+.theme-toggle[data-theme-state="dark"] .theme-toggle-label-dark {
+  color: #ffffff;
+  opacity: 1;
+}
+
+@media (max-width: 820px) {
+  .site-header {
+    padding-bottom: 42px;
+  }
+
+  .nav-wrap {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 18px 24px;
+  }
+
+  .nav-links { justify-content: center; }
+
+  .theme-toggle {
+    top: auto;
+    right: 16px;
+    bottom: 8px;
+    transform: none;
+  }
+}
+
+
+.site-header,
+.site-header *,
+.theme-toggle,
+.theme-toggle * {
+  -webkit-user-select: none;
+  user-select: none;
+}

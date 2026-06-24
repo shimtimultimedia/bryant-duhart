@@ -20,7 +20,7 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 import { RoomEnvironment }    from "three/addons/environments/RoomEnvironment.js";
 
 const MOBILE_BREAKPOINT = 720;
-const MAX_PIXEL_RATIO   = 1.75;
+const MAX_PIXEL_RATIO = 2.25;
 
 const DEPTH         = 0.18;
 const ORTHO_HEIGHT  = 3.6;
@@ -245,6 +245,3 @@ if (document.readyState === "loading") {
 } else {
   init();
 }
-
-
-
