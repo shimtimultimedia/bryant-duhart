@@ -4,9 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>About — Bryant Duhart</title>
-<meta name="description" content="About Bryant Duhart — multimedia creator and founder of Shimti Multimedia, based in Wiesbaden, Germany.">
+<meta name="description" content="About Bryant Duhart — digital media designer and founder of Shimti Multimedia, working internationally across design, video, 3D, music, and interactive media.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=103">
+<link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css?v=116">
 <!-- META:start -->
 <meta name="author" content="Bryant Duhart">
 <meta name="color-scheme" content="light">
@@ -14,14 +16,14 @@
 <link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/about.html">
 
 <!-- Resource hint: preload the transparent portrait cutout on desktop. -->
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=103" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=116" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
 
 <!-- Open Graph — Facebook, LinkedIn, Slack, Discord, etc. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bryant Duhart — Multimedia Creator">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="About — Bryant Duhart">
-<meta property="og:description" content="About Bryant Duhart — multimedia creator and founder of Shimti Multimedia, based in Wiesbaden, Germany.">
+<meta property="og:description" content="About Bryant Duhart — digital media designer and founder of Shimti Multimedia, working internationally across design, video, 3D, music, and interactive media.">
 <meta property="og:url" content="https://shimtimultimedia.github.io/bryant-duhart/about.html">
 <meta property="og:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta property="og:image:alt" content="Bryant Duhart portrait">
@@ -29,12 +31,12 @@
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="About — Bryant Duhart">
-<meta name="twitter:description" content="About Bryant Duhart — multimedia creator and founder of Shimti Multimedia, based in Wiesbaden, Germany.">
+<meta name="twitter:description" content="About Bryant Duhart — digital media designer and founder of Shimti Multimedia, working internationally across design, video, 3D, music, and interactive media.">
 <meta name="twitter:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
 <!-- META:end -->
-<script src="js/include.js?v=103" defer></script>
-<script src="js/particles-bg.js?v=103" defer></script>
+<script src="js/include.js?v=116" defer></script>
+<script src="js/particles-bg.js?v=116" defer></script>
 
 <!-- Three.js importmap — required by the dynamically loaded
      js/brand-3d.js so its transitive FontLoader/TextGeometry
@@ -48,24 +50,21 @@
   }
 }
 </script>
-<script type="module" src="js/hero-3d.js?v=103"></script>
-<script type="module" src="js/about-plaque-3d.js?v=103"></script>
+<script type="module" src="js/hero-3d.js?v=116"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <div data-include="header"></div>
 
-<main id="main" class="about-main">
+<main id="main" class="about-main plaque-page-main">
 
-  <!-- A single floating 3D metal plaque (same material/lighting/cursor
-       behaviour as the home hero). The #about-plaque-canvas renders the
-       metal; .about-plaque-stack is the HTML overlay — the photo hovering on
-       the plaque with the bio laid over it — and about-plaque-3d.js tilts it
-       in sync with the metal so the whole thing moves as one object. The
-       H1 + copy stay in the DOM for SEO / no-JS. -->
+  <!-- A single floating 3D metal plaque using the shared hero renderer.
+       The canvas renders the metal; .plaque-stack is the HTML overlay synced
+       to the same tilt so the whole thing moves as one object. The H1 + copy
+       stay in the DOM for SEO / no-JS. -->
 
-  <section class="hero-plaque" id="hero-plaque">
+  <section class="hero-plaque plaque-size-standard" id="hero-plaque">
     <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
 
     <div class="plaque-stack" id="plaque-stack">
@@ -74,19 +73,35 @@
         <p class="hero-subtitle-text" id="hero-subtitle">Short Biography</p>
       </div>
 
+      <div class="plaque-shape-slot" aria-hidden="true"></div>
+
       <div class="plaque-bio-area">
         <div class="plaque-bio">
-          <p>I'm Bryant Duhart — an independent multidisciplinary creator in Wiesbaden, Germany, and founder of SHIMTI Multimedia.</p>
-          <p>My work connects creative production with technical execution: web design, visual systems, video, 3D, music and audio, photography, app prototyping, AI-assisted workflows, and game-development concepts.</p>
-          <p>My background in operations, retail management, custom apparel, visual merchandising, music/media production, freelance work, and self-directed technical learning gives me a practical view of how creative work has to function in the real world.</p>
+          <p>
+            I'm Bryant Duhart — a digital media designer and the founder of
+            Shimti Multimedia, working internationally across design, video,
+            3D, music, and interactive media.
+          </p>
+          <p>
+            I've been a working creative since 2006, building my craft as a
+            freelancer while holding down the operational side of business in
+            visual merchandising, print production management, and
+            customer-facing roles. That parallel track shaped how I work
+            today: creative output delivered with the punctuality,
+            decisiveness, and accountability of an operations professional.
+            I'm deliberately self-taught — every skill in my toolkit was
+            earned project by project, and I direct AI as part of my
+            production pipeline the way a studio directs its staff.
+          </p>
+          <p>
+            Shimti takes its name from the ancient Babylonian
+            <em>Bit Shimti</em> — "the house where the breath of life is
+            given." This is mine: a modern laboratory where ideas are given
+            form. The portfolio shows what comes out of it; if your project
+            deserves that standard, <a href="contact.html">get in touch</a>.
+          </p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section about-gallery-section">
-    <div class="about-gallery-frame">
-      <div class="about-slideshow" id="about-slideshow" aria-hidden="true"></div>
     </div>
   </section>
 

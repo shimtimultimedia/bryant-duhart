@@ -12,12 +12,16 @@
   .platform,
   .btn,
   .skip-link,
-  .nav-links a {
+  .nav-links a,
+  .plaque-icon-link,
+  .plaque-tab {
     transition-duration: 0.01ms !important;
   }
   .tile:hover,
   .platform:hover,
-  .btn:hover { transform: none; }
+  .btn:hover,
+  .plaque-icon-link:hover,
+  .plaque-icon-link:focus-visible { transform: none; }
 }
 
 /* ============================================================
@@ -44,6 +48,10 @@
   .tile-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+@media (max-width: 900px) {
+  #portrait-bg { display: none; }
+}
+
 @media (max-width: 720px) {
   #portrait-bg { background-image: none; }
   #particles-bg { display: none; }
@@ -56,9 +64,123 @@
 
   main { padding: 40px 16px 56px; }
 
-  main:has(> .hero-plaque) {
+  main.plaque-page-main {
     --plaque-stage-height: clamp(540px, 78vh, 880px);
     --plaque-stage-nudge: 0px;
+  }
+
+  main.social-main,
+  main.portfolio-main,
+  main.services-main,
+  main.home-main,
+  main.about-main {
+    --plaque-stage-height: clamp(510px, calc(100dvh - 280px), 590px);
+    --plaque-stage-top: 8px;
+    padding: 12px 14px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .plaque-interface,
+  .plaque-size-standard {
+    width: min(100%, 430px);
+  }
+  .plaque-interface .plaque-stack,
+  .plaque-size-standard .plaque-stack {
+    padding: 24px 22px 24px;
+    row-gap: 18px;
+    max-height: none;
+  }
+  .plaque-interface .plaque-title-slot,
+  .plaque-size-standard .plaque-title-slot {
+    min-height: 118px;
+  }
+  .plaque-shape-slot {
+    display: none;
+  }
+  .plaque-interface .plaque-bio,
+  .plaque-size-standard .plaque-bio {
+    width: min(100%, 40ch);
+  }
+  .plaque-interface .plaque-bio p,
+  .plaque-size-standard .plaque-bio p {
+    font-size: clamp(0.82rem, 2.3vw, 0.94rem);
+    line-height: 1.36;
+  }
+  /* Standard (Home/About) plaques carry the longest multi-paragraph bios; at
+     mobile width that content can exceed the shared min-height floor. A slightly
+     tighter line-height keeps the full text inside the plaque without shrinking
+     the outer plaque or removing copy. About's shorter bio is unaffected. */
+  .plaque-size-standard .plaque-bio p {
+    line-height: 1.3;
+  }
+  .plaque-icon-dock {
+    position: relative;
+    display: flex;
+    gap: 6px;
+    align-items: end;
+    max-width: 300px;
+    padding: 0;
+  }
+  .plaque-icon-link {
+    min-width: 0;
+    min-height: 42px;
+    font-size: 0.52rem;
+  }
+  .plaque-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .plaque-tab,
+  .plaque-tab-left .plaque-tab,
+  .plaque-tab-right .plaque-tab {
+    top: auto;
+    right: auto;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    width: min(100%, 280px);
+    min-height: auto;
+    opacity: 0;
+    clip-path: inset(92% 0 0 0);
+    transform: translate(-50%, 34px) scale(0.94);
+    transform-origin: center bottom;
+    text-align: center;
+    font-size: 0.78rem;
+  }
+  .plaque-tab-surface {
+    min-height: auto;
+    padding: 18px 18px 20px;
+    gap: 9px;
+  }
+  .plaque-tab-icon {
+    width: 34px;
+    height: 34px;
+    margin-inline: auto;
+  }
+  .plaque-tab-title {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .plaque-tab-copy {
+    font-size: 0.78rem;
+    line-height: 1.34;
+    text-align: center;
+  }
+  .plaque-tab-action {
+    font-size: 0.64rem;
+  }
+  .plaque-tab-preview {
+    max-height: 86px;
+  }
+  .services-main .plaque-tab-preview {
+    width: min(100%, calc(86px * 16 / 9));
+  }
+  .plaque-tab.is-open,
+  .plaque-tab-left .plaque-tab.is-open,
+  .plaque-tab-right .plaque-tab.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    clip-path: inset(0 0 0 0);
+    transform: translate(-50%, 0) scale(1);
   }
 
   .hero { padding: 32px 24px; }

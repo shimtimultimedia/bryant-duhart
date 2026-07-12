@@ -3,7 +3,7 @@
  * brand 3D mark, theme toggle, and minimalist loader.
  */
 
-const ASSET_VERSION = "103";
+const ASSET_VERSION = "116";
 
 const NAV_LINKS = [
   { href: "index.html",     label: "Home"      },
@@ -41,7 +41,8 @@ function applyStoredThemeEarly() {
 
 function currentPage() {
   const match = location.pathname.match(/([^/]+\.html)$/);
-  return match ? match[1] : "index.html";
+  const page = match ? match[1] : "index.html";
+  return page.startsWith("service-") ? "services.html" : page;
 }
 
 function escapeHtml(value) {
@@ -166,6 +167,7 @@ function renderFooter() {
 }
 
 function injectPortraitBg() {
+  if (document.body.classList.contains("no-portrait")) return;
   if (document.getElementById("portrait-bg")) return;
 
   const portrait = document.createElement("div");
@@ -175,6 +177,7 @@ function injectPortraitBg() {
 }
 
 function initBrand3d() {
+  if (document.body.classList.contains("no-portrait")) return;
   if (!document.getElementById("brand-3d-canvas")) return;
   if (window.__brand3dLoaded) return;
 

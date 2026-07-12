@@ -6,12 +6,14 @@
 <title>Social - Bryant Duhart</title>
 <meta name="description" content="SHIMTI Multimedia social media links: Facebook, Instagram, TikTok, YouTube, LinkedIn, X, Tumblr, and Reddit.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=103">
+<link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css?v=116">
 <meta name="author" content="Bryant Duhart">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/social.html">
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=103" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=116" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bryant Duhart - Multimedia Creator">
 <meta property="og:locale" content="en_US">
@@ -25,8 +27,8 @@
 <meta name="twitter:description" content="SHIMTI Multimedia social media links: Facebook, Instagram, TikTok, YouTube, LinkedIn, X, Tumblr, and Reddit.">
 <meta name="twitter:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
-<script src="js/include.js?v=103" defer></script>
-<script src="js/particles-bg.js?v=103" defer></script>
+<script src="js/include.js?v=116" defer></script>
+<script src="js/particles-bg.js?v=116" defer></script>
 <script type="importmap">
 {
   "imports": {
@@ -35,14 +37,15 @@
   }
 }
 </script>
-<script type="module" src="js/hero-3d.js?v=103"></script>
+<script type="module" src="js/hero-3d.js?v=116"></script>
+<script src="js/plaque-interface.js?v=116" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
-<main id="main" class="page-main social-main">
+<main id="main" class="page-main social-main plaque-page-main">
 
-  <section class="hero-plaque" id="hero-plaque">
+  <section class="hero-plaque plaque-interface" id="hero-plaque" data-plaque-interface>
     <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
 
     <div class="plaque-stack" id="plaque-stack">
@@ -51,30 +54,143 @@
         <p class="hero-subtitle-text" id="hero-subtitle">SHIMTI Ecosystem</p>
       </div>
 
+      <div class="plaque-shape-slot" aria-hidden="true"></div>
+
       <div class="plaque-bio-area">
         <div class="plaque-bio">
-          <p>The SHIMTI Ecosystem connects public channels for creative output, business presence, technical projects, community activity, and long-term audience building.</p>
-          <p>Each platform has a different role: visual discovery, short-form media, professional networking, code visibility, publishing, and community distribution.</p>
-          <p>This network supports the larger portfolio by showing where the work lives, how it is shared, and how the SHIMTI Multimedia presence develops across platforms.</p>
+          <p>Public channels for SHIMTI updates, visual work, platform activity, and professional presence.</p>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="section social-hub" aria-labelledby="social-links">
-    <div class="section-headline">
-      <h2 id="social-links"><span class="accent-bar"></span>Official social links</h2>
-      <p>Icons link out to the current public profiles and pages.</p>
-    </div>
-    <div class="social-grid">
-      <a class="social-tile" href="https://www.facebook.com/shimti.multimedia/" target="_blank" rel="noopener"><img src="images/social/facebook.svg" alt="" width="42" height="42"><strong>Facebook</strong><span>shimti.multimedia</span></a>
-      <a class="social-tile" href="https://www.instagram.com/shimtimultimedia/" target="_blank" rel="noopener"><img src="images/social/instagram.svg" alt="" width="42" height="42"><strong>Instagram</strong><span>@shimtimultimedia</span></a>
-      <a class="social-tile" href="https://www.tiktok.com/@shimtimultimedia1" target="_blank" rel="noopener"><img src="images/social/tiktok.svg" alt="" width="42" height="42"><strong>TikTok</strong><span>@shimtimultimedia1</span></a>
-      <a class="social-tile" href="https://www.youtube.com/" target="_blank" rel="noopener"><span class="social-fallback">YT</span><strong>YouTube</strong><span>Channel link pending</span></a>
-      <a class="social-tile" href="https://www.linkedin.com/in/shimtimultimedia/" target="_blank" rel="noopener"><img src="images/social/linkedin.svg" alt="" width="42" height="42"><strong>LinkedIn</strong><span>shimtimultimedia</span></a>
-      <a class="social-tile" href="https://x.com/Shimtimedia" target="_blank" rel="noopener"><img src="images/social/x.svg" alt="" width="42" height="42"><strong>X</strong><span>@Shimtimedia</span></a>
-      <a class="social-tile" href="https://www.tumblr.com/blog/shimti999-blog" target="_blank" rel="noopener"><span class="social-fallback">T</span><strong>Tumblr</strong><span>shimti999-blog</span></a>
-      <a class="social-tile" href="https://www.reddit.com/user/Naive_Butterscotch93/" target="_blank" rel="noopener"><img src="images/social/reddit.svg" alt="" width="42" height="42"><strong>Reddit</strong><span>Naive_Butterscotch93</span></a>
+      <nav class="plaque-icon-dock" aria-label="Official social links">
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="facebook" aria-controls="plaque-tab-facebook" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/facebook.svg" alt="" width="28" height="28">
+            <span>Facebook</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-facebook" data-plaque-panel="facebook" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/facebook.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Facebook</strong>
+              <p class="plaque-tab-copy">Public SHIMTI updates, project announcements, creative posts, and general business presence.</p>
+              <a class="plaque-tab-action" href="https://www.facebook.com/shimti.multimedia/" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/8.jpg" alt="Facebook platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="instagram" aria-controls="plaque-tab-instagram" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/instagram.svg" alt="" width="28" height="28">
+            <span>Instagram</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-instagram" data-plaque-panel="instagram" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/instagram.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Instagram</strong>
+              <p class="plaque-tab-copy">Visual updates, image work, behind-the-scenes creative development, poster polish, and design previews.</p>
+              <a class="plaque-tab-action" href="https://www.instagram.com/shimtimultimedia/" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/7.jpg" alt="Instagram platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="tiktok" aria-controls="plaque-tab-tiktok" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/tiktok.svg" alt="" width="28" height="28">
+            <span>TikTok</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-tiktok" data-plaque-panel="tiktok" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/tiktok.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">TikTok</strong>
+              <p class="plaque-tab-copy">Short-form media, motion concepts, AI-assisted promo tests, and fast visual experiments.</p>
+              <a class="plaque-tab-action" href="https://www.tiktok.com/@shimtimultimedia1" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/6.jpg" alt="TikTok platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="youtube" aria-controls="plaque-tab-youtube" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/youtube.svg" alt="" width="28" height="28">
+            <span>YouTube</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-youtube" data-plaque-panel="youtube" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/youtube.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">YouTube</strong>
+              <p class="plaque-tab-copy">Video channel space for future edits, motion pieces, screen content, and promotional media.</p>
+              <a class="plaque-tab-action" href="https://www.youtube.com/@Shimtimultimedia" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/5.jpg" alt="YouTube platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="linkedin" aria-controls="plaque-tab-linkedin" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/linkedin.svg" alt="" width="28" height="28">
+            <span>LinkedIn</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-linkedin" data-plaque-panel="linkedin" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/linkedin.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">LinkedIn</strong>
+              <p class="plaque-tab-copy">Professional network presence for business identity, collaboration context, services, and work history.</p>
+              <a class="plaque-tab-action" href="https://www.linkedin.com/in/shimtimultimedia/" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/4.jpg" alt="LinkedIn platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="x" aria-controls="plaque-tab-x" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/x.svg" alt="" width="28" height="28">
+            <span>X</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-x" data-plaque-panel="x" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/x.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">X</strong>
+              <p class="plaque-tab-copy">Fast updates, project notes, public conversation, and lightweight development commentary.</p>
+              <a class="plaque-tab-action" href="https://x.com/Shimtimedia" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/3.jpg" alt="X platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="tumblr" aria-controls="plaque-tab-tumblr" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/tumblr.svg" alt="" width="28" height="28">
+            <span>Tumblr</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-tumblr" data-plaque-panel="tumblr" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/tumblr.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Tumblr</strong>
+              <p class="plaque-tab-copy">Visual archive and experimental publishing space for image-led creative direction.</p>
+              <a class="plaque-tab-action" href="https://www.tumblr.com/blog/shimti999-blog" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/2.jpg" alt="Tumblr platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="reddit" aria-controls="plaque-tab-reddit" aria-expanded="false">
+            <img class="plaque-icon" src="images/social/reddit.svg" alt="" width="28" height="28">
+            <span>Reddit</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-reddit" data-plaque-panel="reddit" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon" src="images/social/reddit.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Reddit</strong>
+              <p class="plaque-tab-copy">Community-facing discussion, project visibility, and niche interest spaces connected to SHIMTI work.</p>
+              <a class="plaque-tab-action" href="https://www.reddit.com/user/Naive_Butterscotch93/" target="_blank" rel="noopener">Open platform</a>
+              <img class="plaque-tab-preview" src="images/1.jpg" alt="Reddit platform preview" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   </section>
 </main>

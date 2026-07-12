@@ -88,12 +88,6 @@ const DEPTH          = 0.18;
 const ORTHO_HEIGHT   = 3.6;
 const PADDING        = 0.04;
 const PLAQUE_RADIUS  = 0.07;
-const TITLE_BAND_FRAC = 0.32;
-
-const CUBE_SIZE_MIN = 0.18;
-const CUBE_SIZE_MAX = 0.36;
-const CUBE_GAP_FILL = 0.34;
-const CUBE_VERTICAL_NUDGE = 0.02;
 const CUBE_CENTER_DEADZONE = 0.025;
 const CUBE_MAX_SPIN_SPEED = 4.25;
 const CUBE_SPIN_CURVE = 1.15;
@@ -103,9 +97,22 @@ const TILT_YAW   = 0.20;
 const LIGHT_RANGE = 8;
 const MOUSE_SMOOTHING = 0.11;
 
+// Interface tab plates: real duplicate plaques rendered as children of the
+// assembly, parked behind the main plaque and sliding out sideways on open.
+const TAB_PLATE_Z_OFFSET = -DEPTH * 1.7;  // sit behind the main plaque (true depth occlusion)
+const TAB_SLIDE_SMOOTH   = 0.18;          // per-frame ease toward open/closed
+const TAB_PLATE_PAD      = 0.12;          // world units of metal margin around the DOM content
+const TAB_BEHIND_FRAC    = 0.06;          // fraction of the plate that stays tucked behind when open
+
+// Title fills only part of its DOM slot so the bloom glow has headroom and
+// short titles (height-limited) don't balloon to the slot's full height.
+const TITLE_SLOT_FILL = 0.62;
+
 const BLOOM_THRESHOLD = 0.88;
 const BLOOM_STRENGTH  = 0.28;
-const BLOOM_RADIUS    = 0.22;
+/* Radius kept tight: at 0.22 the halo bled ~a full text-height above the
+   title, making it read closer to the plaque edge than it actually is. */
+const BLOOM_RADIUS    = 0.14;
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -209,7 +216,13 @@ function init() {
   const heroTitle    = document.getElementById("hero-title");
   const heroSubtitle = document.getElementById("hero-subtitle");
   const titleSlot    = heroPlaque ? heroPlaque.querySelector(".plaque-title-slot") : null;
-  const plaqueBio    = heroPlaque ? heroPlaque.querySelector(".plaque-bio") : null;
+  const shapeSlot    = heroPlaque ? heroPlaque.querySelector(".plaque-shape-slot") : null;
+  const dockItems    = heroPlaque
+    ? Array.from(heroPlaque.querySelectorAll(".plaque-dock-item"))
+    : [];
+  const webglTabsEnabled = dockItems.length
+    && plaqueStack
+    && matchMedia("(min-width: 721px)").matches;
 
   if (!canvas) return;
 
@@ -336,6 +349,8 @@ function init() {
   const cssBasisFlip = new THREE.Matrix4().makeScale(1, -1, 1);
   const cssMirrorMatrix = new THREE.Matrix4();
 
+  const tabPlates = [];
+
   let plaque = null;
   let titleInner = null;
   let centerCube = null;
@@ -346,7 +361,6 @@ function init() {
   let titleNatW = 0;
   let titleNatH = 0;
   let titleScale = 1;
-  let titleBottomWorldY = 0;
   let cubeCurrentSize = 0;
   let heroFont = null;
   let rafId = 0;
@@ -422,53 +436,72 @@ function init() {
     updateOrtho();
 
     const aspect = w / h;
-    const plaqueH = ORTHO_HEIGHT * (1 - 2 * PADDING);
-    const plaqueW = ORTHO_HEIGHT * aspect * (1 - 2 * PADDING);
+    const pxPerWorld = h / ORTHO_HEIGHT;
+    let plaqueH = ORTHO_HEIGHT * (1 - 2 * PADDING);
+    let plaqueW = ORTHO_HEIGHT * aspect * (1 - 2 * PADDING);
+
+    // The .plaque-stack box IS the plaque. CSS padding on the stack is the
+    // single source of truth for interior margins -- never add sizing fudge factors here.
+    if (plaqueStack && plaqueStack.offsetWidth > 0 && plaqueStack.offsetHeight > 0) {
+      plaqueW = plaqueStack.offsetWidth / pxPerWorld;
+      plaqueH = plaqueStack.offsetHeight / pxPerWorld;
+    }
 
     if (plaque) {
       plaque.geometry.dispose();
       plaque.geometry = new RoundedBoxGeometry(plaqueW, plaqueH, DEPTH, 5, PLAQUE_RADIUS);
     }
 
-    let bandFrac = TITLE_BAND_FRAC;
-    if (titleSlot) {
-      const f = titleSlot.getBoundingClientRect().height / h;
-      if (f > 0.05 && f < 0.9) bandFrac = f;
+    for (const tab of tabPlates) {
+      const cw = tab.dom.offsetWidth;
+      const ch = tab.dom.offsetHeight;
+      if (!cw || !ch) continue;
+
+      const worldW = cw / pxPerWorld + TAB_PLATE_PAD;
+      const worldH = ch / pxPerWorld + TAB_PLATE_PAD;
+
+      tab.mesh.geometry.dispose();
+      tab.mesh.geometry = new RoundedBoxGeometry(worldW, worldH, DEPTH, 5, PLAQUE_RADIUS);
+
+      const desiredOpenPxX = (plaqueW / 2 + worldW / 2 - worldW * TAB_BEHIND_FRAC) * pxPerWorld;
+      const maxOpenPxX = Math.max(0, w / 2 - cw / 2 - 18);
+
+      tab.openPxX = Math.min(desiredOpenPxX, maxOpenPxX);
+      tab.openWorldX = tab.openPxX / pxPerWorld;
+      tab.hiddenPxOpen = Math.max(0, plaqueStack.offsetWidth / 2 - tab.openPxX + cw / 2);
+      tab.contentWidth = Math.max(168, cw - tab.hiddenPxOpen - 28);
+
+      tab.surface.style.width = `${tab.contentWidth}px`;
+      tab.surface.style.boxSizing = "border-box";
     }
 
-    const bandH = plaqueH * bandFrac;
+    // All 3D layout mirrors DOM slot rects. Never position or size a 3D
+    // element from plaque geometry -- add/resize the DOM slot instead.
+    const canvasRect = canvas.getBoundingClientRect();
 
-    if (titleInner && titleNatW) {
-      const maxW = plaqueW * 0.82;
-      const maxH = bandH * 0.62;
+    if (titleInner && titleNatW && titleSlot) {
+      const slotRect = titleSlot.getBoundingClientRect();
+      const maxW = Math.min(plaqueW * 0.82, slotRect.width / pxPerWorld);
+      const maxH = (slotRect.height / pxPerWorld) * TITLE_SLOT_FILL;
       titleScale = Math.min(maxW / titleNatW, maxH / titleNatH);
 
       titleInner.scale.set(titleScale, titleScale, 1);
-      titleInner.position.set(0, plaqueH / 2 - bandH / 2, DEPTH);
-      titleBottomWorldY = titleInner.position.y - (titleNatH * titleScale) / 2;
+      titleInner.position.set(
+        (slotRect.left + slotRect.width / 2 - canvasRect.left - canvasRect.width / 2) / pxPerWorld,
+        screenYToWorldY(slotRect.top + slotRect.height / 2, canvasRect),
+        DEPTH,
+      );
     }
 
-    if (centerCube) {
-      let cubeWorldY = plaqueH * 0.18;
-      let cubeSize = 0.26;
-
-      if (plaqueBio && titleInner) {
-        const canvasRect = canvas.getBoundingClientRect();
-        const bioRect = plaqueBio.getBoundingClientRect();
-
-        if (canvasRect.height > 0 && bioRect.height > 0) {
-          const bioTopWorldY = screenYToWorldY(bioRect.top, canvasRect);
-          const gapWorldH = titleBottomWorldY - bioTopWorldY;
-
-          if (gapWorldH > 0.12) {
-            cubeWorldY = bioTopWorldY + gapWorldH / 2 + CUBE_VERTICAL_NUDGE;
-            cubeSize = clamp(gapWorldH * CUBE_GAP_FILL, CUBE_SIZE_MIN, CUBE_SIZE_MAX);
-          }
-        }
-      }
-
+    if (centerCube && shapeSlot) {
+      const slotRect = shapeSlot.getBoundingClientRect();
+      const cubeSize = slotRect.height / pxPerWorld;
       rebuildCube(cubeSize);
-      centerCube.position.set(0, cubeWorldY, DEPTH + cubeSize * 0.58);
+      centerCube.position.set(
+        (slotRect.left + slotRect.width / 2 - canvasRect.left - canvasRect.width / 2) / pxPerWorld,
+        screenYToWorldY(slotRect.top + slotRect.height / 2, canvasRect),
+        DEPTH + cubeSize * 0.58,
+      );
     }
   }
 
@@ -502,6 +535,51 @@ function init() {
     assembly.rotation.x += (targetX - assembly.rotation.x) * 0.09;
     assembly.rotation.y += (targetY - assembly.rotation.y) * 0.09;
 
+    if (tabPlates.length) {
+      const tabEase = 1 - Math.pow(1 - TAB_SLIDE_SMOOTH, dt * 60);
+
+      for (const tab of tabPlates) {
+        const target = tab.dom.classList.contains("is-open") ? 1 : 0;
+        tab.openAmount += (target - tab.openAmount) * tabEase;
+
+        if (tab.openAmount < 0.002 && target === 0) {
+          tab.openAmount = 0;
+          if (tab.mesh.visible) tab.mesh.visible = false;
+          if (tab.dom.style.opacity !== "0") {
+            tab.dom.style.opacity = "0";
+            tab.dom.style.pointerEvents = "none";
+          }
+          tab.dom.style.clipPath = tab.dir > 0
+            ? "inset(0 0 0 100%)"
+            : "inset(0 100% 0 0)";
+          tab.surface.style.transform = "";
+          tab.dom.style.transform = "translate(-50%, -50%)";
+          continue;
+        }
+
+        tab.mesh.visible = true;
+        tab.mesh.position.x = tab.dir * tab.openWorldX * tab.openAmount;
+
+        const fade = clamp((tab.openAmount - 0.18) / 0.82, 0, 1);
+        const tabW = tab.dom.offsetWidth || 1;
+        const plaqueW = plaqueStack ? plaqueStack.offsetWidth : 0;
+        const currentX = tab.openPxX * tab.openAmount;
+        const hiddenPx = Math.max(0, plaqueW / 2 - currentX + tabW / 2 + 12);
+        const tuckedInset = clamp((hiddenPx / tabW) * 100, 0, 100);
+
+        tab.dom.style.opacity = String(fade);
+        tab.dom.style.clipPath = tab.dir > 0
+          ? `inset(0 0 0 ${tuckedInset}%)`
+          : `inset(0 ${tuckedInset}% 0 0)`;
+        tab.surface.style.transform = tab.dir > 0
+          ? `translateX(${tab.hiddenPxOpen}px)`
+          : "translateX(0)";
+        tab.dom.style.pointerEvents = fade > 0.6 ? "auto" : "none";
+        tab.dom.style.transform =
+          `translate(-50%, -50%) translateX(${tab.dir * tab.openPxX * tab.openAmount}px)`;
+      }
+    }
+
     if (cubeRotor) {
       const spinYInput = signedCurve(mouseS.x, CUBE_CENTER_DEADZONE, CUBE_SPIN_CURVE);
       const spinXInput = signedCurve(mouseS.y, CUBE_CENTER_DEADZONE, CUBE_SPIN_CURVE);
@@ -533,6 +611,21 @@ function init() {
     pipeline.finalComposer.render();
   }
 
+  // If any frame throws, the rAF chain would die SILENTLY — plaque frozen,
+  // nothing in the console. Fail loudly and hand the page back to the DOM
+  // text fallback instead of leaving a corpse on screen.
+  function restoreDomFallback() {
+    if (heroTitle) heroTitle.classList.remove("hidden-by-3d");
+    if (heroSubtitle) heroSubtitle.classList.remove("hidden-by-3d");
+    canvas.classList.remove("active");
+    if (heroPlaque) heroPlaque.classList.remove("plaque-active", "webgl-tabs");
+    if (plaqueStack) plaqueStack.style.transform = "";
+
+    for (const tab of tabPlates) {
+      tab.dom.removeAttribute("style");
+    }
+  }
+
   function animate() {
     if (stopped) return;
 
@@ -541,7 +634,15 @@ function init() {
     const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
     lastFrameTime = now;
 
-    renderFrame(t, dt);
+    try {
+      renderFrame(t, dt);
+    } catch (error) {
+      console.error("hero-3d: render frame failed; restoring DOM fallback.", error);
+      restoreDomFallback();
+      stop();
+      return;
+    }
+
     rafId = requestAnimationFrame(animate);
   }
 
@@ -632,6 +733,51 @@ function init() {
 
       assembly.add(plaque, titleInner, centerCube);
 
+      if (webglTabsEnabled) {
+        for (const item of dockItems) {
+          const dom = item.querySelector(".plaque-tab");
+          const surface = dom ? dom.querySelector(".plaque-tab-surface") : null;
+          if (!dom || !surface) continue;
+
+          const mesh = new THREE.Mesh(
+            new RoundedBoxGeometry(1, 1, DEPTH, 5, PLAQUE_RADIUS),
+            plaqueMaterial,
+          );
+          mesh.position.set(0, 0, TAB_PLATE_Z_OFFSET);
+          mesh.visible = false;
+          assembly.add(mesh);
+
+          // The DOM panel becomes a pure content layer; JS owns its position,
+          // slide, and fade so it tracks the 3D plate exactly. No CSS transition.
+          dom.style.top = "50%";
+          dom.style.left = "50%";
+          dom.style.right = "auto";
+          dom.style.bottom = "auto";
+          dom.style.transformOrigin = "center center";
+          dom.style.transition = "none";
+          dom.style.clipPath = item.classList.contains("plaque-tab-right")
+            ? "inset(0 0 0 100%)"
+            : "inset(0 100% 0 0)";
+          surface.style.transform = "";
+          dom.style.opacity = "0";
+          dom.style.pointerEvents = "none";
+
+          tabPlates.push({
+            dom,
+            surface,
+            dir: item.classList.contains("plaque-tab-right") ? 1 : -1,
+            mesh,
+            openAmount: 0,
+            openWorldX: 0,
+            openPxX: 0,
+            hiddenPxOpen: 0,
+            contentWidth: 0,
+          });
+        }
+
+        if (tabPlates.length && heroPlaque) heroPlaque.classList.add("webgl-tabs");
+      }
+
       if (heroTitle) heroTitle.classList.add("hidden-by-3d");
       if (heroSubtitle) heroSubtitle.classList.add("hidden-by-3d");
       canvas.classList.add("active");
@@ -654,8 +800,26 @@ function init() {
   window.addEventListener("pagehide", stop, { once: true });
 }
 
+// init() refuses to start below the mobile breakpoint, but a page can load in
+// a narrow window and be widened later (or the viewport can report 0x0 during
+// startup in some embedders). Without this retry the 3D would never appear
+// until a full reload.
+function boot() {
+  if (window.innerWidth >= MOBILE_BREAKPOINT) {
+    init();
+    return;
+  }
+
+  window.addEventListener("resize", function retryInit() {
+    if (window.innerWidth >= MOBILE_BREAKPOINT && !window.__hero3dReady) {
+      window.removeEventListener("resize", retryInit);
+      init();
+    }
+  }, { passive: true });
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init, { once: true });
+  document.addEventListener("DOMContentLoaded", boot, { once: true });
 } else {
-  init();
+  boot();
 }

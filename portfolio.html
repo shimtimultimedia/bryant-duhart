@@ -6,12 +6,14 @@
 <title>Portfolio - Bryant Duhart</title>
 <meta name="description" content="Bryant Duhart portfolio hub with external work links, code, visual case studies, and custom creative content by Shimti Multimedia.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=103">
+<link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css?v=116">
 <meta name="author" content="Bryant Duhart">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/portfolio.html">
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=103" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=116" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bryant Duhart - Multimedia Creator">
 <meta property="og:locale" content="en_US">
@@ -25,8 +27,8 @@
 <meta name="twitter:description" content="External work links, code, visual case studies, and custom creative content by Shimti Multimedia.">
 <meta name="twitter:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
-<script src="js/include.js?v=103" defer></script>
-<script src="js/particles-bg.js?v=103" defer></script>
+<script src="js/include.js?v=116" defer></script>
+<script src="js/particles-bg.js?v=116" defer></script>
 <script type="importmap">
 {
   "imports": {
@@ -35,15 +37,16 @@
   }
 }
 </script>
-<script type="module" src="js/hero-3d.js?v=103"></script>
+<script type="module" src="js/hero-3d.js?v=116"></script>
+<script src="js/plaque-interface.js?v=116" defer></script>
 
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
-<main id="main" class="page-main portfolio-main">
+<main id="main" class="page-main portfolio-main plaque-page-main">
 
-  <section class="hero-plaque" id="hero-plaque">
+  <section class="hero-plaque plaque-interface" id="hero-plaque" data-plaque-interface>
     <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
 
     <div class="plaque-stack" id="plaque-stack">
@@ -52,58 +55,105 @@
         <p class="hero-subtitle-text" id="hero-subtitle">Creative Work</p>
       </div>
 
+      <div class="plaque-shape-slot" aria-hidden="true"></div>
+
       <div class="plaque-bio-area">
         <div class="plaque-bio">
           <p>This portfolio connects the practical work behind SHIMTI Multimedia: web presentation, graphic systems, AI-assisted production, 3D direction, media concepts, and technical problem-solving.</p>
-          <p>The page is structured as a work hub rather than a static gallery. Code, visual case studies, client-ready artwork, platform links, and future featured projects each show a different part of the production range.</p>
-          <p>The interactive 3D plaque system, responsive layout, metadata, visual hierarchy, and local asset structure are part of the portfolio itself — a live example of polished digital presentation.</p>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="section hub-section" aria-labelledby="portfolio-platforms">
-    <div class="section-headline">
-      <h2 id="portfolio-platforms"><span class="accent-bar"></span>External portfolio platforms</h2>
-      <p>Each platform supports a different proof point: technical execution, visual presentation, case-study thinking, and public creative output.</p>
-    </div>
-    <div class="hub-grid two-up">
-      <a class="link-card feature-link" href="https://github.com/shimtimultimedia" target="_blank" rel="noopener">
-        <span class="link-kicker">Code / sites / prototypes</span>
-        <strong>GitHub</strong>
-        <p>Code, static websites, interface experiments, automation concepts, and technical systems that show practical problem-solving beyond surface-level design.</p>
-        <span class="link-action">Open GitHub</span>
-      </a>
-      <a class="link-card feature-link" href="https://www.behance.net/Shimtimultimedia" target="_blank" rel="noopener">
-        <span class="link-kicker">Visual case studies</span>
-        <strong>Behance</strong>
-        <p>Visual design, campaign presentation, layout direction, brand polish, and case-study style creative work prepared for public viewing.</p>
-        <span class="link-action">Open Behance</span>
-      </a>
-    </div>
-  </section>
+      <nav class="plaque-icon-dock" aria-label="Portfolio platforms and marketplaces">
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="github" aria-controls="plaque-tab-github" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/github.svg" alt="" width="28" height="28">
+            <span>GitHub</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-github" data-plaque-panel="github" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/github.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">GitHub</strong>
+              <p class="plaque-tab-copy">Code, static websites, interface experiments, automation concepts, and technical systems that show practical problem-solving beyond surface-level design.</p>
+              <a class="plaque-tab-action" href="https://github.com/shimtimultimedia" target="_blank" rel="noopener">Open GitHub</a>
+            </div>
+          </div>
+        </div>
 
-  <section class="section hub-section" aria-labelledby="custom-work">
-    <div class="section-headline">
-      <h2 id="custom-work"><span class="accent-bar"></span>Custom art and featured content</h2>
-      <p>This section is reserved for direct project highlights so visitors can evaluate the work without leaving the site.</p>
-    </div>
-    <div class="showcase-grid">
-      <article class="showcase-card">
-        <span class="showcase-label">Upcoming</span>
-        <h3>Poster and campaign art</h3>
-        <p>Finished client posters, event graphics, tribute-show artwork, and promotional visuals presented as polished campaign assets.</p>
-      </article>
-      <article class="showcase-card">
-        <span class="showcase-label">Upcoming</span>
-        <h3>AI-assisted visuals</h3>
-        <p>AI-assisted visual development, scene concepts, image refinement, and short-form media workflows organized by project outcome.</p>
-      </article>
-      <article class="showcase-card">
-        <span class="showcase-label">Upcoming</span>
-        <h3>3D and game assets</h3>
-        <p>3D direction, rendered stills, marketplace-ready assets, game/media objects, and interactive presentation work can be featured here.</p>
-      </article>
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="behance" aria-controls="plaque-tab-behance" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/behance.svg" alt="" width="28" height="28">
+            <span>Behance</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-behance" data-plaque-panel="behance" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/behance.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Behance</strong>
+              <p class="plaque-tab-copy">Visual design, campaign presentation, layout direction, brand polish, and case-study style creative work prepared for public viewing.</p>
+              <a class="plaque-tab-action" href="https://www.behance.net/Shimtimultimedia" target="_blank" rel="noopener">Open Behance</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="fab" aria-controls="plaque-tab-fab" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/fab.svg" alt="" width="28" height="28">
+            <span>Fab</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-fab" data-plaque-panel="fab" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/fab.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Fab</strong>
+              <p class="plaque-tab-copy">3D asset marketplace storefront for published SHIMTI Multimedia models and marketplace-ready work.</p>
+              <a class="plaque-tab-action" href="https://www.fab.com/sellers/Shimtimultimedia" target="_blank" rel="noopener">Open Fab</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="sketchfab" aria-controls="plaque-tab-sketchfab" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/sketchfab.svg" alt="" width="28" height="28">
+            <span>Sketchfab</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-sketchfab" data-plaque-panel="sketchfab" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/sketchfab.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Sketchfab</strong>
+              <p class="plaque-tab-copy">Public 3D model showcase — characters, assets, and scene work.</p>
+              <a class="plaque-tab-action" href="https://sketchfab.com/shimtimultimedia" target="_blank" rel="noopener">Open Sketchfab</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="redbubble" aria-controls="plaque-tab-redbubble" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/redbubble.svg" alt="" width="28" height="28">
+            <span>Redbubble</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-redbubble" data-plaque-panel="redbubble" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/redbubble.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Redbubble</strong>
+              <p class="plaque-tab-copy">Product and print-on-demand shop.</p>
+              <a class="plaque-tab-action" href="https://www.redbubble.com/people/Shimti/shop?asc=u" target="_blank" rel="noopener">Open Redbubble</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="threadless" aria-controls="plaque-tab-threadless" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/threadless.svg" alt="" width="28" height="28">
+            <span>Threadless</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-threadless" data-plaque-panel="threadless" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/threadless.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Threadless</strong>
+              <p class="plaque-tab-copy">Apparel and print designs on the Threadless artist storefront.</p>
+              <a class="plaque-tab-action" href="https://www.threadless.com/@Shimti" target="_blank" rel="noopener">Open Threadless</a>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   </section>
 </main>

@@ -146,7 +146,7 @@ body::-webkit-scrollbar { display: none; }
 #portrait-bg {
   position: fixed;
   inset: 0;
-  background-image: url("../images/bd_bg-cutout.webp?v=103");
+  background-image: url("../images/bd_bg-cutout.webp?v=116");
   background-repeat: no-repeat;
   background-position: left calc(100% + 8px);
   background-size: contain;
@@ -214,6 +214,19 @@ a,
 input,
 textarea,
 select {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Contact / map content must stay selectable so the email address and
+   business details can be copied. This overrides the global non-selectable
+   presentation policy above for these containers only. */
+.contact-wrap,
+.contact-wrap *,
+.contact-meta,
+.contact-meta *,
+.map-copy,
+.map-copy * {
   -webkit-user-select: text;
   user-select: text;
 }

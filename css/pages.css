@@ -53,22 +53,6 @@
   box-shadow: 0 18px 46px rgba(0,0,0,0.55);
 }
 
-.about-slideshow { position: absolute; inset: 0; z-index: 0; }
-.about-slide {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0;
-  transform: translateX(6%) scale(1.03);
-  transition: opacity 2.2s ease, transform 2.4s ease;
-  }
-.about-slide.is-current { opacity: 1; transform: translateX(0) scale(1); }
-.about-slide.is-leaving { opacity: 0; transform: translateX(-6%) scale(1.03); }
-.about-slideshow.reduced-motion .about-slide { transition: opacity 0.6s ease; transform: none !important; }
-
 .about-frame::after {
   content: "";
   position: absolute;
@@ -247,26 +231,6 @@
   .social-tile:hover { transform: none; }
 }
 
-.about-gallery-section {
-  width: min(100%, 1120px);
-  margin-inline: auto;
-}
-
-.about-gallery-frame {
-  position: relative;
-  min-height: clamp(360px, 54vh, 680px);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: #161616;
-  box-shadow: 0 18px 46px rgba(0,0,0,0.18);
-}
-
-.about-gallery-frame .about-slideshow {
-  position: absolute;
-  inset: 0;
-}
-
-
 .brochure-card strong {
   color: var(--black);
   font-weight: 800;
@@ -275,8 +239,4 @@
 :root.theme-dark .map-embed iframe,
 :root.theme-dark .social-tile img {
   filter: grayscale(1) invert(1) contrast(1.05);
-}
-
-:root.theme-dark .about-gallery-frame {
-  background: #0f1114;
 }

@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 SITE_ORIGIN = "https://shimtimultimedia.github.io/bryant-duhart/"
-ASSET_VERSION = "103"
+ASSET_VERSION = "116"
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = {
@@ -19,6 +19,17 @@ PAGES = {
     "services.html": ("monthly", "0.8"),
     "social.html": ("monthly", "0.6"),
     "contact.html": ("yearly", "0.5"),
+    "service-web-design.html": ("monthly", "0.5"),
+    "service-graphic-design.html": ("monthly", "0.5"),
+    "service-video.html": ("monthly", "0.5"),
+    "service-3d-design.html": ("monthly", "0.5"),
+    "service-audio.html": ("monthly", "0.5"),
+    "service-ai.html": ("monthly", "0.5"),
+    "service-app-development.html": ("monthly", "0.5"),
+    "service-creative-direction.html": ("monthly", "0.5"),
+    "service-posters.html": ("monthly", "0.5"),
+    "service-ai-visuals.html": ("monthly", "0.5"),
+    "service-game-development.html": ("monthly", "0.5"),
 }
 
 

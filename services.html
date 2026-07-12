@@ -6,12 +6,14 @@
 <title>Services - Bryant Duhart</title>
 <meta name="description" content="Client services from Shimti Multimedia: web, design, video, audio, 3D, AI workflows, app prototypes, and creative direction.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="stylesheet" href="css/style.css?v=103">
+<link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css?v=116">
 <meta name="author" content="Bryant Duhart">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/services.html">
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=103" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=116" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bryant Duhart - Multimedia Creator">
 <meta property="og:locale" content="en_US">
@@ -25,8 +27,8 @@
 <meta name="twitter:description" content="Client services from Shimti Multimedia: web, design, video, audio, 3D, AI workflows, app prototypes, and creative direction.">
 <meta name="twitter:image" content="https://shimtimultimedia.github.io/bryant-duhart/images/bd_bg.webp">
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
-<script src="js/include.js?v=103" defer></script>
-<script src="js/particles-bg.js?v=103" defer></script>
+<script src="js/include.js?v=116" defer></script>
+<script src="js/particles-bg.js?v=116" defer></script>
 <script type="importmap">
 {
   "imports": {
@@ -35,14 +37,15 @@
   }
 }
 </script>
-<script type="module" src="js/hero-3d.js?v=103"></script>
+<script type="module" src="js/hero-3d.js?v=116"></script>
+<script src="js/plaque-interface.js?v=116" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
-<main id="main" class="page-main services-main">
+<main id="main" class="page-main services-main plaque-page-main">
 
-  <section class="hero-plaque" id="hero-plaque">
+  <section class="hero-plaque plaque-interface" id="hero-plaque" data-plaque-interface>
     <canvas class="hero-3d-canvas" id="hero-3d" aria-hidden="true"></canvas>
 
     <div class="plaque-stack" id="plaque-stack">
@@ -51,75 +54,192 @@
         <p class="hero-subtitle-text" id="hero-subtitle">AI Powered Multimedia</p>
       </div>
 
+      <div class="plaque-shape-slot" aria-hidden="true"></div>
+
       <div class="plaque-bio-area">
         <div class="plaque-bio">
           <p>SHIMTI Multimedia provides practical creative production across web, design, video, audio, 3D, AI-assisted workflows, app prototypes, and campaign direction.</p>
           <p>The service model is built for small businesses, performers, creators, and independent teams that need finished media without coordinating a separate specialist for every stage.</p>
-          <p>Each service below is written around deliverables: what can be produced, where it fits, and how it supports a real public-facing project.</p>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="section brochure-panel" aria-labelledby="service-offers">
-    <div class="section-headline">
-      <h2 id="service-offers"><span class="accent-bar"></span>Service catalogue</h2>
-      <p>Each offer can stand alone or combine into a complete production package: concept, design, build, polish, and delivery.</p>
-    </div>
-    <div class="brochure-grid">
-      <article class="brochure-card">
-        <h3>Web design and digital presence</h3>
-        <p>Responsive websites, landing pages, portfolio systems, navigation structure, SEO metadata, accessibility basics, and lightweight static deployments.</p>
-        <p><strong>Useful for:</strong> personal brands, small businesses, artists, performers, and service providers who need a serious online presence.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>Graphic design and campaign assets</h3>
-        <p>Posters, flyers, social graphics, brand visuals, layout systems, promo packs, and finished artwork for digital or print presentation.</p>
-        <p><strong>Useful for:</strong> events, releases, business announcements, tribute shows, social campaigns, and promotional packages.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>Video and motion concepts</h3>
-        <p>Promo edits, trailer-style concepts, short-form campaign videos, AI-assisted scene development, and visual storytelling support.</p>
-        <p><strong>Useful for:</strong> social media promotion, product teasers, performer reels, and cinematic concept previews.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>3D assets and visual direction</h3>
-        <p>3D model direction, render-style visuals, scene concepts, marketplace asset preparation, and visual support for games, media, and branded presentations.</p>
-        <p><strong>Useful for:</strong> concept art, product mockups, game/media assets, platform storefronts, and premium presentation visuals.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>Music, audio, and sound</h3>
-        <p>Music-production support, audio cleanup, voiceover preparation, podcast editing, sound design, and release-ready presentation.</p>
-        <p><strong>Useful for:</strong> promos, podcasts, video projects, artist material, narration, and multimedia campaigns that need cleaner sound.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>AI workflow consulting</h3>
-        <p>Practical AI workflow setup for image, video, writing, automation, local tools, creative pipelines, and production acceleration.</p>
-        <p><strong>Useful for:</strong> creators and teams who want better output, faster iteration, and repeatable creative systems instead of random prompting.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>App and prototype development</h3>
-        <p>Small business tools, proof-of-concept apps, interface prototypes, AI-integrated utilities, and internal workflow helpers.</p>
-        <p><strong>Useful for:</strong> validating ideas, organizing workflows, testing interfaces, and turning rough concepts into usable demos.</p>
-      </article>
-      <article class="brochure-card">
-        <h3>Creative direction</h3>
-        <p>Campaign-level coordination across media types, visual language, production choices, delivery planning, and final presentation polish.</p>
-        <p><strong>Useful for:</strong> projects that need one coherent direction across graphics, copy, video, web, and platform presentation.</p>
-      </article>
-    </div>
-  </section>
+      <nav class="plaque-icon-dock" aria-label="Services and platforms">
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="web-design" aria-controls="plaque-tab-web-design" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/web-design.svg" alt="" width="28" height="28">
+            <span>Web</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-web-design" data-plaque-panel="web-design" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/web-design.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Web Design &amp; Digital Presence</strong>
+              <p class="plaque-tab-copy">Responsive websites, landing pages, portfolio systems, navigation structure, SEO metadata, accessibility basics, and lightweight static deployments.</p>
+              <img class="plaque-tab-preview" src="images/services/web-design.svg" alt="Web Design preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-web-design.html" data-service="web-design">Service Details</a>
+            </div>
+          </div>
+        </div>
 
-  <section class="section hub-section" aria-labelledby="service-platforms">
-    <div class="section-headline">
-      <h2 id="service-platforms"><span class="accent-bar"></span>External service and shop platforms</h2>
-      <p>Marketplace and storefront destinations connected to SHIMTI Multimedia work.</p>
-    </div>
-    <div class="hub-grid">
-      <a class="link-card" href="https://www.fab.com/sellers/Shimtimultimedia" target="_blank" rel="noopener"><strong>Fab</strong><p>3D asset marketplace storefront.</p></a>
-      <div class="link-card" aria-disabled="true"><strong>Sketchfab</strong><p>Public profile pending.</p></div>
-      <a class="link-card" href="https://www.redbubble.com/people/Shimti/shop?asc=u" target="_blank" rel="noopener"><strong>Redbubble</strong><p>Product and print-on-demand shop.</p></a>
-      <div class="link-card" aria-disabled="true"><strong>Threadless</strong><p>Public shop pending.</p></div>
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="graphic-design" aria-controls="plaque-tab-graphic-design" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/graphic-design.svg" alt="" width="28" height="28">
+            <span>Graphic</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-graphic-design" data-plaque-panel="graphic-design" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/graphic-design.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Graphic Design &amp; Campaign Assets</strong>
+              <p class="plaque-tab-copy">Posters, flyers, social graphics, brand visuals, layout systems, promo packs, and finished artwork for digital or print presentation.</p>
+              <img class="plaque-tab-preview" src="images/services/graphic-design.svg" alt="Graphic Design preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-graphic-design.html" data-service="graphic-design">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="video" aria-controls="plaque-tab-video" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/video.svg" alt="" width="28" height="28">
+            <span>Video</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-video" data-plaque-panel="video" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/video.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Video &amp; Motion Concepts</strong>
+              <p class="plaque-tab-copy">Promo edits, trailer-style concepts, short-form campaign videos, AI-assisted scene development, and visual storytelling support.</p>
+              <img class="plaque-tab-preview" src="images/services/video.svg" alt="Video preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-video.html" data-service="video">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="three-d" aria-controls="plaque-tab-three-d" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/3d-design.svg" alt="" width="28" height="28">
+            <span>3D</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-three-d" data-plaque-panel="three-d" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/3d-design.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">3D Assets &amp; Visual Direction</strong>
+              <p class="plaque-tab-copy">3D model direction, render-style visuals, scene concepts, marketplace asset preparation, and visual support for games, media, and branded presentations.</p>
+              <img class="plaque-tab-preview" src="images/services/3d-design.svg" alt="3D Assets preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-3d-design.html" data-service="three-d">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="audio" aria-controls="plaque-tab-audio" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/audio-services.svg" alt="" width="28" height="28">
+            <span>Audio</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-audio" data-plaque-panel="audio" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/audio-services.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Music, Audio &amp; Sound</strong>
+              <p class="plaque-tab-copy">Music-production support, audio cleanup, voiceover preparation, podcast editing, sound design, and release-ready presentation.</p>
+              <img class="plaque-tab-preview" src="images/services/audio-services.svg" alt="Audio Services preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-audio.html" data-service="audio">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="ai" aria-controls="plaque-tab-ai" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/ai-consulting.svg" alt="" width="28" height="28">
+            <span>AI</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-ai" data-plaque-panel="ai" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/ai-consulting.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">AI Workflow Consulting</strong>
+              <p class="plaque-tab-copy">Practical AI workflow setup for image, video, writing, automation, local tools, creative pipelines, and production acceleration.</p>
+              <img class="plaque-tab-preview" src="images/services/ai-consulting.svg" alt="AI Workflow Consulting preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-ai.html" data-service="ai">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="apps" aria-controls="plaque-tab-apps" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/app-development.svg" alt="" width="28" height="28">
+            <span>Apps</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-apps" data-plaque-panel="apps" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/app-development.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">App &amp; Prototype Development</strong>
+              <p class="plaque-tab-copy">Small business tools, proof-of-concept apps, interface prototypes, AI-integrated utilities, and internal workflow helpers.</p>
+              <img class="plaque-tab-preview" src="images/services/app-development.svg" alt="App Development preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-app-development.html" data-service="apps">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="direction" aria-controls="plaque-tab-direction" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/creative-direction.svg" alt="" width="28" height="28">
+            <span>Direction</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-direction" data-plaque-panel="direction" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/creative-direction.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Creative Direction</strong>
+              <p class="plaque-tab-copy">Campaign-level coordination across media types, visual language, production choices, delivery planning, and final presentation polish.</p>
+              <img class="plaque-tab-preview" src="images/services/creative-direction.svg" alt="Creative Direction preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-creative-direction.html" data-service="direction">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="posters" aria-controls="plaque-tab-posters" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/graphic-design.svg" alt="" width="28" height="28">
+            <span>Posters</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-posters" data-plaque-panel="posters" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/graphic-design.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">Poster &amp; Campaign Art</strong>
+              <p class="plaque-tab-copy">Finished client posters, event graphics, tribute-show artwork, and promotional visuals presented as polished campaign assets.</p>
+              <img class="plaque-tab-preview" src="images/services/photography.svg" alt="Poster and Campaign Art preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-posters.html" data-service="posters">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-right">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="ai-visuals" aria-controls="plaque-tab-ai-visuals" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/ai-consulting.svg" alt="" width="28" height="28">
+            <span>AI Visuals</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-ai-visuals" data-plaque-panel="ai-visuals" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/ai-consulting.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">AI-Assisted Visuals</strong>
+              <p class="plaque-tab-copy">AI-assisted visual development, scene concepts, image refinement, and short-form media workflows organized by project outcome.</p>
+              <img class="plaque-tab-preview" src="images/services/film-concepts.svg" alt="AI-Assisted Visuals preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-ai-visuals.html" data-service="ai-visuals">Service Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="plaque-dock-item plaque-tab-left">
+          <button class="plaque-icon-link" type="button" data-plaque-trigger="three-d-game" aria-controls="plaque-tab-three-d-game" aria-expanded="false">
+            <img class="plaque-icon plaque-icon-mark" src="images/brands/3d-design.svg" alt="" width="28" height="28">
+            <span>3D &amp; Game</span>
+          </button>
+          <div class="plaque-tab" id="plaque-tab-three-d-game" data-plaque-panel="three-d-game" aria-hidden="true">
+            <div class="plaque-tab-surface">
+              <img class="plaque-tab-icon plaque-icon-mark" src="images/brands/3d-design.svg" alt="" width="42" height="42">
+              <strong class="plaque-tab-title">3D &amp; Game Assets</strong>
+              <p class="plaque-tab-copy">3D direction, rendered stills, marketplace-ready assets, game/media objects, and interactive presentation work.</p>
+              <img class="plaque-tab-preview" src="images/services/game-development.svg" alt="3D and Game Assets preview" loading="lazy" decoding="async">
+              <a class="plaque-tab-action plaque-tab-button" href="service-game-development.html" data-service="three-d-game">Service Details</a>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   </section>
 </main>
