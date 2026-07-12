@@ -40,7 +40,7 @@ function applyTheme(theme) {
   const toggle = document.querySelector("[data-theme-toggle]");
   if (toggle) {
     toggle.setAttribute("aria-pressed", String(isDark));
-    toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    toggle.setAttribute("aria-label", `Dark Light color theme: switch to ${isDark ? "light" : "dark"} mode`);
     toggle.dataset.themeState = isDark ? "dark" : "light";
   }
 }
@@ -63,4 +63,3 @@ if (document.readyState === "loading") {
 } else {
   initThemeToggle();
 }
-

@@ -3,7 +3,7 @@
  * brand 3D mark, theme toggle, and minimalist loader.
  */
 
-const ASSET_VERSION = "116";
+const ASSET_VERSION = "117";
 
 const NAV_LINKS = [
   { href: "index.html",     label: "Home"      },
@@ -148,13 +148,13 @@ function renderHeader() {
 ${links}
     </nav>
 
-    <button class="theme-toggle" type="button" data-theme-toggle data-theme-state="${isDark ? "dark" : "light"}" aria-label="${isDark ? "Switch to light mode" : "Switch to dark mode"}" aria-pressed="${String(isDark)}">
-      <span class="theme-toggle-label theme-toggle-label-dark">Dark</span>
+    <button class="theme-toggle" type="button" data-theme-toggle data-theme-state="${isDark ? "dark" : "light"}" aria-label="Dark Light color theme: ${isDark ? "switch to light mode" : "switch to dark mode"}" aria-pressed="${String(isDark)}">
+      <span class="theme-toggle-label theme-toggle-label-dark" aria-hidden="true">Dark</span>
       <span class="theme-toggle-track" aria-hidden="true">
         <span class="theme-toggle-moon"></span>
         <span class="theme-toggle-thumb"></span>
       </span>
-      <span class="theme-toggle-label theme-toggle-label-light">Light</span>
+      <span class="theme-toggle-label theme-toggle-label-light" aria-hidden="true">Light</span>
     </button>
   </div>
 </header>`;

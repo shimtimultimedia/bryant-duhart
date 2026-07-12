@@ -4,60 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Page not found — Bryant Duhart</title>
-<meta name="description" content="The page you were looking for doesn't exist.">
+<meta name="description" content="The requested page could not be found.">
 <meta name="robots" content="noindex">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32 48x48">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/style.css?v=116">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#000000">
-
-<!-- Resource hint: preload the transparent portrait cutout on desktop. -->
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=116" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
-
-<script src="js/include.js?v=116" defer></script>
-<script src="js/particles-bg.js?v=116" defer></script>
-
-<!-- Three.js importmap — required by the dynamically loaded
-     js/brand-3d.js so its transitive FontLoader/TextGeometry
-     imports of "three" resolve. Without this, the 3D brand mark
-     fails to render and the BD text fallback is shown instead. -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "./js/vendor/three.module.js",
-    "three/addons/": "./js/vendor/jsm/"
-  }
-}
-</script>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css?v=117">
+<script src="js/include.js?v=117" defer></script>
+<script src="js/particles-bg.js?v=117" defer></script>
 </head>
-<body>
+<body class="no-portrait">
 <a class="skip-link" href="#main">Skip to content</a>
-
 <div data-include="header"></div>
-
-<main id="main">
-
-  <section class="section">
-    <div class="contact-wrap">
-      <h1>404</h1>
-      <p class="lede">
-        That page doesn't exist — at least not at this address.
-      </p>
-      <p style="color:var(--muted); margin-bottom: 24px;">
-        Try one of the links in the nav above, or head straight back.
-      </p>
-      <div class="btn-row" style="justify-content:center;">
-        <a href="index.html" class="btn btn-primary">← Back to Home</a>
-        <a href="portfolio.html" class="btn btn-outline">See the work</a>
-      </div>
-    </div>
+<main id="main" class="error-page-main">
+  <section class="error-page-content">
+    <p class="error-code" aria-hidden="true">404</p>
+    <h1>Page not found</h1>
+    <p>The page you requested is not available at this address.</p>
+    <a class="service-primary-action" href="index.html">Back to home</a>
   </section>
-
 </main>
-
 <div data-include="footer"></div>
-
 </body>
 </html>

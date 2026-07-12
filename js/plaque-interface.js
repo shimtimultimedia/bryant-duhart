@@ -20,13 +20,26 @@
 
       panels.forEach((panel) => {
         const isOpen = panel.dataset.plaquePanel === activeId;
+        const preview = panel.querySelector("img[data-preview-src]");
+
+        if (isOpen && preview && !preview.dataset.previewLoaded) {
+          preview.src = preview.dataset.previewSrc;
+          preview.dataset.previewLoaded = "true";
+        }
+
         panel.classList.toggle("is-open", isOpen);
         panel.setAttribute("aria-hidden", String(!isOpen));
+        panel.inert = !isOpen;
       });
     }
 
     triggers.forEach((trigger) => {
       trigger.addEventListener("click", () => {
+        setActivePanel(trigger.dataset.plaqueTrigger);
+      });
+      trigger.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
         setActivePanel(trigger.dataset.plaqueTrigger);
       });
     });
@@ -42,6 +55,8 @@
         setActivePanel("");
       }
     });
+
+    setActivePanel("");
   }
 
   document.addEventListener("DOMContentLoaded", () => {

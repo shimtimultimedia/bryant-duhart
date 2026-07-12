@@ -31,11 +31,11 @@
 /* ============================================================ */
 
 .site-footer {
-  color: var(--muted);
+  color: #BBBBBB;
 }
 
 .site-footer p {
-  color: var(--muted);
+  color: #BBBBBB;
 }
 
 :root.theme-dark .site-footer {

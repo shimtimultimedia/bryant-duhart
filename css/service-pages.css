@@ -130,6 +130,37 @@
   text-transform: uppercase;
 }
 
+.error-page-main {
+  display: grid;
+  place-items: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.error-page-content {
+  max-width: 720px;
+}
+
+.error-code {
+  margin: 0;
+  font-size: clamp(7rem, 24vw, 18rem);
+  font-weight: 900;
+  line-height: 0.78;
+  color: var(--ink);
+}
+
+.error-page-content h1 {
+  margin: 32px 0 16px;
+  font-size: clamp(2rem, 5vw, 4rem);
+  text-transform: uppercase;
+}
+
+.error-page-content > p:not(.error-code) {
+  margin: 0 0 32px;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
 @media (max-width: 720px) {
   .service-detail-main > section { padding: 56px 24px; }
   .service-detail-hero { min-height: auto; grid-template-columns: 1fr; padding-top: 80px; }
