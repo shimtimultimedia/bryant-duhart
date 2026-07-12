@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 SITE_ORIGIN = "https://shimtimultimedia.github.io/bryant-duhart/"
-ASSET_VERSION = "117"
+ASSET_VERSION = "118"
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = {

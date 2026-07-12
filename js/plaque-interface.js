@@ -23,6 +23,11 @@
         const preview = panel.querySelector("img[data-preview-src]");
 
         if (isOpen && preview && !preview.dataset.previewLoaded) {
+          // This swap IS the deferral. loading="lazy" must not survive it:
+          // inside the transformed/opacity-driven tab subtree the browser's
+          // native lazy heuristic never fires, so a lazy image here would
+          // stay blank forever.
+          preview.loading = "eager";
           preview.src = preview.dataset.previewSrc;
           preview.dataset.previewLoaded = "true";
         }

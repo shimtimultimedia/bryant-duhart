@@ -3,7 +3,7 @@
  * brand 3D mark, theme toggle, and minimalist loader.
  */
 
-const ASSET_VERSION = "117";
+const ASSET_VERSION = "118";
 
 const NAV_LINKS = [
   { href: "index.html",     label: "Home"      },
