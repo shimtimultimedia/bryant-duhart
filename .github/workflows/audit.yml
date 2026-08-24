@@ -1,0 +1,63 @@
+# Deep audit against the LIVE site.
+#
+# Separate from quality.yml on purpose. Everything here either touches the public
+# internet or measures the deployed site, so it can fail for reasons unrelated to a
+# given commit. Keeping it off the push/PR path keeps the blocking gate trustworthy.
+#
+# Lighthouse targets the deployed URL rather than a local copy because GitHub Pages
+# serves compressed, CDN-cached responses. A locally served run reports
+# uses-text-compression and document-latency failures that do not exist in production,
+# which would force the thresholds down to values that assert nothing.
+name: Audit
+
+on:
+  schedule:
+    # Mondays 07:15 UTC. Offset from the other repository so the two runs do not
+    # contend. GitHub cron is best-effort, not exact.
+    - cron: '15 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: External links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check all links including external
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Retries absorb transient upstream failures. Without them this reports other
+          # people's momentary outages as our defects.
+          args: >-
+            --no-progress
+            --max-retries 3
+            --timeout 20
+            --exclude-mail
+            .
+          fail: true
+
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Audit deployed site
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          # Key journey pages, not just the homepage: a regression in the portfolio or
+          # contact page matters as much as one on the landing page.
+          urls: |
+            https://shimtimultimedia.github.io/bryant-duhart/
+            https://shimtimultimedia.github.io/bryant-duhart/portfolio.html
+            https://shimtimultimedia.github.io/bryant-duhart/services.html
+            https://shimtimultimedia.github.io/bryant-duhart/contact.html
+          # Three runs, median reported. A single run on shared CI hardware is noisy
+          # enough to cross a threshold by chance.
+          runs: 3
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true
