@@ -36,7 +36,7 @@ jobs:
             --no-progress
             --max-retries 3
             --timeout 20
-            --exclude-mail
+            --include-mail=false
             .
           fail: true
 
