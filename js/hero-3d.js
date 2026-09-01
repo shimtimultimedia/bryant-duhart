@@ -367,6 +367,12 @@ function init() {
   let stopped = false;
   let lastFrameTime = performance.now();
 
+  // Paused is not stopped. stop() is teardown - it disposes geometry, materials and the
+  // renderer, and cannot be undone. This is the reversible one: the scene stays built and
+  // only the frame loop halts, so resuming is a single rAF and the plaque looks identical
+  // the instant it comes back.
+  let paused = false;
+
   function buildTextGeo(text, size) {
     const geometry = new TextGeometry(text, {
       font: heroFont,
@@ -627,7 +633,7 @@ function init() {
   }
 
   function animate() {
-    if (stopped) return;
+    if (stopped || paused) return;
 
     const now = performance.now();
     const t = now / 1000;
@@ -798,6 +804,58 @@ function init() {
 
   window.addEventListener("resize", layout, { passive: true });
   window.addEventListener("pagehide", stop, { once: true });
+
+  /*
+   * Render only while the plaque is actually on a screen someone is looking at.
+   *
+   * The loop ran unconditionally: bloom, a post-processing chain and a full WebGL frame,
+   * sixty times a second, for as long as the tab existed - with the hero scrolled far
+   * offscreen, and in background tabs. Nothing about that reached a viewer's eye; it
+   * reached their battery and the main thread, and it is a large part of why Lighthouse
+   * marks these pages down.
+   *
+   * Nothing here changes a single pixel of how the plaque looks. It changes when the
+   * frames are drawn at all.
+   */
+  function pause() {
+    if (paused || stopped) return;
+    paused = true;
+    cancelAnimationFrame(rafId);
+  }
+
+  function resume() {
+    if (!paused || stopped) return;
+    paused = false;
+    // Reset the clock, or the first frame back computes dt from however long the tab sat
+    // hidden and the animation jumps.
+    lastFrameTime = performance.now();
+    rafId = requestAnimationFrame(animate);
+  }
+
+  // Scrolled out of view is the same as not being looked at. Assume on-screen until the
+  // observer says otherwise, so a browser without it simply keeps the old behaviour.
+  let onScreen = true;
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) pause();
+    else if (onScreen) resume();
+  });
+
+  // Observe the SECTION, never the canvas.
+  //
+  // .hero-3d-canvas is display:none until this module adds .active once the font has
+  // loaded, and a display:none element never intersects anything. Observing it meant the
+  // observer fired isIntersecting:false immediately, paused the loop before it had
+  // started, and the plaque never rendered at all. #hero-plaque is laid out from first
+  // paint, so it reports honestly.
+  const visibilityTarget = heroPlaque || canvas.parentElement;
+  if (typeof IntersectionObserver === "function" && visibilityTarget) {
+    new IntersectionObserver((entries) => {
+      onScreen = entries[0].isIntersecting;
+      if (onScreen && !document.hidden) resume();
+      else pause();
+    }, { threshold: 0 }).observe(visibilityTarget);
+  }
 }
 
 // init() refuses to start below the mobile breakpoint, but a page can load in

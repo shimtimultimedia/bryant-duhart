@@ -33,6 +33,10 @@ function init() {
 
   const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Held so the loop can be cancelled when the tab is hidden. 0 means "not running",
+  // which is what the visibility handler tests to avoid stacking a second loop.
+  let rafId = 0;
+
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -194,8 +198,30 @@ function init() {
     keyLight.intensity = prefersReduced ? 2.4 : 2.4 + Math.sin(t * 0.60) * 0.6;
 
     render();
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
   }
+
+  /*
+   * Stop drawing when nobody can see it.
+   *
+   * This mark is 72 pixels square and sits in the header of every page, and its loop ran
+   * unconditionally for the life of the tab - including while the tab was in the
+   * background. A WebGL frame per animation tick, forever, for a logo nobody was looking
+   * at. The mesh holds a fixed pose and only the key light tracks the cursor, so a paused
+   * frame is identical to a running one until the pointer moves again.
+   *
+   * render() is called once on resume so the mark is correct for the current pointer
+   * position the moment it comes back, rather than easing in from a stale one.
+   */
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else if (!rafId) {
+      render();
+      rafId = requestAnimationFrame(animate);
+    }
+  });
 }
 
 if (document.readyState === "loading") {

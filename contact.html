@@ -29,6 +29,9 @@
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
 <script src="js/include.js?v=118" defer></script>
 <script src="js/particles-bg.js?v=118" defer></script>
+<!-- Three.js importmap — kept for the header brand mark. include.js injects
+     js/brand-3d.js on every page, and its bare "three" import resolves through
+     this. Removing it would leave the header logo as its text fallback. -->
 <script type="importmap">
 {
   "imports": {
@@ -37,7 +40,9 @@
   }
 }
 </script>
-<script type="module" src="js/hero-3d.js?v=118"></script>
+<!-- hero-3d.js is deliberately NOT loaded here. This page has no #hero-3d canvas,
+     so the module downloaded, parsed, pulled in FontLoader, TextGeometry and the
+     EffectComposer chain, and then returned without drawing anything. -->
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
