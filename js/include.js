@@ -177,17 +177,23 @@ function injectPortraitBg() {
 }
 
 /*
- * The 3D header mark, loaded once the page has stopped being busy.
+ * The 3D header mark.
  *
- * This used to be injected during init(), which meant three.js was fetched, parsed and
- * a WebGL context created while the page was still trying to become interactive. It is
- * decorative - a 72-pixel logo with a static text fallback already on screen - and it was
- * measured as the single largest main-thread cost on the site: 10.9 seconds of script
- * execution on contact.html, a page that renders no 3D of its own. Total Blocking Time
- * scored 0 on every page because of it.
+ * This is the largest main-thread cost on the site: Lighthouse attributes a single
+ * 9,300ms task to brand-3d.js on contact.html, a page that renders no 3D of its own, and
+ * main-thread "Other" work of 10,400ms against only 650ms of script evaluation. That
+ * shape - one long synchronous block, almost none of it script - is WebGL shader
+ * compilation for the mark's clearcoat MeshPhysicalMaterial under Lighthouse's CPU
+ * throttling. It is a one-time cost, not per-frame work.
  *
- * Deferring to idle changes nothing about how the header looks once settled. It changes
- * when the work happens: after the page is usable, rather than in competition with it.
+ * Deferring the injection to requestIdleCallback was tried and made things measurably
+ * worse: Total Blocking Time counts long tasks between FCP and TTI, so moving the block
+ * later pushed it INTO the measured window rather than ahead of it. TBT rose from ~6,600ms
+ * to ~9,500ms on every page and contact's LCP went from 1.1s to 5.2s. Injecting early,
+ * where the compile lands before first paint, is the better of the two. Do not "optimise"
+ * this by deferring it again without measuring.
+ *
+ * The real lever is the material, not the timing.
  */
 function initBrand3d() {
   if (document.body.classList.contains("no-portrait")) return;
@@ -196,23 +202,10 @@ function initBrand3d() {
 
   window.__brand3dLoaded = true;
 
-  const inject = () => {
-    const script = document.createElement("script");
-    script.type = "module";
-    script.src = `js/brand-3d.js?v=${ASSET_VERSION}`;
-    document.head.appendChild(script);
-  };
-
-  // requestIdleCallback where available, with a timeout so it cannot be starved
-  // indefinitely on a busy page. Safari has no rIC, so it falls back to a short timer
-  // after load rather than never running.
-  if (typeof requestIdleCallback === "function") {
-    requestIdleCallback(inject, { timeout: 3000 });
-  } else if (document.readyState === "complete") {
-    setTimeout(inject, 200);
-  } else {
-    window.addEventListener("load", () => setTimeout(inject, 200), { once: true });
-  }
+  const script = document.createElement("script");
+  script.type = "module";
+  script.src = `js/brand-3d.js?v=${ASSET_VERSION}`;
+  document.head.appendChild(script);
 }
 
 function initThemeScript() {
