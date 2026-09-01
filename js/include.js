@@ -176,6 +176,19 @@ function injectPortraitBg() {
   document.body.appendChild(portrait);
 }
 
+/*
+ * The 3D header mark, loaded once the page has stopped being busy.
+ *
+ * This used to be injected during init(), which meant three.js was fetched, parsed and
+ * a WebGL context created while the page was still trying to become interactive. It is
+ * decorative - a 72-pixel logo with a static text fallback already on screen - and it was
+ * measured as the single largest main-thread cost on the site: 10.9 seconds of script
+ * execution on contact.html, a page that renders no 3D of its own. Total Blocking Time
+ * scored 0 on every page because of it.
+ *
+ * Deferring to idle changes nothing about how the header looks once settled. It changes
+ * when the work happens: after the page is usable, rather than in competition with it.
+ */
 function initBrand3d() {
   if (document.body.classList.contains("no-portrait")) return;
   if (!document.getElementById("brand-3d-canvas")) return;
@@ -183,10 +196,23 @@ function initBrand3d() {
 
   window.__brand3dLoaded = true;
 
-  const script = document.createElement("script");
-  script.type = "module";
-  script.src = `js/brand-3d.js?v=${ASSET_VERSION}`;
-  document.head.appendChild(script);
+  const inject = () => {
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = `js/brand-3d.js?v=${ASSET_VERSION}`;
+    document.head.appendChild(script);
+  };
+
+  // requestIdleCallback where available, with a timeout so it cannot be starved
+  // indefinitely on a busy page. Safari has no rIC, so it falls back to a short timer
+  // after load rather than never running.
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(inject, { timeout: 3000 });
+  } else if (document.readyState === "complete") {
+    setTimeout(inject, 200);
+  } else {
+    window.addEventListener("load", () => setTimeout(inject, 200), { once: true });
+  }
 }
 
 function initThemeScript() {

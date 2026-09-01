@@ -37,6 +37,10 @@ function init() {
   // which is what the visibility handler tests to avoid stacking a second loop.
   let rafId = 0;
 
+  // ~30fps. See the note in animate().
+  const FRAME_MS = 1000 / 30;
+  let lastDraw = 0;
+
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -181,7 +185,8 @@ function init() {
   // the env map supplies the ambient richness.
 
   function animate() {
-    const t = performance.now() / 1000;
+    const now = performance.now();
+    const t = now / 1000;
 
     // Ease the smoothed cursor toward the real one.
     mouseS.x += (mouse.x - mouseS.x) * 0.12;
@@ -197,7 +202,14 @@ function init() {
     // Gentle intensity breathing for life; steady under reduced motion.
     keyLight.intensity = prefersReduced ? 2.4 : 2.4 + Math.sin(t * 0.60) * 0.6;
 
-    render();
+    // Capped to ~30fps. The mark holds a fixed pose; all that moves is a key light easing
+    // toward the cursor and a slow intensity breathe on a 0.6Hz sine. At that rate 60fps
+    // and 30fps are indistinguishable to the eye, and it halves the per-frame cost of a
+    // clearcoat MeshPhysicalMaterial that was running flat out on every page of the site.
+    if (now - lastDraw >= FRAME_MS) {
+      lastDraw = now;
+      render();
+    }
     rafId = requestAnimationFrame(animate);
   }
 
@@ -213,15 +225,34 @@ function init() {
    * render() is called once on resume so the mark is correct for the current pointer
    * position the moment it comes back, rather than easing in from a stale one.
    */
+  let markOnScreen = true;
+
+  function stopLoop() {
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+  }
+
+  function startLoop() {
+    if (rafId) return;
+    render();
+    rafId = requestAnimationFrame(animate);
+  }
+
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      cancelAnimationFrame(rafId);
-      rafId = 0;
-    } else if (!rafId) {
-      render();
-      rafId = requestAnimationFrame(animate);
-    }
+    if (document.hidden) stopLoop();
+    else if (markOnScreen) startLoop();
   });
+
+  // Scrolled past the header is the same as not looking at it. The canvas is laid out
+  // from first paint here - unlike the hero canvas, which is display:none until its font
+  // arrives - so observing the canvas itself is safe.
+  if (typeof IntersectionObserver === "function") {
+    new IntersectionObserver((entries) => {
+      markOnScreen = entries[0].isIntersecting;
+      if (markOnScreen && !document.hidden) startLoop();
+      else stopLoop();
+    }, { threshold: 0 }).observe(canvas);
+  }
 }
 
 if (document.readyState === "loading") {

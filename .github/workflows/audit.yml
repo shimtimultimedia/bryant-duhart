@@ -32,11 +32,23 @@ jobs:
         with:
           # Retries absorb transient upstream failures. Without them this reports other
           # people's momentary outages as our defects.
+          #
+          # --accept exists because several of these platforms refuse automated clients on
+          # purpose. LinkedIn answers 999 to anything that is not a browser; fab.com,
+          # threadless and reddit answer 403. Every one of those URLs returns 200 to a real
+          # visitor - verified by hand with a browser user-agent - so failing the audit on
+          # them reports the platforms' bot defences as broken links on this site, and a
+          # gate that cries wolf is one people stop reading.
+          #
+          # 301/302 are accepted because a profile URL moving is normal and not a defect.
+          # 4xx codes that actually indicate a dead link - 404, 410 - are NOT accepted and
+          # still fail the run.
           args: >-
             --no-progress
             --max-retries 3
             --timeout 20
             --include-mail=false
+            --accept 200,206,301,302,403,429,999
             .
           fail: true
 
