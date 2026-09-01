@@ -71,5 +71,5 @@ jobs:
           # Three runs, median reported. A single run on shared CI hardware is noisy
           # enough to cross a threshold by chance.
           runs: 3
-          configPath: ./.lighthouserc.json
+          configPath: ./.lighthouserc.js
           uploadArtifacts: true
