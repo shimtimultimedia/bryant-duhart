@@ -3,7 +3,7 @@
  * brand 3D mark, theme toggle, and minimalist loader.
  */
 
-const ASSET_VERSION = "118";
+const ASSET_VERSION = "119";
 
 const NAV_LINKS = [
   { href: "index.html",     label: "Home"      },
@@ -160,9 +160,41 @@ ${links}
 </header>`;
 }
 
+/* Same accounts, order and split as the shimtimultimedia.com footer. */
+const FOOTER_SOCIALS = [
+  [
+    ["Facebook", "facebook", "https://www.facebook.com/shimti.multimedia/"],
+    ["Instagram", "instagram", "https://www.instagram.com/shimtimultimedia/"],
+    ["X", "x", "https://x.com/Shimtimedia"],
+    ["TikTok", "tiktok", "https://www.tiktok.com/@shimtimultimedia1"],
+  ],
+  [
+    ["LinkedIn", "linkedin", "https://www.linkedin.com/in/shimtimultimedia/"],
+    ["Tumblr", "tumblr", "https://www.tumblr.com/blog/shimti999-blog"],
+    ["YouTube", "youtube", "https://www.youtube.com/@Shimtimultimedia"],
+    ["Reddit", "reddit", "https://www.reddit.com/user/Naive_Butterscotch93/"],
+  ],
+];
+
+function renderFooterSocials(links, label) {
+  const items = links.map(([name, icon, url]) =>
+    `<a class="footer-social-link" href="${url}" target="_blank" rel="noopener" aria-label="${name}">` +
+    `<svg class="footer-social-icon" aria-hidden="true" focusable="false"><use href="images/social-icons.svg#${icon}"></use></svg></a>`
+  ).join("\n    ");
+  return `<nav class="footer-socials" aria-label="${label}">
+    ${items}
+  </nav>`;
+}
+
+/* Layout mirrors shimtimultimedia.com: legal links bookend the bar, social icons flank
+   the centred copyright. css/footer.css rearranges the same five children on phones. */
 function renderFooter() {
   return `<footer class="site-footer">
+  <a class="footer-legal-link footer-legal-link--privacy" href="privacy.html">Privacy Policy</a>
+  ${renderFooterSocials(FOOTER_SOCIALS[0], "Social media links")}
   <p>${FOOTER_HTML}</p>
+  ${renderFooterSocials(FOOTER_SOCIALS[1], "More social media links")}
+  <a class="footer-legal-link footer-legal-link--impressum" href="impressum.html">Legal Notice</a>
 </footer>`;
 }
 
@@ -218,6 +250,51 @@ function initThemeScript() {
   document.head.appendChild(script);
 }
 
+/*
+ * Service titles are set large and never break inside a word, so on a phone a long word
+ * ("DEVELOPMENT") can be wider than the screen. Each title is shrunk only by the amount
+ * its longest word overflows; titles that already fit keep their designed size. Runs
+ * again once the web font has loaded and whenever the window width changes.
+ */
+function fitServiceTitles() {
+  document.querySelectorAll(".service-detail-hero h1").forEach(title => {
+    title.style.fontSize = "";
+    // The limit is what the title would actually collide with: the hero's inner edge, or
+    // 16px short of the hero image beside it. Overhanging its own 15ch box into empty
+    // space is part of the design and is left alone.
+    const hero = title.closest(".service-detail-hero");
+    const heroBox = hero.getBoundingClientRect();
+    const titleLeft = title.getBoundingClientRect().left;
+    let limit = heroBox.right - parseFloat(getComputedStyle(hero).paddingRight);
+    for (const neighbour of hero.children) {
+      if (neighbour.contains(title)) continue;
+      const box = neighbour.getBoundingClientRect();
+      if (box.width && box.left > titleLeft + 1) limit = Math.min(limit, box.left - 16);
+    }
+    const text = document.createRange();
+    text.selectNodeContents(title);
+    for (let pass = 0; pass < 4; pass += 1) {
+      const box = text.getBoundingClientRect();
+      if (box.right <= limit + 1) break;
+      const size = parseFloat(getComputedStyle(title).fontSize);
+      const scale = (limit - box.left) / (box.right - box.left);
+      title.style.fontSize = `${Math.floor(size * scale * 0.98 * 10) / 10}px`;
+    }
+  });
+}
+
+function initServiceTitleFit() {
+  if (!document.querySelector(".service-detail-hero h1")) return;
+  fitServiceTitles();
+  document.fonts?.ready.then(fitServiceTitles);
+  let width = window.innerWidth;
+  window.addEventListener("resize", () => {
+    if (window.innerWidth === width) return;
+    width = window.innerWidth;
+    fitServiceTitles();
+  }, { passive: true });
+}
+
 function init() {
   applyStoredThemeEarly();
   injectLoader();
@@ -231,6 +308,7 @@ function init() {
     element.outerHTML = renderFooter();
   });
 
+  initServiceTitleFit();
   initBrand3d();
   initThemeScript();
   runLoader();

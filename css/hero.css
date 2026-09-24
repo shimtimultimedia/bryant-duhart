@@ -222,7 +222,9 @@ main.about-main {
   width: 100%;
   padding: 0 12px;
   align-items: center;
-  justify-content: center;
+  /* safe: centred while the plaque fits; aligned to the top when it is taller than
+     main, so the overflow lands below (scrollable) instead of above (unreachable). */
+  justify-content: safe center;
   overflow-y: hidden;
   overflow-x: hidden;
 }

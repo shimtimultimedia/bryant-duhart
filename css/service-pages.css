@@ -163,7 +163,10 @@
 
 @media (max-width: 720px) {
   .service-detail-main > section { padding: 56px 24px; }
-  .service-detail-hero { min-height: auto; grid-template-columns: 1fr; padding-top: 80px; }
+  /* minmax(0, 1fr), not 1fr: a bare 1fr track grows to its longest unbreakable word, so
+     "DEVELOPMENT" widened the column past the screen and was cut off. Pinning the track
+     lets fitServiceTitles() in include.js see the overflow and shrink that title. */
+  .service-detail-hero { min-height: auto; grid-template-columns: minmax(0, 1fr); padding-top: 80px; }
   .service-detail-hero h1 { font-size: clamp(2.5rem, 14vw, 4.4rem); }
   .service-cover-list, .service-deliverables, .service-process { grid-template-columns: 1fr; }
 }

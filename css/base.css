@@ -91,8 +91,12 @@ body {
      <main> scrolls its own overflow. 100dvh tracks mobile browser UI
      bars (address bar collapse/expand) so the layout doesn't get
      cropped or trapped behind a hidden Safari/Chrome toolbar; 100vh
-     stays as a fallback for older browsers. */
-  min-height: 100vh;
+     stays as a fallback for older browsers.
+     The fallback must be a second `height` declaration, not `min-height`:
+     min-height beats height, so `min-height: 100vh` forced the taller
+     large-viewport height on phones and pushed the footer behind Chrome's
+     address bar, where the non-scrolling body could never reveal it. */
+  height: 100vh;
   height: 100dvh;
   overflow: hidden;
   display: flex;
@@ -146,7 +150,7 @@ body::-webkit-scrollbar { display: none; }
 #portrait-bg {
   position: fixed;
   inset: 0;
-  background-image: url("../images/bd_bg-cutout.webp?v=118");
+  background-image: url("../images/bd_bg-cutout.webp?v=119");
   background-repeat: no-repeat;
   background-position: left calc(100% + 8px);
   background-size: contain;

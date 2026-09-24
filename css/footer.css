@@ -23,6 +23,79 @@
    (a 60ch block with no auto-margins would hug the left). */
 .site-footer p { max-width: none; margin: 0; }
 
+/* Footer layout — mirrors the shimtimultimedia.com footer.
+   Wide: Privacy Policy | icons | copyright | icons | Legal Notice, one row.
+   Below 900px: icons | copyright | icons, then the two legal links beneath.
+   380px and narrower: copyright, then all icons, then the legal links. */
+.site-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(1.25rem, 3vw, 3rem);
+  padding: 12px clamp(16px, 4vw, 48px);
+}
+.site-footer > p { grid-column: 3; grid-row: 1; white-space: nowrap; }
+.site-footer .footer-legal-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: inherit;
+  white-space: nowrap;
+  text-underline-offset: 0.2em;
+}
+.site-footer .footer-legal-link:hover { color: #fff; }
+.footer-legal-link--privacy { grid-column: 1; grid-row: 1; justify-self: start; }
+.footer-legal-link--impressum { grid-column: 5; grid-row: 1; justify-self: end; }
+.footer-socials { display: flex; align-items: center; gap: clamp(0.65rem, 1.25vw, 1.15rem); }
+.footer-socials:first-of-type { grid-column: 2; grid-row: 1; justify-content: flex-end; }
+.footer-socials:last-of-type { grid-column: 4; grid-row: 1; justify-content: flex-start; }
+.site-footer .footer-social-link {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: inherit;
+  text-decoration: none;
+  transition: color 180ms ease, transform 180ms ease;
+}
+/* Invisible 24px hit area keeps small icons tappable (WCAG 2.5.8). */
+.footer-social-link::before { content: ""; position: absolute; inset: 50% auto auto 50%; width: 24px; height: 24px; transform: translate(-50%, -50%); }
+.site-footer .footer-social-link:hover,
+.site-footer .footer-social-link:focus-visible { color: #fff; transform: scale(1.12); }
+.footer-social-link:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; border-radius: 50%; }
+.footer-social-icon { width: 0.95rem; height: 0.95rem; fill: currentColor; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .site-footer .footer-social-link { transition: none; }
+  .site-footer .footer-social-link:hover, .site-footer .footer-social-link:focus-visible { transform: none; }
+}
+
+@media (max-width: 56.249em) {
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: clamp(0.2rem, 1.5vw, 0.45rem);
+    row-gap: 0.25rem;
+    padding: 0.65rem 0.5rem;
+  }
+  .site-footer > p { grid-column: 2; grid-row: 1; font-size: clamp(0.52rem, 2.15vw, 0.62rem); letter-spacing: 0.025em; }
+  .footer-socials { gap: clamp(0.16rem, 1vw, 0.3rem); }
+  .footer-socials:first-of-type { grid-column: 1; grid-row: 1; }
+  .footer-socials:last-of-type { grid-column: 3; grid-row: 1; }
+  .site-footer .footer-social-link { width: clamp(0.85rem, 3.7vw, 1rem); height: clamp(0.85rem, 3.7vw, 1rem); }
+  .footer-social-icon { width: clamp(0.68rem, 3vw, 0.8rem); height: clamp(0.68rem, 3vw, 0.8rem); }
+  .footer-legal-link--privacy { grid-column: 1 / 3; grid-row: 2; }
+  .footer-legal-link--impressum { grid-column: 3; grid-row: 2; }
+}
+
+@media (max-width: 23.75em) {
+  .site-footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .site-footer > p { grid-column: 1 / -1; }
+  .footer-socials:first-of-type { grid-column: 1; grid-row: 2; }
+  .footer-socials:last-of-type { grid-column: 2; grid-row: 2; }
+  .footer-legal-link--privacy { grid-column: 1; grid-row: 3; }
+  .footer-legal-link--impressum { grid-column: 2; grid-row: 3; }
+}
+
 /* View Transitions intentionally disabled.
    Cross-document transition snapshots were triggering on plain reload,
    leaving the prior page's canvas snapshot visible while the new page's
