@@ -1,0 +1,321 @@
+/* contact.css - Contact page: project brief + generated inquiry.
+   Structure and proportions mirror shimtimultimedia.com/contact.html (desktop).
+   Every colour is a portfolio theme token or derived from one, so the light/dark
+   toggle restyles the page live with no page-specific theme code. */
+
+.contact-page {
+  --contact-accent: var(--black);
+  --contact-on-accent: var(--bg);
+  --contact-text: var(--ink);
+  --contact-label: var(--dark);
+  --contact-muted: var(--muted);
+  --contact-panel-border: rgba(0, 0, 0, 0.3);
+  --contact-panel-glow: rgba(0, 0, 0, 0.08);
+  --contact-rule: rgba(0, 0, 0, 0.14);
+  --contact-field-bg: #F4F4F4;
+  --contact-field-ink: #111111;
+  --contact-field-border: rgba(0, 0, 0, 0.3);
+  --contact-chip-bg: rgba(255, 255, 255, 0.92);
+  --contact-chip-border: rgba(0, 0, 0, 0.55);
+  --contact-hover-glow: rgba(0, 0, 0, 0.22);
+  --contact-scroll-thumb: rgba(0, 0, 0, 0.5);
+  --contact-scroll-track: rgba(0, 0, 0, 0.06);
+}
+
+:root.theme-dark .contact-page {
+  --contact-panel-border: rgba(245, 245, 245, 0.42);
+  --contact-panel-glow: rgba(255, 255, 255, 0.06);
+  --contact-rule: rgba(245, 245, 245, 0.22);
+  --contact-field-bg: rgba(242, 242, 242, 0.96);
+  --contact-field-ink: #0B0C0E;
+  --contact-field-border: rgba(245, 245, 245, 0.42);
+  --contact-chip-bg: rgba(11, 12, 14, 0.92);
+  --contact-chip-border: rgba(245, 245, 245, 0.62);
+  --contact-hover-glow: rgba(255, 255, 255, 0.35);
+  --contact-scroll-thumb: rgba(245, 245, 245, 0.6);
+  --contact-scroll-track: rgba(255, 255, 255, 0.06);
+}
+
+/* The page frame: header / main / footer already fill the viewport (base.css app shell).
+   Main stops being the 1080px centred reading column and hands its height to the scene. */
+main.contact-main {
+  max-width: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.contact-scene {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: clamp(0.75rem, 2vh, 1.5rem);
+  padding: clamp(0.75rem, 2vh, 1.5rem) clamp(1rem, 3vw, 3rem) clamp(0.6rem, 1.5vh, 1.2rem);
+}
+
+/* No visible title: the page heading stays for screen readers and search engines,
+   and the enlarged brand cube takes its place above the forms. */
+.contact-scene-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The enlarged cube: a second live instance of the header's 3D mark (brand-3d.js
+   drives every .brand-3d-large canvas), with the flat cube drawing until it is ready. */
+.contact-cube {
+  position: relative;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: clamp(84px, 14vh, 140px);
+  height: clamp(84px, 14vh, 140px);
+}
+.contact-cube .brand-mark-fallback { display: grid; place-items: center; width: 100%; height: 100%; }
+.contact-cube .brand-mark-fallback svg { width: 82%; height: 82%; display: block; }
+.contact-cube.brand-mark-ready .brand-mark-fallback { visibility: hidden; }
+
+.contact-scene-intro {
+  justify-self: center;
+  width: min(72rem, calc(100% - 3rem));
+  max-width: none;
+  margin: 0;
+  color: var(--contact-text);
+  font-size: clamp(0.78rem, min(1.05vw, 1.8vh), 1.2rem);
+  line-height: 1.55;
+  letter-spacing: 0.035em;
+  text-align: center;
+  /* The portrait’s face sits behind this line on desktop; a halo in the page colour
+     keeps it readable in both themes. */
+  text-shadow: 0 0 4px var(--bg), 0 0 10px var(--bg), 0 0 18px var(--bg);
+}
+
+.contact-workspace {
+  justify-self: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  width: min(88rem, calc(100% - 3rem));
+  min-height: 0;
+  padding-right: 0.45rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--contact-scroll-thumb) var(--contact-scroll-track);
+}
+
+.contact-panel {
+  min-width: 0;
+  padding: clamp(1.35rem, 2vw, 1.85rem);
+  border: 1px solid var(--contact-panel-border);
+  border-radius: 1.25rem;
+  /* Studio uses 0.88 over a dark photo; the portfolio token (0.94) keeps the portrait
+     behind the panels from ghosting through in the light theme. */
+  background: var(--card-soft);
+  box-shadow: 0 0 2rem var(--contact-panel-glow);
+  backdrop-filter: blur(12px);
+  color: var(--contact-text);
+}
+
+/* base.css makes the site non-selectable; the brief and the inquiry must stay copyable. */
+.contact-panel,
+.contact-panel * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.contact-panel h2,
+.contact-panel h3 {
+  color: var(--contact-accent);
+  text-transform: uppercase;
+}
+
+.contact-panel h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: 0.1em;
+}
+
+.contact-panel h3 {
+  margin: 2rem 0 0.5rem;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.contact-brief-form {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.9rem;
+}
+
+.contact-field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.contact-brief-form label,
+.contact-summary-label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--contact-label);
+  font-size: 0.76rem;
+  line-height: 1.4;
+  letter-spacing: 0.025em;
+}
+
+.contact-brief-form label > span { color: var(--contact-muted); font-size: 0.65rem; }
+
+.contact-brief-form input,
+.contact-brief-form select,
+.contact-brief-form textarea,
+.contact-summary {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--contact-field-border);
+  border-radius: 0.55rem;
+  background: var(--contact-field-bg);
+  color: var(--contact-field-ink);
+  /* The fields are light in both themes, so their native parts (date picker icon,
+     select popup) must render light too, not follow the dark page's color-scheme. */
+  color-scheme: light;
+  font-family: inherit;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.contact-brief-form input,
+.contact-brief-form select { min-height: 2.65rem; padding: 0.55rem 0.65rem; }
+
+.contact-brief-form textarea,
+.contact-summary { padding: 0.7rem; resize: vertical; }
+
+.contact-summary-label { margin-top: 0.9rem; }
+.contact-summary { display: block; min-height: 13.25rem; margin-top: 0.5rem; }
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.8rem;
+}
+
+.contact-actions a,
+.contact-actions button,
+.contact-routes a {
+  border: 1px solid var(--contact-chip-border);
+  border-radius: 999px;
+  background: var(--contact-chip-bg);
+  color: var(--contact-text);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contact-actions a,
+.contact-actions button { padding: 0.72rem 1rem; }
+
+.contact-actions .contact-primary-action,
+.contact-actions .contact-primary-action:hover {
+  border-color: var(--contact-accent);
+  background: var(--contact-accent);
+  color: var(--contact-on-accent);
+}
+
+.contact-actions a:hover,
+.contact-actions button:hover,
+.contact-routes a:hover {
+  border-color: var(--contact-text);
+  color: var(--contact-text);
+  box-shadow: 0 0 0.9rem var(--contact-hover-glow);
+}
+.contact-actions .contact-primary-action:hover { color: var(--contact-on-accent); }
+
+.contact-copy-status {
+  max-width: none;
+  min-height: 1.2em;
+  margin: 0 0 1.1rem;
+  color: var(--contact-accent);
+  font-size: 0.68rem;
+}
+
+.contact-routes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--contact-rule);
+}
+
+.contact-routes a { padding: 0.52rem 0.75rem; }
+
+.contact-location {
+  max-width: none;
+  margin: 0.6rem 0 0;
+  color: var(--contact-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.025em;
+}
+
+.contact-expectations {
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--contact-rule);
+}
+
+.contact-expectations ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--contact-muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+/* Studio "lightning": a brief, random brightening of the page area behind the panels.
+   Dark theme only - a white flash on the white light theme is invisible. */
+.contact-flash { display: none; }
+
+:root.theme-dark .contact-flash {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(120% 90% at 50% 18%, #FFFFFF 0%, rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0.12) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Below the desktop breakpoint: the studio's stacked fallback, so a narrow window is
+   never broken while the phone layout is designed separately. */
+@media (max-width: 900px) {
+  main.contact-main { overflow-y: auto; }
+  .contact-scene { display: block; padding: 1rem 0.7rem 1.5rem; }
+  .contact-cube { margin: 0.25rem auto 0.9rem; width: clamp(76px, 22vw, 110px); height: clamp(76px, 22vw, 110px); }
+  .contact-scene-intro { margin: 0 auto 1rem; width: calc(100% - 1.7rem); font-size: clamp(0.72rem, 3.25vw, 0.88rem); line-height: 1.4; }
+  .contact-workspace { width: 100%; grid-template-columns: 1fr; gap: 0.85rem; overflow: visible; padding-right: 0; }
+  .contact-panel { padding: 0.9rem; border-radius: 1rem; }
+  .contact-panel h2 { margin-top: 0.5rem; font-size: 1.3rem; }
+  .contact-field-row { grid-template-columns: 1fr; }
+  .contact-brief-form { gap: 0.7rem; }
+  .contact-brief-form input,
+  .contact-brief-form select { min-height: 2.5rem; }
+  .contact-summary { min-height: 12rem; }
+  .contact-actions > * { flex: 1 1 8rem; text-align: center; }
+}

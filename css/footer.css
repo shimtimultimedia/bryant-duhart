@@ -96,6 +96,56 @@
   .footer-legal-link--impressum { grid-column: 2; grid-row: 3; }
 }
 
+/* Legal links use the same icons in every viewport. */
+.footer-legal-icon { display: none; }
+
+/* Phone footer (matches the studio site on phones): one line -
+   privacy icon | icons | copyright | icons | legal-notice icon. "All rights reserved."
+   is dropped here to make room for a slightly larger copyright line. The link text
+   stays in the markup, visually hidden, as the accessible name. */
+@media (max-width: 720px) {
+  .site-footer {
+    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr) auto;
+    column-gap: clamp(4px, 1.6vw, 8px);
+    row-gap: 0;
+    padding: 0.55rem clamp(6px, 2vw, 10px);
+  }
+  .site-footer > p {
+    grid-column: 3;
+    grid-row: 1;
+    font-size: clamp(0.66rem, 2.9vw, 0.8rem);
+    letter-spacing: 0.01em;
+  }
+  .footer-rights { display: none; }
+  .footer-socials:first-of-type { grid-column: 2; grid-row: 1; justify-content: flex-end; }
+  .footer-socials:last-of-type { grid-column: 4; grid-row: 1; justify-content: flex-start; }
+  .footer-legal-link--privacy { grid-column: 1; grid-row: 1; }
+  .footer-legal-link--impressum { grid-column: 5; grid-row: 1; }
+  .site-footer .footer-legal-link {
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+  }
+  .footer-legal-icon {
+    display: block;
+    width: clamp(15px, 4.4vw, 18px);
+    height: clamp(15px, 4.4vw, 18px);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .footer-legal-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 /* View Transitions intentionally disabled.
    Cross-document transition snapshots were triggering on plain reload,
    leaving the prior page's canvas snapshot visible while the new page's
@@ -120,4 +170,73 @@
 :root.theme-dark .site-footer p,
 :root.theme-dark .footer-brand {
   color: #F2F2F2;
+}
+
+/* Keep the two legal icons beside the social groups, not at the screen edges. */
+.site-footer {
+  grid-template-columns: repeat(5, auto);
+  justify-content: center;
+  column-gap: clamp(0.15rem, 0.6vw, 0.75rem);
+  row-gap: 0;
+}
+.site-footer > p { grid-column: 3; grid-row: 1; }
+.footer-socials:first-of-type { grid-column: 2; grid-row: 1; }
+.footer-socials:last-of-type { grid-column: 4; grid-row: 1; }
+.footer-legal-link--privacy { grid-column: 1; grid-row: 1; }
+.footer-legal-link--impressum { grid-column: 5; grid-row: 1; }
+.site-footer .footer-legal-link {
+  position: relative;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+.footer-legal-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.footer-legal-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.footer-legal-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+@media (max-width: 480px) {
+  .site-footer { column-gap: 0; }
+  .site-footer > p { font-size: clamp(0.52rem, 2.15vw, 0.62rem); }
+}
+
+/* Keep the language control at the right without displacing the icon group. */
+.site-footer { position: relative; }
+.footer-language { position: absolute; right: 12px; display: flex; align-items: center; }
+.footer-language-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.footer-language select {
+  max-width: 112px;
+  min-height: 28px;
+  border: 1px solid #777;
+  border-radius: 4px;
+  padding: 2px 5px;
+  background: #050505;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+}
+.footer-language select:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 1100px) {
+  .site-footer { padding-bottom: 36px; }
+  .footer-language { bottom: 4px; }
 }

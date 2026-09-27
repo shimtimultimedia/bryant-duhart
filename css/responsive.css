@@ -59,15 +59,159 @@
   #portrait-bg { display: none; }
 }
 
+/* Portrait tablets use the same offscreen edge sheets as phones without
+   shrinking the tablet plaque or its navigation dock. */
+@media (min-width: 721px) and (max-width: 900px) and (orientation: portrait) {
+  .plaque-dock-item .plaque-tab {
+    --sheet-max-h: min(70vh, 650px);
+    --sheet-parked: translateX(calc(100% + 64px));
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(80vw, 480px);
+    height: fit-content;
+    min-height: 0;
+    max-height: var(--sheet-max-h);
+    margin: auto 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+    transform: var(--sheet-parked);
+    touch-action: pan-y;
+    transition: transform 0.32s ease, display 0.32s allow-discrete, overlay 0.32s allow-discrete;
+  }
+  .plaque-dock-item .plaque-tab-surface {
+    min-height: 0;
+    max-height: var(--sheet-max-h);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    padding: 24px;
+    background-color: #121212;
+    border-radius: 14px 0 0 14px;
+  }
+  .plaque-dock-item .plaque-tab.is-open { transform: translateX(0); pointer-events: auto; }
+  @starting-style {
+    .plaque-dock-item .plaque-tab.is-open { transform: var(--sheet-parked); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plaque-dock-item .plaque-tab { transition: none; }
+  }
+}
+
+/* Short phone landscape screens use normal document flow, not a 3D stage. */
+@media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+  body { background: #fff !important; color: #111; }
+  #portrait-bg, #particles-bg, .hero-3d-canvas, .plaque-shape-slot,
+  .plaque-icon-dock .plaque-icon-link { display: none !important; }
+  .site-header { padding-bottom: 0; }
+  .nav-wrap {
+    max-width: none;
+    padding: 6px 12px;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 8px;
+  }
+  .brand { grid-column: 1; justify-self: start; font-size: 0.85rem; gap: 5px; }
+  .brand-mark { width: 2.1em; height: 2.1em; }
+  .brand-mark--mirror { display: none; }
+  .brand-text { font-size: 1em; }
+  .brand-sub { font-size: 0.46em; margin-top: 2px; }
+  .nav-links { grid-column: 2; flex-wrap: nowrap; justify-content: center; gap: 0; }
+  .nav-links a { padding: 5px 7px; font-size: 0.75rem; }
+  .theme-toggle {
+    top: 50%; bottom: auto; right: 12px;
+    transform: translateY(-50%) scale(0.75);
+    transform-origin: right center;
+  }
+  main {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    background: #fff !important;
+    color: #111 !important;
+  }
+  main.plaque-page-main {
+    container-type: normal;
+    display: block;
+    padding: 16px 24px;
+  }
+  main.plaque-page-main :is(.hero-plaque, .plaque-stack, .plaque-title-slot,
+    .plaque-bio-area, .plaque-bio, .plaque-icon-dock, .plaque-dock-item,
+    .plaque-tab, .plaque-tab-surface) {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0;
+    padding: 0;
+    transform: none !important;
+    background: none !important;
+    color: #111 !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: none;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    clip-path: none !important;
+    mask-image: none !important;
+    pointer-events: auto;
+  }
+  .plaque-tab-surface::before { display: none; }
+  main.plaque-page-main .hidden-by-3d {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    clip: auto !important;
+    clip-path: none !important;
+    white-space: normal;
+    color: #111 !important;
+    text-shadow: none;
+  }
+  main.plaque-page-main .hero-title-text { font-size: 1.5rem; margin: 0 0 4px; }
+  main.plaque-page-main .hero-subtitle-text { font-size: 1rem; margin: 0 0 16px; }
+  main.plaque-page-main :is(.plaque-bio p, .plaque-tab-copy) {
+    font-size: 1rem; line-height: 1.5; color: #111 !important;
+    text-align: left; max-width: none; margin: 0 0 12px;
+  }
+  main.plaque-page-main .plaque-tab { margin-block: 24px; }
+  main, main * {
+    text-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    color: #111 !important;
+  }
+  main.plaque-page-main .hero-subtitle-text {
+    width: 100% !important;
+    max-width: none;
+    margin-inline: auto;
+    text-align: center;
+  }
+  main.plaque-page-main a { color: #111 !important; text-decoration: underline; }
+  main :is(section, article, .contact-panel, .service-detail-section, .service-cta) {
+    background: #fff !important;
+    box-shadow: none !important;
+    border-radius: 0;
+  }
+  main .contact-actions .contact-primary-action,
+  main .contact-actions .contact-primary-action:hover,
+  main .contact-actions .contact-primary-action:focus-visible {
+    background: #000 !important;
+    color: #fff !important;
+  }
+}
+
 @media (max-width: 720px) {
   #portrait-bg { background-image: none; }
   #particles-bg { display: none; }
 
-  .nav-wrap { padding: 14px 16px; gap: 10px; }
-  .brand-text { font-size: 1.05rem; }
-  /* On mobile the brand-text shrinks but the mark keeps the same
-     auto/stretch behavior — no override needed. */
-  .nav-links a { padding: 6px 12px; font-size: 0.9rem; min-height: 32px; }
+  /* Phone header (brand, marks, one-row navigation) lives in header.css. */
 
   main { padding: 40px 16px 56px; }
 
@@ -148,28 +292,64 @@
     width: 22px;
     height: 22px;
   }
-  .plaque-tab,
-  .plaque-tab-left .plaque-tab,
-  .plaque-tab-right .plaque-tab {
-    top: auto;
-    right: auto;
-    bottom: calc(100% + 12px);
-    left: 50%;
-    width: min(calc(100vw - 32px), 340px);
-    min-height: auto;
-    opacity: 0;
-    clip-path: inset(92% 0 0 0);
-    transform: translate(-50%, 34px) scale(0.94);
-    transform-origin: center bottom;
+  /* Edge sheets: on phones each dock panel slides in from the right screen edge,
+     vertically centred, like Samsung's Edge Panel. plaque-interface.js makes the panel
+     a manual popover (top layer), because the drawn 3D plaque transforms #plaque-stack
+     and a transformed ancestor would trap a fixed panel inside the plaque. The panel is
+     parked a shadow's width past the edge when closed; display/overlay transition
+     discretely so the popover stays painted while it slides out. */
+  .plaque-dock-item .plaque-tab {
+    --sheet-max-h: min(70vh, 520px);
+    --sheet-parked: translateX(calc(100% + 64px));
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 60;
+    width: min(88vw, 340px);
+    height: fit-content;
+    min-height: 0;
+    max-height: var(--sheet-max-h);
+    margin: auto 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    overflow: visible;
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+    transform: var(--sheet-parked);
+    transform-origin: right center;
     text-align: center;
     font-size: 0.78rem;
+    touch-action: pan-y;
+    transition:
+      transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+      display 0.32s allow-discrete,
+      overlay 0.32s allow-discrete;
   }
-  .plaque-tab-surface {
-    min-height: auto;
-    max-height: min(62vh, 520px);
+  /* The plate's gradients are 96-98% opaque. Over the page that residual transparency
+     let the text behind ghost through the dark plate, so on phones it gets a solid base
+     under the same gradients. */
+  .plaque-tab-surface { background-color: #121212; }
+  :root.theme-dark .plaque-tab-surface { background-color: #040404; }
+  .plaque-dock-item .plaque-tab-surface {
+    min-height: 0;
+    max-height: var(--sheet-max-h);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    /* A scroller re-enables every pan direction for its content, so the panel's
+       pan-y does not reach inside it; without this a sideways swipe became a pan and
+       the close swipe was cancelled. */
+    touch-action: pan-y;
     padding: 22px 20px 24px;
     gap: 12px;
+    border-right: 0;
+    border-radius: 14px 0 0 14px;
+  }
+  .plaque-dock-item .plaque-tab-surface::before {
+    inset: 8px 0 8px 8px;
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
   }
   .plaque-tab-icon {
     width: 34px;
@@ -195,13 +375,14 @@
   .services-main .plaque-tab-preview {
     width: min(100%, calc(86px * 16 / 9));
   }
-  .plaque-tab.is-open,
-  .plaque-tab-left .plaque-tab.is-open,
-  .plaque-tab-right .plaque-tab.is-open {
-    opacity: 1;
+  .plaque-dock-item .plaque-tab.is-open {
     pointer-events: auto;
-    clip-path: inset(0 0 0 0);
-    transform: translate(-50%, 0) scale(1);
+    transform: translateX(0);
+  }
+  /* A popover goes from display:none to shown in one step; this is where its slide
+     starts from, or it would appear already open. */
+  @starting-style {
+    .plaque-dock-item .plaque-tab.is-open { transform: var(--sheet-parked); }
   }
 
   .hero { padding: 32px 24px; }
@@ -210,40 +391,125 @@
   h2 { font-size: 1.35rem; }
 
   .bio-block, .founder-block { padding: 24px 22px; }
-  .contact-wrap { padding: 32px 22px; }
 
-  /* Force the H1 + subtitle back to normal layout on mobile even if
-     .hidden-by-3d was applied while the user was on desktop and they
-     resized down. Without restoring the subtitle, a desktop→mobile
-     resize would leave it visually-hidden while the 3D canvas is forced
-     off — the title would show alone. */
-  .hero-3d-canvas { display: none !important; }
-  .hero-title-text.hidden-by-3d,
-  .hero-subtitle-text.hidden-by-3d {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: normal;
-  }
-  .hero-title-text.hidden-by-3d { margin: 0 0 14px; }
-  .hero-subtitle-text.hidden-by-3d { margin: 4px 0 0; }
+  /* The 3D plaque draws on phones too (hero-3d.js phone mode). .hidden-by-3d and the
+     visible canvas are always set and cleared together, so no phone-only restore of
+     the DOM title is needed here any more. */
 }
 
 @media (max-width: 420px) {
-  .nav-wrap { gap: 8px; }
-  .nav-links { gap: 2px; }
-  .nav-links a {
-    padding: 6px 10px;
-    font-size: 0.82rem;
-    /* Hold the 32px floor on the smallest screens for tap accuracy
-       (WCAG 2.2 SC 2.5.8). */
-    min-height: 32px;
-  }
   main { padding: 32px 14px 48px; }
   .hero { padding: 24px 18px; }
   .tile-grid { grid-template-columns: 1fr; }
   .platform, .tile { padding: 18px 18px; }
+}
+
+/* Legal documents stay plain white regardless of the selected site theme. */
+body.legal-page, body.legal-page main {
+  background: #fff !important;
+  color: #111 !important;
+}
+body.legal-page main * { color: #111 !important; text-shadow: none; }
+body.legal-page #particles-bg { display: none !important; }
+
+@media (min-width: 901px), (min-width: 721px) and (min-height: 501px) {
+  body.legal-page main.legal-main {
+    display: block;
+    width: 100%;
+    max-width: none;
+    padding: 28px 24px 40px;
+  }
+  body.legal-page .legal-main > section {
+    width: 100%;
+    max-width: 900px;
+    margin-inline: auto;
+    padding: 20px 0;
+    background: #fff;
+  }
+  body.legal-page .service-detail-hero {
+    display: block;
+    min-height: 0;
+    text-align: center;
+    padding-top: 0 !important;
+    padding-bottom: 24px !important;
+  }
+  body.legal-page .service-detail-hero h1 {
+    max-width: none;
+    margin: 0 0 10px;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.15;
+  }
+  body.legal-page .service-value { max-width: none; margin: 0; font-size: 1rem; }
+  body.legal-page .service-detail-section h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+  body.legal-page .service-detail-section h3 { font-size: 1.1rem; margin: 24px 0 8px; }
+  body.legal-page .service-detail-section p {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+}
+
+/* Keep the original portrait scale on a full-width layer, shifted left behind
+   the centered plaque. Phone landscape and tablet portrait stay plain. */
+@media (min-width: 901px) {
+  #portrait-bg {
+    inset: 0;
+    width: auto;
+    background-size: contain;
+    background-position: -12vw calc(100% + 8px);
+  }
+  main.plaque-page-main {
+    container-type: size;
+    padding-inline: 12px;
+    --plaque-stage-height: min(540px, 82cqh);
+  }
+  main.plaque-page-main .hero-plaque {
+    width: 100%;
+  }
+  main.plaque-page-main .plaque-stack {
+    width: min(52vw, 760px);
+    min-height: var(--plaque-stage-height);
+    height: var(--plaque-stage-height);
+    padding: clamp(24px, 3.5vh, 40px) clamp(28px, 3vw, 56px);
+  }
+  main.plaque-page-main .plaque-title-slot {
+    min-height: clamp(72px, 10vh, 108px);
+  }
+}
+@media (min-width: 901px) and (max-width: 1024px) {
+  #portrait-bg { background-size: 70%; }
+}
+@media (min-width: 1025px) and (max-width: 1600px) {
+  #portrait-bg {
+    background-position: -18vw calc(100% + 100px);
+  }
+}
+@media (min-width: 1920px) {
+  #portrait-bg { background-size: auto 90vh; }
+}
+/* Ultrawide monitors keep the portrait beside the centered plaque rather than
+   anchoring it beyond the left screen edge. Scale the reading area with height. */
+@media (min-width: 1921px) {
+  #portrait-bg {
+    background-position: calc(50vw - 380px - 96vh) calc(100% + 8px);
+  }
+  main.plaque-page-main {
+    --plaque-stage-height: min(72vh, 82cqh);
+  }
+  main.plaque-page-main .plaque-stack {
+    width: min(52vw, 100vh);
+    padding: 4vh 5vh;
+  }
+  main.plaque-page-main .plaque-title-slot { min-height: 14vh; }
+  main.plaque-page-main .plaque-bio p {
+    font-size: clamp(1rem, 1.5vh, 1.5rem);
+  }
+}
+@media (max-width: 900px) {
+  #portrait-bg { display: none; }
 }

@@ -37,6 +37,28 @@ jobs:
       - name: Validate HTML
         run: npx --yes html-validate@11 *.html
 
+  unit:
+    name: Unit and browser tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      # Test-only dependency; the deployed static website remains dependency-free.
+      - name: Install pinned browser test library
+        run: npm install --no-save --package-lock=false playwright@1.61.1
+
+      - name: Install Chromium and system dependencies
+        run: npx --no-install playwright install --with-deps chromium
+
+      # Tests own isolated ephemeral servers. Serial files avoid GPU contention.
+      - name: Run unit and browser tests
+        run: node --test --test-concurrency=1 "build/*.test.mjs"
+
   links:
     name: Internal links
     runs-on: ubuntu-latest

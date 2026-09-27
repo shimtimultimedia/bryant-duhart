@@ -196,6 +196,10 @@ main.plaque-page-main {
 
 .hero-title-text,
 .hero-subtitle-text { text-align: center; }
+.plaque-active.localized-title .hero-title-text,
+.plaque-active.localized-title .hero-subtitle-text { color: #fff; position: relative; z-index: 2; }
+.localized-title .hero-title-text { font-size: clamp(1.3rem, 3vw, 2.8rem); overflow-wrap: anywhere; }
+.localized-title .hero-subtitle-text { font-size: clamp(0.8rem, 1.3vw, 1.2rem); letter-spacing: 0.04em; overflow-wrap: anywhere; }
 .hero-subtitle-text {
   font-size: clamp(1rem, 1.2vw + 0.6rem, 1.6rem);
   letter-spacing: 0.18em;
@@ -286,6 +290,72 @@ main.about-main {
   max-width: none;
 }
 
+/* Home/About biography: a scroll window inside the 3D plaque.
+   The plaque is held at its designed stage height (it already renders at exactly
+   that height; this stops longer copy from growing it). The bio area keeps its
+   natural height while the text fits - so the layout is unchanged - and shrinks
+   into a scroll window only when the text is longer than the space left under the
+   title. It lives inside #plaque-stack, so it tilts and moves with the plaque.
+   Fades are a mask on the window itself, so they stay at the edges while the text
+   slides beneath them; include.js toggles each edge's fade by scroll position. */
+@property --bio-fade-top {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --bio-fade-bottom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* The stage height is derived from the viewport minus a fixed 78px allowance, but
+   the header and footer actually take ~143px, so on shorter windows the plaque was
+   taller than <main> and its lower edge sat behind the footer. With a scroll window
+   that would bury the last lines of the bio where no scrolling can reach them. main
+   is a size container (its height comes from the body's flex column, never from its
+   content), so 100cqh is exactly the space available: the plaque keeps its designed
+   height wherever that fits and shrinks only as much as needed where it does not. */
+main.home-main,
+main.about-main {
+  container-type: size;
+}
+
+.plaque-size-standard .plaque-stack {
+  /* min-height too: the shared plaque rule sets min-height to the stage height, and
+     min-height beats height, so capping height alone would change nothing. */
+  height: min(var(--plaque-stage-height), 100cqh);
+  min-height: min(var(--plaque-stage-height), 100cqh);
+}
+
+.plaque-size-standard .plaque-bio-area {
+  display: block;
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.plaque-size-standard .plaque-bio-area::-webkit-scrollbar { display: none; }
+
+.plaque-size-standard .plaque-bio-area[data-scrollable] {
+  --bio-fade: 2.6em;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--bio-fade-top), #000 calc(100% - var(--bio-fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--bio-fade-top), #000 calc(100% - var(--bio-fade-bottom)), transparent 100%);
+  transition: --bio-fade-top 0.3s ease, --bio-fade-bottom 0.3s ease;
+}
+.plaque-size-standard .plaque-bio-area[data-fade-top] { --bio-fade-top: var(--bio-fade); }
+.plaque-size-standard .plaque-bio-area[data-fade-bottom] { --bio-fade-bottom: var(--bio-fade); }
+
+/* The mask clips anything painted outside the window, so the keyboard focus ring
+   is drawn just inside its edge instead. */
+.plaque-size-standard .plaque-bio-area:focus-visible { outline-offset: -3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .plaque-size-standard .plaque-bio-area[data-scrollable] { transition: none; }
+}
+
 .plaque-interface .plaque-bio p,
 .plaque-size-standard .plaque-bio p {
   font-size: clamp(0.9rem, 0.22vw + 0.82rem, 1rem);
@@ -373,6 +443,23 @@ main.about-main {
    black), so we force white here instead of relying on inheritance. */
 .plaque-icon.plaque-icon-mark {
   filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255,255,255,0.38));
+}
+
+/* White silhouettes belong on the drawn 3D plaque only - the same condition the plaque
+   text uses (.plaque-active, set by hero-3d.js). Where no plaque is drawn (phones, or no
+   WebGL) the dock sits on the page background, and forced-white icons were invisible
+   on the light theme. There they take the theme's ink colour instead. */
+.hero-plaque:not(.plaque-active) .plaque-icon {
+  filter: grayscale(1) contrast(1.15);
+}
+.hero-plaque:not(.plaque-active) .plaque-icon.plaque-icon-mark {
+  filter: brightness(0);
+}
+:root.theme-dark .hero-plaque:not(.plaque-active) .plaque-icon {
+  filter: grayscale(1) invert(1) contrast(1.15);
+}
+:root.theme-dark .hero-plaque:not(.plaque-active) .plaque-icon.plaque-icon-mark {
+  filter: brightness(0) invert(1);
 }
 
 .plaque-icon-fallback {

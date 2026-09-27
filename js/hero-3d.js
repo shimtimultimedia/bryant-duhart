@@ -16,6 +16,7 @@
 
 import * as THREE             from "three";
 import { FontLoader }         from "three/addons/loaders/FontLoader.js";
+import { extendTitleFont }    from "./title-font.js";
 import { TextGeometry }       from "three/addons/geometries/TextGeometry.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment }    from "three/addons/environments/RoomEnvironment.js";
@@ -23,6 +24,7 @@ import { EffectComposer }     from "three/addons/postprocessing/EffectComposer.j
 import { RenderPass }         from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass }    from "three/addons/postprocessing/UnrealBloomPass.js";
 import { ShaderPass }         from "three/addons/postprocessing/ShaderPass.js";
+import { createFrameGate }    from "./frame-gate.js?v=119";
 
 const PAGE_PATH = window.location.pathname.toLowerCase();
 
@@ -78,7 +80,40 @@ const SUB_SCALE     = 0.42;
 const SUB_GAP       = 0.34;
 
 const FONT_URL          = "js/vendor/fonts/helvetiker_bold.typeface.json";
-const MOBILE_BREAKPOINT = 720;
+
+/*
+ * Phone mode (max-width 720px). The plaques were once switched off below 720px with no
+ * recorded reason; measured on a Galaxy A57 the phone has the memory and GPU for them,
+ * but the unchanged desktop settings ran at ~49 fps and never stopped drawing. Phones
+ * therefore get: a capability gate (real GPU, >=4 GB, >=4 cores, no data saver), DPR
+ * capped at 2, no MSAA (the bloom composer's render targets discard it anyway), lighter
+ * text geometry, a 30 fps cap, and drawing only for a short while after the visitor
+ * touches the screen or it resizes - the plaque is otherwise still, so identical frames are
+ * not redrawn. Touch never tilts the plaque (a scroll would read as a tilt).
+ */
+const PHONE_QUERY = "(max-width: 720px)";
+// Wider than a phone, the dock's panels are 3D plates sliding out beside the plaque.
+// On phones they are edge sheets owned by plaque-interface.js and positioned by CSS.
+const TAB_PLATES_QUERY = "(min-width: 901px), (min-width: 721px) and (orientation: landscape)";
+const PHONE_MAX_PIXEL_RATIO = 2;
+const PHONE_FPS = 30;
+const PHONE_IDLE_MS = 2000;
+
+function canRunPhone3d() {
+  const connection = navigator.connection;
+  if (connection && connection.saveData) return false;
+  if (navigator.deviceMemory && navigator.deviceMemory < 4) return false;
+  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return false;
+  try {
+    const probe = document.createElement("canvas");
+    const gl = probe.getContext("webgl2", { failIfMajorPerformanceCaveat: true });
+    if (!gl) return false;
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const DEFAULT_LAYER = 0;
 const BLOOM_LAYER   = 1;
@@ -128,15 +163,19 @@ function signedCurve(value, deadzone, curve) {
   return Math.sign(value) * curved;
 }
 
-function createRenderer(canvas) {
+function pixelRatioCap(phoneMode) {
+  return Math.min(window.devicePixelRatio || 1, phoneMode ? PHONE_MAX_PIXEL_RATIO : MAX_PIXEL_RATIO);
+}
+
+function createRenderer(canvas, phoneMode) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: true,
+    antialias: !phoneMode,
     powerPreference: "high-performance",
   });
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO));
+  renderer.setPixelRatio(pixelRatioCap(phoneMode));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.94;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -145,8 +184,8 @@ function createRenderer(canvas) {
   return renderer;
 }
 
-function createTransparentBloomPipeline(renderer, scene, camera) {
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+function createTransparentBloomPipeline(renderer, scene, camera, phoneMode) {
+  const pixelRatio = pixelRatioCap(phoneMode);
 
   const bloomComposer = new EffectComposer(renderer);
   bloomComposer.setPixelRatio(pixelRatio);
@@ -207,8 +246,10 @@ function createTransparentBloomPipeline(renderer, scene, camera) {
 }
 
 function init() {
-  if (window.innerWidth < MOBILE_BREAKPOINT) return;
   if (window.__hero3dReady) return;
+
+  const phoneMode = matchMedia(PHONE_QUERY).matches;
+  if (phoneMode && !canRunPhone3d()) return;
 
   const canvas       = document.getElementById("hero-3d");
   const heroPlaque   = document.getElementById("hero-plaque");
@@ -220,9 +261,9 @@ function init() {
   const dockItems    = heroPlaque
     ? Array.from(heroPlaque.querySelectorAll(".plaque-dock-item"))
     : [];
-  const webglTabsEnabled = dockItems.length
-    && plaqueStack
-    && matchMedia("(min-width: 721px)").matches;
+  // Built whatever the width: a phone loaded in portrait and turned to landscape needs
+  // them. setTabPlatesAttached() decides, per width, whether they are used.
+  const hasTabPlates = dockItems.length > 0 && Boolean(plaqueStack);
 
   if (!canvas) return;
 
@@ -250,7 +291,7 @@ function init() {
 
   let renderer;
   try {
-    renderer = createRenderer(canvas);
+    renderer = createRenderer(canvas, phoneMode);
   } catch {
     window.__hero3dReady = false;
     return;
@@ -260,7 +301,7 @@ function init() {
   const envMap = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = envMap;
 
-  const pipeline = createTransparentBloomPipeline(renderer, scene, camera);
+  const pipeline = createTransparentBloomPipeline(renderer, scene, camera, phoneMode);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.30));
 
@@ -285,6 +326,8 @@ function init() {
   }
 
   function onPointerMove(event) {
+    // On phones a finger drag is a scroll, not a request to tilt the plaque.
+    if (phoneMode && event.pointerType && event.pointerType !== "mouse") return;
     updateMouseFromClientPoint(event.clientX, event.clientY);
   }
 
@@ -294,8 +337,11 @@ function init() {
   }
 
   window.addEventListener("pointermove", onPointerMove, { passive: true });
-  window.addEventListener("mousemove", onPointerMove, { passive: true });
-  window.addEventListener("touchmove", onTouchMove, { passive: true });
+  if (!phoneMode) {
+    // Touch devices also fire compatibility mousemove events; phones skip both.
+    window.addEventListener("mousemove", onPointerMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+  }
 
   const titleFrontMaterial = new THREE.MeshPhysicalMaterial({
     color: 0xfff1d0,
@@ -351,6 +397,44 @@ function init() {
 
   const tabPlates = [];
 
+  // The inline styles this module writes on a plate's DOM panel while it tracks a 3D plate.
+  const TAB_DOM_PROPS = ["top", "left", "right", "bottom", "transform-origin", "transition",
+    "clip-path", "opacity", "pointer-events", "transform"];
+  const TAB_SURFACE_PROPS = ["transform", "width", "box-sizing"];
+
+  /*
+   * Tab plates are built once, on a wide screen. When the screen becomes phone-width
+   * (a phone rotated from landscape to portrait), the panels must become edge sheets,
+   * which CSS positions - so every inline style written here is removed and the frame
+   * loop stops driving them. They re-attach when the screen is wide again.
+   */
+  let tabPlatesAttached = false;
+  function setTabPlatesAttached(attached) {
+    if (stopped) return;
+    tabPlatesAttached = attached && tabPlates.length > 0;
+    for (const tab of tabPlates) {
+      tab.openAmount = 0;
+      tab.mesh.visible = false;
+      for (const prop of TAB_DOM_PROPS) tab.dom.style.removeProperty(prop);
+      for (const prop of TAB_SURFACE_PROPS) tab.surface.style.removeProperty(prop);
+      if (!tabPlatesAttached) continue;
+
+      // The DOM panel becomes a pure content layer; JS owns its position,
+      // slide, and fade so it tracks the 3D plate exactly. No CSS transition.
+      tab.dom.style.top = "50%";
+      tab.dom.style.left = "50%";
+      tab.dom.style.right = "auto";
+      tab.dom.style.bottom = "auto";
+      tab.dom.style.transformOrigin = "center center";
+      tab.dom.style.transition = "none";
+      tab.dom.style.clipPath = tab.dir > 0 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)";
+      tab.dom.style.opacity = "0";
+      tab.dom.style.pointerEvents = "none";
+    }
+    if (heroPlaque) heroPlaque.classList.toggle("webgl-tabs", tabPlatesAttached);
+    if (tabPlatesAttached && plaque) layout();
+  }
+
   let plaque = null;
   let titleInner = null;
   let centerCube = null;
@@ -365,6 +449,7 @@ function init() {
   let heroFont = null;
   let rafId = 0;
   let stopped = false;
+  let sizeObserver = null;
   let lastFrameTime = performance.now();
 
   // Paused is not stopped. stop() is teardown - it disposes geometry, materials and the
@@ -374,15 +459,17 @@ function init() {
   let paused = false;
 
   function buildTextGeo(text, size) {
+    extendTitleFont(heroFont, text);
     const geometry = new TextGeometry(text, {
       font: heroFont,
       size,
       depth: DEPTH,
-      curveSegments: 14,
+      // Phones: a quarter of the triangles, and text builds ~3x faster on the A57.
+      curveSegments: phoneMode ? 6 : 14,
       bevelEnabled: true,
       bevelThickness: 0.018,
       bevelSize: 0.012,
-      bevelSegments: 5,
+      bevelSegments: phoneMode ? 2 : 5,
     });
 
     geometry.center();
@@ -458,7 +545,7 @@ function init() {
       plaque.geometry = new RoundedBoxGeometry(plaqueW, plaqueH, DEPTH, 5, PLAQUE_RADIUS);
     }
 
-    for (const tab of tabPlates) {
+    for (const tab of tabPlatesAttached ? tabPlates : []) {
       const cw = tab.dom.offsetWidth;
       const ch = tab.dom.offsetHeight;
       if (!cw || !ch) continue;
@@ -499,8 +586,13 @@ function init() {
       );
     }
 
-    if (centerCube && shapeSlot) {
-      const slotRect = shapeSlot.getBoundingClientRect();
+    // Phones hide the shape slot to save height. An empty slot means no shape, not a
+    // shape placed from a 0x0 box.
+    const shapeRect = shapeSlot ? shapeSlot.getBoundingClientRect() : null;
+    if (centerCube) centerCube.visible = Boolean(shapeRect && shapeRect.height >= 1);
+
+    if (centerCube && centerCube.visible) {
+      const slotRect = shapeRect;
       const cubeSize = slotRect.height / pxPerWorld;
       rebuildCube(cubeSize);
       centerCube.position.set(
@@ -541,7 +633,7 @@ function init() {
     assembly.rotation.x += (targetX - assembly.rotation.x) * 0.09;
     assembly.rotation.y += (targetY - assembly.rotation.y) * 0.09;
 
-    if (tabPlates.length) {
+    if (tabPlatesAttached) {
       const tabEase = 1 - Math.pow(1 - TAB_SLIDE_SMOOTH, dt * 60);
 
       for (const tab of tabPlates) {
@@ -627,15 +719,31 @@ function init() {
     if (heroPlaque) heroPlaque.classList.remove("plaque-active", "webgl-tabs");
     if (plaqueStack) plaqueStack.style.transform = "";
 
-    for (const tab of tabPlates) {
-      tab.dom.removeAttribute("style");
-    }
+    setTabPlatesAttached(false);
   }
+
+  // Phone pacing: the last frame actually drawn, and the last thing the visitor did.
+  let lastDrawTime = 0;
+  let lastInteraction = performance.now();
+  const phoneFrameGate = createFrameGate(PHONE_FPS);
 
   function animate() {
     if (stopped || paused) return;
 
     const now = performance.now();
+    if (phoneMode) {
+      // Idle: the plaque is still, so stop drawing identical frames until the next
+      // touch, resize or rotation (kick). The first frame after a kick always draws.
+      if (lastDrawTime && now - lastInteraction > (prefersReduced ? 0 : PHONE_IDLE_MS)) {
+        pause();
+        return;
+      }
+      if (!phoneFrameGate.ready(now)) {
+        rafId = requestAnimationFrame(animate);
+        return;
+      }
+      lastDrawTime = now;
+    }
     const t = now / 1000;
     const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
     lastFrameTime = now;
@@ -663,11 +771,44 @@ function init() {
     });
   }
 
+  function syncTitleLanguage() {
+    if (!titleInner || !heroFont || stopped) return;
+    const title = heroTitle?.textContent.trim().toUpperCase() || TITLE_TEXT;
+    const subtitle = heroSubtitle?.textContent.trim().toUpperCase() || SUBTITLE_TEXT;
+    const key = `${title}\n${subtitle}`;
+    if (titleInner.userData.languageText !== key) {
+      const nameGeo = buildTextGeo(title, 1.0);
+      const subGeo = buildTextGeo(subtitle, SUB_SCALE);
+      const nameH = nameGeo.boundingBox.max.y - nameGeo.boundingBox.min.y;
+      const subH = subGeo.boundingBox.max.y - subGeo.boundingBox.min.y;
+      const [nameMesh, subMesh] = titleInner.children;
+      nameMesh.geometry.dispose();
+      subMesh.geometry.dispose();
+      nameMesh.geometry = nameGeo;
+      subMesh.geometry = subGeo;
+      nameMesh.position.y = (subH + SUB_GAP) / 2;
+      subMesh.position.y = -(nameH + SUB_GAP) / 2;
+      titleNatW = Math.max(nameGeo.boundingBox.max.x - nameGeo.boundingBox.min.x,
+        subGeo.boundingBox.max.x - subGeo.boundingBox.min.x);
+      titleNatH = nameH + subH + SUB_GAP;
+      titleInner.userData.languageText = key;
+      layout();
+      kick();
+    }
+    titleInner.visible = true;
+    heroTitle?.classList.add('hidden-by-3d');
+    heroSubtitle?.classList.add('hidden-by-3d');
+    heroPlaque?.classList.remove('localized-title');
+  }
+  document.addEventListener('portfolio-languagechange', syncTitleLanguage);
+
   function stop() {
     if (stopped) return;
     stopped = true;
 
     cancelAnimationFrame(rafId);
+    sizeObserver?.disconnect();
+    document.removeEventListener('portfolio-languagechange', syncTitleLanguage);
     window.removeEventListener("pointermove", onPointerMove);
     window.removeEventListener("mousemove", onPointerMove);
     window.removeEventListener("touchmove", onTouchMove);
@@ -739,7 +880,7 @@ function init() {
 
       assembly.add(plaque, titleInner, centerCube);
 
-      if (webglTabsEnabled) {
+      if (hasTabPlates) {
         for (const item of dockItems) {
           const dom = item.querySelector(".plaque-tab");
           const surface = dom ? dom.querySelector(".plaque-tab-surface") : null;
@@ -752,21 +893,6 @@ function init() {
           mesh.position.set(0, 0, TAB_PLATE_Z_OFFSET);
           mesh.visible = false;
           assembly.add(mesh);
-
-          // The DOM panel becomes a pure content layer; JS owns its position,
-          // slide, and fade so it tracks the 3D plate exactly. No CSS transition.
-          dom.style.top = "50%";
-          dom.style.left = "50%";
-          dom.style.right = "auto";
-          dom.style.bottom = "auto";
-          dom.style.transformOrigin = "center center";
-          dom.style.transition = "none";
-          dom.style.clipPath = item.classList.contains("plaque-tab-right")
-            ? "inset(0 0 0 100%)"
-            : "inset(0 100% 0 0)";
-          surface.style.transform = "";
-          dom.style.opacity = "0";
-          dom.style.pointerEvents = "none";
 
           tabPlates.push({
             dom,
@@ -781,11 +907,16 @@ function init() {
           });
         }
 
-        if (tabPlates.length && heroPlaque) heroPlaque.classList.add("webgl-tabs");
+        if (tabPlates.length) {
+          const tabPlatesQuery = matchMedia(TAB_PLATES_QUERY);
+          setTabPlatesAttached(tabPlatesQuery.matches);
+          tabPlatesQuery.addEventListener("change", (event) => setTabPlatesAttached(event.matches));
+        }
       }
 
       if (heroTitle) heroTitle.classList.add("hidden-by-3d");
       if (heroSubtitle) heroSubtitle.classList.add("hidden-by-3d");
+      syncTitleLanguage();
       canvas.classList.add("active");
       if (heroPlaque) heroPlaque.classList.add("plaque-active");
 
@@ -802,8 +933,23 @@ function init() {
     },
   );
 
+  // CSS container sizing can change after the window resize event (or after a
+  // stylesheet reload). Rebuild both geometry and camera from the final boxes.
+  sizeObserver = new ResizeObserver(() => {
+    if (!stopped && canvas.clientWidth && canvas.clientHeight) layout();
+  });
+  sizeObserver.observe(canvas);
+  if (plaqueStack) sizeObserver.observe(plaqueStack);
   window.addEventListener("resize", layout, { passive: true });
   window.addEventListener("pagehide", stop, { once: true });
+
+  // A lost GPU context (a phone reclaiming graphics memory, a driver reset) left a blank
+  // or frozen canvas over hidden DOM text. Hand the page back to the plain DOM plaque.
+  canvas.addEventListener("webglcontextlost", () => {
+    console.warn("hero-3d: WebGL context lost; restoring DOM fallback.");
+    restoreDomFallback();
+    try { stop(); } catch { /* the context is already gone */ }
+  }, { once: true });
 
   /*
    * Render only while the plaque is actually on a screen someone is looking at.
@@ -836,10 +982,29 @@ function init() {
   // observer says otherwise, so a browser without it simply keeps the old behaviour.
   let onScreen = true;
 
+  // Wake the loop. On phones this also restarts the idle window and forces a fresh frame.
+  function kick() {
+    lastInteraction = performance.now();
+    lastDrawTime = 0;
+    phoneFrameGate.reset();
+    resume();
+  }
+
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) pause();
-    else if (onScreen) resume();
+    else if (onScreen) kick();
   });
+
+  if (phoneMode) {
+    // A touch or key press gives the plaque a moment of life and lets a tab plate finish
+    // sliding (landscape); a resize or rotation needs a fresh frame. Scrolling is left
+    // out: the canvas moves with the page, so nothing needs redrawing.
+    for (const type of ["pointerdown", "keydown", "resize", "orientationchange"]) {
+      window.addEventListener(type, () => {
+        if (onScreen && !document.hidden) kick();
+      }, { passive: true, capture: true });
+    }
+  }
 
   // Observe the SECTION, never the canvas.
   //
@@ -852,24 +1017,26 @@ function init() {
   if (typeof IntersectionObserver === "function" && visibilityTarget) {
     new IntersectionObserver((entries) => {
       onScreen = entries[0].isIntersecting;
-      if (onScreen && !document.hidden) resume();
+      if (onScreen && !document.hidden) kick();
       else pause();
     }, { threshold: 0 }).observe(visibilityTarget);
   }
 }
 
-// init() refuses to start below the mobile breakpoint, but a page can load in
-// a narrow window and be widened later (or the viewport can report 0x0 during
-// startup in some embedders). Without this retry the 3D would never appear
-// until a full reload.
+// Phones and desktops both start here; init() decides whether a phone is capable.
+// A phone that fails the capability gate stays on the DOM plaque, but a narrow
+// desktop window that is widened later (or an embedder that reports 0x0 during
+// startup) still gets the 3D without a reload.
 function boot() {
-  if (window.innerWidth >= MOBILE_BREAKPOINT) {
-    init();
-    return;
-  }
+  init();
+  if (window.__hero3dReady) return;
 
   window.addEventListener("resize", function retryInit() {
-    if (window.innerWidth >= MOBILE_BREAKPOINT && !window.__hero3dReady) {
+    if (window.__hero3dReady) {
+      window.removeEventListener("resize", retryInit);
+      return;
+    }
+    if (window.innerWidth > 0 && !matchMedia(PHONE_QUERY).matches) {
       window.removeEventListener("resize", retryInit);
       init();
     }

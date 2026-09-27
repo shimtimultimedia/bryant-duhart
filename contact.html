@@ -13,7 +13,7 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://shimtimultimedia.github.io/bryant-duhart/contact.html">
-<link rel="preload" as="image" href="images/bd_bg-cutout.webp?v=119" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/portraits/portrait-1.webp?v=119" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bryant Duhart - Multimedia Creator">
 <meta property="og:locale" content="en_US">
@@ -29,6 +29,8 @@
 <meta name="twitter:image:alt" content="Bryant Duhart portrait">
 <script src="js/include.js?v=119" defer></script>
 <script src="js/particles-bg.js?v=119" defer></script>
+<script src="js/contact-inquiry.js?v=119" defer></script>
+<script src="js/contact-flash.js?v=119" defer></script>
 <!-- Three.js importmap — kept for the header brand mark. include.js injects
      js/brand-3d.js on every page, and its bare "three" import resolves through
      this. Removing it would leave the header logo as its text fallback. -->
@@ -44,34 +46,110 @@
      so the module downloaded, parsed, pulled in FontLoader, TextGeometry and the
      EffectComposer chain, and then returned without drawing anything. -->
 </head>
-<body>
+<body class="contact-page">
 <a class="skip-link" href="#main">Skip to content</a>
 <div data-include="header"></div>
 <main id="main" class="page-main contact-main">
-  <section class="section contact-layout">
-    <div class="contact-wrap business-contact">
-      <p class="eyebrow">Business contact</p>
-      <h1>Project inquiries and collaboration</h1>
-      <p class="lede">For business, client, or collaboration inquiries, contact SHIMTI Multimedia by email. A private telephone number is not published on this site.</p>
-      <a class="btn btn-primary" href="mailto:shimtimultimedia@gmail.com?subject=Business%20inquiry%20from%20portfolio%20site">Email SHIMTI Multimedia</a>
-      <div class="contact-meta">
-        <div><div class="label">Business email</div><div class="value"><a href="mailto:shimtimultimedia@gmail.com">shimtimultimedia@gmail.com</a></div></div>
-        <div><div class="label">Location</div><div class="value">Wiesbaden, Germany</div></div>
-        <div><div class="label">Studio</div><div class="value">SHIMTI Multimedia</div></div>
-        <div><div class="label">Phone</div><div class="value">Not published publicly</div></div>
-      </div>
+  <div class="contact-flash" data-contact-flash aria-hidden="true"></div>
+  <article class="contact-scene">
+    <h1 class="contact-scene-title">Contact</h1>
+    <div class="contact-cube" aria-hidden="true">
+      <span class="brand-mark-fallback">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="32,9 54,21 32,33 10,21" fill="#FFFFFF"/>
+          <polygon points="10,21 32,33 32,55 10,43" fill="#B8B8B8"/>
+          <polygon points="54,21 54,43 32,55 32,33" fill="#757575"/>
+        </svg>
+      </span>
+      <canvas class="brand-3d-canvas brand-3d-large" width="240" height="240"></canvas>
     </div>
-    <aside class="map-card" aria-labelledby="map-title">
-      <div class="map-embed">
-        <iframe title="Map showing Wiesbaden, Germany" src="https://www.openstreetmap.org/export/embed.html?bbox=8.1800%2C49.9900%2C8.3300%2C50.1150&amp;layer=mapnik&amp;marker=50.0782%2C8.2398" loading="lazy"></iframe>
-      </div>
-      <div class="map-copy">
-        <h2 id="map-title">Based in Wiesbaden, Germany</h2>
-        <p>SHIMTI Multimedia is based in Wiesbaden and works remotely with clients, collaborators, and creative partners.</p>
-        <a href="https://www.openstreetmap.org/?mlat=50.0782&amp;mlon=8.2398#map=12/50.0782/8.2398" target="_blank" rel="noopener">Open map</a>
-      </div>
-    </aside>
-  </section>
+    <p class="contact-scene-intro">Tell me what you want to create, when you need it, and what success looks like. I&rsquo;ll help determine the best way forward.</p>
+
+    <div class="contact-workspace">
+      <section class="contact-panel contact-brief-panel" aria-labelledby="contact-brief-title">
+        <h2 id="contact-brief-title">Project brief</h2>
+        <div class="contact-brief-form">
+          <label>Service needed
+            <select data-contact-service>
+              <option>Web Design &amp; Digital Presence</option>
+              <option>Graphic Design &amp; Campaign Assets</option>
+              <option>Video &amp; Motion Concepts</option>
+              <option>3D Assets &amp; Visual Direction</option>
+              <option>Music, Audio &amp; Sound</option>
+              <option>AI Workflow Consulting</option>
+              <option>App &amp; Prototype Development</option>
+              <option>Creative Direction</option>
+              <option>Poster &amp; Campaign Art</option>
+              <option>AI-Assisted Visuals</option>
+              <option>3D &amp; Game Assets</option>
+              <option>Other / Not sure yet</option>
+            </select>
+          </label>
+
+          <label>Project description
+            <textarea data-contact-description rows="5" placeholder="Describe the idea, the intended audience, and what you want the finished result to accomplish."></textarea>
+          </label>
+
+          <div class="contact-field-row">
+            <label>Target date <span>(optional)</span>
+              <input type="date" data-contact-date>
+            </label>
+            <label>Budget range <span>(optional)</span>
+              <select data-contact-budget>
+                <option value="">Not specified</option>
+                <option>Under &euro;250</option>
+                <option>&euro;250&ndash;&euro;500</option>
+                <option>&euro;500&ndash;&euro;1,000</option>
+                <option>&euro;1,000&ndash;&euro;2,500</option>
+                <option>&euro;2,500+</option>
+                <option>Needs discussion</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="contact-field-row">
+            <label>Preferred contact
+              <select data-contact-method>
+                <option>Email</option>
+                <option>LinkedIn</option>
+                <option>Instagram</option>
+              </select>
+            </label>
+            <label>Your email
+              <input type="email" data-contact-email placeholder="name@example.com" autocomplete="email">
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-panel contact-summary-panel" aria-labelledby="contact-summary-title">
+        <h2 id="contact-summary-title">Your inquiry</h2>
+        <label class="contact-summary-label" for="contact-summary">Review or edit this message before opening your email application.</label>
+        <textarea id="contact-summary" class="contact-summary" rows="11" data-contact-summary></textarea>
+        <div class="contact-actions">
+          <a class="contact-primary-action" data-contact-email-link href="mailto:shimtimultimedia@gmail.com">Prepare email</a>
+          <button type="button" data-contact-copy>Copy inquiry</button>
+        </div>
+        <p class="contact-copy-status" data-contact-status aria-live="polite"></p>
+
+        <div class="contact-routes" role="group" aria-label="Direct contact alternatives">
+          <a href="mailto:shimtimultimedia@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/shimtimultimedia/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.instagram.com/shimtimultimedia/" target="_blank" rel="noopener">Instagram</a>
+        </div>
+        <p class="contact-location">shimtimultimedia@gmail.com &middot; Based in Wiesbaden, Germany</p>
+
+        <div class="contact-expectations">
+          <h3>What to expect</h3>
+          <ul>
+            <li>Incomplete ideas are welcome.</li>
+            <li>The first conversation carries no obligation.</li>
+            <li>Do not send confidential files until arrangements are confirmed.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </article>
 </main>
 <div data-include="footer"></div>
 </body>

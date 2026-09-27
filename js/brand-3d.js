@@ -18,6 +18,7 @@
 import * as THREE             from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment }    from "three/addons/environments/RoomEnvironment.js";
+import { createFrameGate }    from "./frame-gate.js?v=119";
 
 const ORTHO_H = 2;     // world-height of the camera frustum
 const PADDING = 0.1;   // breathing room so the cube's corners don't clip
@@ -27,9 +28,10 @@ const LIGHT_RANGE = 7; // Cursor-follow light travel for the small header mark
 // Shimti Multimedia cube this mark echoes.
 const ISO_TILT = Math.atan(1 / Math.SQRT2);  // ≈ 35.26°
 
-function init() {
-  const canvas = document.getElementById("brand-3d-canvas");
-  if (!canvas) return;
+// One independent cube per canvas: the header mark (#brand-3d-canvas) and any enlarged
+// cube a page carries (.brand-3d-large, e.g. above the contact forms). Each has its own
+// renderer, so each pauses on its own when scrolled out of view.
+function initCube(canvas) {
 
   const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -38,8 +40,7 @@ function init() {
   let rafId = 0;
 
   // ~30fps. See the note in animate().
-  const FRAME_MS = 1000 / 30;
-  let lastDraw = 0;
+  const frameGate = createFrameGate(30);
 
   let renderer;
   try {
@@ -123,8 +124,23 @@ function init() {
     mesh.scale.setScalar(scale);
   }
 
+  // Phones show the mark on both sides of the title. The second copy is not a second
+  // WebGL scene: each rendered frame is copied onto a small 2D canvas in the same task,
+  // while the WebGL drawing buffer is still valid, so both marks match at almost no cost.
+  const mirror = canvas.id === "brand-3d-canvas" ? document.querySelector(".brand-3d-mirror") : null;
+  const mirrorCtx = mirror ? mirror.getContext("2d") : null;
+
   function render() {
     renderer.render(scene, camera);
+    if (mirrorCtx && mirror.offsetParent !== null) {
+      if (mirror.width !== canvas.width || mirror.height !== canvas.height) {
+        mirror.width = canvas.width;
+        mirror.height = canvas.height;
+      }
+      mirrorCtx.clearRect(0, 0, mirror.width, mirror.height);
+      mirrorCtx.drawImage(canvas, 0, 0);
+      mirror.parentElement?.classList.add("brand-mark-ready");
+    }
   }
 
   // Build the cube synchronously — no font, no async load. Rounded
@@ -206,10 +222,7 @@ function init() {
     // toward the cursor and a slow intensity breathe on a 0.6Hz sine. At that rate 60fps
     // and 30fps are indistinguishable to the eye, and it halves the per-frame cost of a
     // clearcoat MeshPhysicalMaterial that was running flat out on every page of the site.
-    if (now - lastDraw >= FRAME_MS) {
-      lastDraw = now;
-      render();
-    }
+    if (frameGate.ready(now)) render();
     rafId = requestAnimationFrame(animate);
   }
 
@@ -253,6 +266,12 @@ function init() {
       else stopLoop();
     }, { threshold: 0 }).observe(canvas);
   }
+}
+
+function init() {
+  const header = document.getElementById("brand-3d-canvas");
+  if (header) initCube(header);
+  document.querySelectorAll(".brand-3d-large").forEach(initCube);
 }
 
 if (document.readyState === "loading") {

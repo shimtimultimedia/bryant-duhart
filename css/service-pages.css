@@ -17,6 +17,10 @@
   border-bottom: 1px solid var(--line);
 }
 
+/* Long translated compound words must fit narrow process-card columns. */
+html:not([lang="en"]) main p,
+html:not([lang="en"]) main li { overflow-wrap: anywhere; }
+
 .service-breadcrumb,
 .service-back-link {
   display: inline-block;
