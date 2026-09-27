@@ -1,4 +1,5 @@
 import { languages, rows } from './language-data.js';
+import { initMotionControl } from './motion-control.js?v=120';
 
 const normalize = value => value.replace(/\s+/g, ' ').trim();
 const catalogs = new Map(languages.map(([code], index) => [code,
@@ -61,6 +62,13 @@ function apply() {
     }
   }
   document.documentElement.lang = language;
+  for (const link of document.querySelectorAll('a[data-service]')) {
+    const url = new URL(link.href, location.href);
+    if (url.origin !== 'https://shimtimultimedia.com') continue;
+    if (language === 'en') url.searchParams.delete('lang');
+    else url.searchParams.set('lang', language);
+    link.href = url.href;
+  }
   document.title = originalTitle.split(/(\s[—–-]\s)/).map(translate).join('');
   const selector = document.querySelector('#footer-language');
   if (selector) selector.setAttribute('aria-label', translate('Language'));
@@ -98,6 +106,7 @@ if (footer) {
   });
   label.append(caption, select);
   footer.append(label);
+  initMotionControl('.site-footer', () => language);
   apply();
   document.dispatchEvent(new CustomEvent('portfolio-languagechange', { detail: { language } }));
 }

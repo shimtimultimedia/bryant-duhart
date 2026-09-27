@@ -20,12 +20,12 @@
 
   const schedule = () => {
     window.clearTimeout(timeout);
-    if (document.hidden || reducedMotion.matches) return;
+    if (document.hidden || reducedMotion.matches || document.documentElement.dataset.motion === 'reduce') return;
     timeout = window.setTimeout(runFlash, 6000 + random() * 14000);
   };
 
   const runFlash = () => {
-    if (document.hidden || reducedMotion.matches || getComputedStyle(flashLayer).display === 'none') {
+    if (document.hidden || reducedMotion.matches || document.documentElement.dataset.motion === 'reduce' || getComputedStyle(flashLayer).display === 'none') {
       schedule();
       return;
     }
@@ -64,6 +64,7 @@
     animation = null;
     schedule();
   };
+  window.addEventListener('site-motion-change', reset);
 
   document.addEventListener('visibilitychange', reset);
   reducedMotion.addEventListener('change', reset);

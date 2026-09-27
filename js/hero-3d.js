@@ -24,7 +24,7 @@ import { EffectComposer }     from "three/addons/postprocessing/EffectComposer.j
 import { RenderPass }         from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass }    from "three/addons/postprocessing/UnrealBloomPass.js";
 import { ShaderPass }         from "three/addons/postprocessing/ShaderPass.js";
-import { createFrameGate }    from "./frame-gate.js?v=119";
+import { createFrameGate }    from "./frame-gate.js?v=120";
 
 const PAGE_PATH = window.location.pathname.toLowerCase();
 
@@ -269,7 +269,9 @@ function init() {
 
   window.__hero3dReady = true;
 
-  const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.motion === 'reduce';
+  const onMotionChange = event => { prefersReduced = event.detail.reduced; };
+  window.addEventListener('site-motion-change', onMotionChange);
 
   const scene = new THREE.Scene();
 
@@ -803,6 +805,7 @@ function init() {
   document.addEventListener('portfolio-languagechange', syncTitleLanguage);
 
   function stop() {
+    window.removeEventListener('site-motion-change', onMotionChange);
     if (stopped) return;
     stopped = true;
 

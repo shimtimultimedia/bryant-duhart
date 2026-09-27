@@ -18,7 +18,7 @@
 import * as THREE             from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment }    from "three/addons/environments/RoomEnvironment.js";
-import { createFrameGate }    from "./frame-gate.js?v=119";
+import { createFrameGate }    from "./frame-gate.js?v=120";
 
 const ORTHO_H = 2;     // world-height of the camera frustum
 const PADDING = 0.1;   // breathing room so the cube's corners don't clip
@@ -33,7 +33,8 @@ const ISO_TILT = Math.atan(1 / Math.SQRT2);  // ≈ 35.26°
 // renderer, so each pauses on its own when scrolled out of view.
 function initCube(canvas) {
 
-  const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.dataset.motion === 'reduce';
+  window.addEventListener('site-motion-change', event => { prefersReduced = event.detail.reduced; });
 
   // Held so the loop can be cancelled when the tab is hidden. 0 means "not running",
   // which is what the visibility handler tests to avoid stacking a second loop.

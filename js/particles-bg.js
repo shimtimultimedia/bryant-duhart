@@ -177,7 +177,7 @@ function buildParticles() {
     let horizontalInput = 0;
     let baseVelocity = 0;
 
-    if (!isPaused) {
+    if (!isPaused && document.documentElement.dataset.motion !== 'reduce') {
       // Frame-rate-independent smoothing. At normal 60fps it behaves like
       // the original MOUSE_SMOOTHING value, but it stays stable on faster
       // or slower displays.

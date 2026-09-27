@@ -3,7 +3,7 @@
  * brand 3D mark, theme toggle, and minimalist loader.
  */
 
-const ASSET_VERSION = "119";
+const ASSET_VERSION = "120";
 
 const NAV_LINKS = [
   { href: "index.html",     label: "Home"      },
@@ -42,7 +42,7 @@ function applyStoredThemeEarly() {
 function currentPage() {
   const match = location.pathname.match(/([^/]+\.html)$/);
   const page = match ? match[1] : "index.html";
-  return page.startsWith("service-") ? "services.html" : page;
+  return page;
 }
 
 function escapeHtml(value) {
@@ -272,7 +272,7 @@ function startPortraitCycle(portrait) {
   }
 
   async function advance() {
-    if (document.hidden || !shown.matches || still.matches) {
+    if (document.hidden || !shown.matches || still.matches || document.documentElement.dataset.motion === 'reduce') {
       window.setTimeout(advance, PORTRAIT_HOLD_MS);
       return;
     }
@@ -527,7 +527,7 @@ function init() {
   initEdgePanel();
   initBrand3d();
   initThemeScript();
-  import('./site-language.js').catch(error => console.error('Local language module:', error));
+  import(`./site-language.js?v=${ASSET_VERSION}`).catch(error => console.error('Local language module:', error));
   runLoader();
 }
 

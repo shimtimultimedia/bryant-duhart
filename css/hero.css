@@ -170,6 +170,10 @@ main.plaque-page-main {
 
 /* Links inside any plaque bio: anchors don't inherit the forced white above,
    and the global `a` rule paints them black — invisible on the dark metal. */
+.plaque-bio a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .hero-plaque.plaque-active .plaque-bio a {
   color: #fff;
   text-decoration: underline;

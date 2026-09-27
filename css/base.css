@@ -155,7 +155,7 @@ body::-webkit-scrollbar { display: none; }
 #portrait-bg {
   position: fixed;
   inset: 0;
-  background-image: url("../images/portraits/portrait-1.webp?v=119");
+  background-image: url("../images/portraits/portrait-1.webp?v=120");
   background-repeat: no-repeat;
   background-position: left calc(100% + 8px);
   background-size: contain;
